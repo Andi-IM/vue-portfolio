@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { ExternalLink, Github, X, Smartphone, Code, CheckCircle2 } from 'lucide-vue-next'
 import marketMingleImg from '../images/market-mingle.png'
 import lokapanduImg from '../images/lokapandu.png'
+import culinaryCompassImg from '../images/lokapandu.png'
 
 interface Project {
   title: string
@@ -24,11 +25,7 @@ const projects = [
       'Solusi terpusat bagi wisatawan untuk menemukan rekomendasi destinasi anti-mainstream dan menyusun rencana perjalanan secara visual dan efisien.',
     longDescription:
       'Lokapandu dikembangkan untuk menjawab tantangan pariwisata Indonesia yang tumbuh pesat, di mana wisatawan kesulitan merencanakan perjalanan akibat informasi destinasi yang tersebar. Aplikasi ini menyatukan pencarian dan perencanaan wisata dalam satu platform. MVP aplikasi Lokapandu memiliki tiga fitur utama: Rekomendasi Wisata, Rencana Wisata, dan Asisten Wisata AI berbasis Gemini. Dibangun dengan Flutter dan Supabase, Lokapandu menghadirkan solusi modern, aman, dan siap pakai bagi wisatawan.',
-    features: [
-      'Rekomendasi Wisata',
-      'Rencana Wisata',
-      'Asisten Wisata AI berbasis Gemini',
-    ],
+    features: ['Rekomendasi Wisata', 'Rencana Wisata', 'Asisten Wisata AI berbasis Gemini'],
     tags: ['Flutter', 'Supabase', 'Provider', 'Gemini', 'Dart'],
     image: lokapanduImg,
     link: 'https://drive.google.com/drive/folders/1HIW2WgRz-RxB3vCe9joTAXPQ5N1v3HqY?usp=drive_link',
@@ -39,15 +36,32 @@ const projects = [
     description: 'Aplikasi multi platform sederhana yang menampilkan daftar',
     longDescription:
       'FinTrack adalah solusi manajemen keuangan pribadi yang komprehensif. Dibangun dengan Flutter untuk performa native yang mulus, aplikasi ini memungkinkan pengguna untuk mencatat transaksi harian, memvisualisasikan arus kas dengan grafik interaktif, dan menetapkan anggaran bulanan agar tetap pada jalurnya. Sinkronisasi cloud memastikan data Anda aman dan dapat diakses dari perangkat mana pun.',
-    features: [
-      'Penjelajahan produk',
-      'Keranjang belanja',
-      'multi-platform (web, mobile, desktop)',
-    ],
-    tags: ['Flutter','Dart', 'Provider', ],
+    features: ['Penjelajahan produk', 'Keranjang belanja', 'multi-platform (web, mobile, desktop)'],
+    tags: ['Flutter', 'Dart', 'Provider'],
     image: marketMingleImg,
     link: 'https://marketmingle.andi-irhamm.workers.dev/',
     github: 'https://github.com/Andi-IM/market-mingle.git',
+  },
+  {
+    title: 'Culinary Compass - Aplikasi Rekomendasi Makanan',
+    description: 'Aplikasi multi platform sederhana yang menampilkan daftar',
+    longDescription:
+      'Culinary Compass adalah aplikasi yang menampilkan daftar rekomendasi restoran berdasarkan rating dan review pengguna. Aplikasi ini menggunakan API dari restaurant.com untuk mengambil data restoran dan menampilkan informasi lengkap tentang setiap restoran termasuk alamat, menu, rating, dan review. Pengguna dapat mencari restoran berdasarkan nama, kategori, atau lokasi. Aplikasi ini juga memiliki fitur untuk menyimpan restoran favorit dan memberikan pemberitahuan tentang acara restoran yang akan datang.',
+    features: [
+      'Restaurant List with API Integration',
+      'Restaurant Search by name',
+      'Restaurant Detail View with comprehensive information',
+      'Restaurant Review Submission with rating',
+      'Favorite Restaurants management',
+      'Scheduled Restaurant Reminder notifications (more feature only on mobile)',
+      'Dark/Light Theme support',
+      'Cross-platform (web, mobile, desktop)',
+      'Responsive Design for all device sizes',
+    ],
+    tags: ['Flutter', 'Dart', 'Provider'],
+    image: culinaryCompassImg,
+    link: 'https://culinary-compass.andi-irhamm.workers.dev/',
+    github: 'https://github.com/Andi-IM/CulinaryCompass.git',
   },
 ]
 
