@@ -70,7 +70,7 @@ const handleScroll = (id: string) => {
           {{ item }}
         </button>
         <a
-          href="https://pub-1d2d5180bcb0450bb6d122152ab25b6d.r2.dev/Profile.pdf"
+          href="https://pub-1d2d5180bcb0450bb6d122152ab25b6d.r2.dev/cv-andi-irham-2025.pdf"
           download
           class="text-blue-400 hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium w-full text-left flex items-center gap-2"
         >
