@@ -23,7 +23,7 @@ const handleScroll = (id: string) => {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
         <div class="flex-shrink-0 font-bold text-2xl text-blue-500 tracking-wider">
-          ALEX<span class="text-white">DEV.</span>
+          Andi<span class="text-white">IM.</span>
         </div>
 
         <!-- Desktop Menu -->
@@ -37,12 +37,14 @@ const handleScroll = (id: string) => {
             >
               {{ item }}
             </button>
-            <button
+            <a
+              href=""
+              download
               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center gap-2 transition-all hover:scale-105"
             >
               <Download :size="16" />
               Unduh CV
-            </button>
+            </a>
           </div>
         </div>
 
@@ -67,6 +69,14 @@ const handleScroll = (id: string) => {
         >
           {{ item }}
         </button>
+        <a
+          href="https://pub-1d2d5180bcb0450bb6d122152ab25b6d.r2.dev/Profile.pdf"
+          download
+          class="text-blue-400 hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium w-full text-left flex items-center gap-2"
+        >
+          <Download :size="16" />
+          Unduh CV
+        </a>
       </div>
     </div>
   </nav>

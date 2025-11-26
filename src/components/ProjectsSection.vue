@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { ExternalLink, Github, X, Smartphone, Code, CheckCircle2 } from 'lucide-vue-next'
 import marketMingleImg from '../images/market-mingle.webp'
 import lokapanduImg from '../images/lokapandu.webp'
-import culinaryCompassImg from '../images/lokapandu.webp'
+import culinaryCompassImg from '../images/culinary-compass.webp'
 import nutrivisionImg from '../images/nutrivision.webp'
 
 interface Project {
@@ -13,7 +13,7 @@ interface Project {
   features: string[]
   tags: string[]
   image: string
-  link: string
+  link?: string | null
   github: string
 }
 
@@ -66,13 +66,14 @@ const projects = [
   },
   {
     title: 'Nutrivision - Aplikasi Deteksi Makanan',
-    description: 'Aplikasi sederhana yang memanfaatkan API Gemini dan MLKit untuk mendeteksi makanan',
+    description:
+      'Aplikasi sederhana yang memanfaatkan API Gemini dan MLKit untuk mendeteksi makanan',
     longDescription:
       'Nutrivision adalah aplikasi yang menampilkan daftar rekomendasi restoran berdasarkan rating dan review pengguna. Aplikasi ini menggunakan API dari restaurant.com untuk mengambil data restoran dan menampilkan informasi lengkap tentang setiap restoran termasuk alamat, menu, rating, dan review. Pengguna dapat mencari restoran berdasarkan nama, kategori, atau lokasi. Aplikasi ini juga memiliki fitur untuk menyimpan restoran favorit dan memberikan pemberitahuan tentang acara restoran yang akan datang.',
     features: ['nutrition information of food', 'recipe of food', 'ingredient of food'],
     tags: ['Flutter', 'Dart', 'Provider', 'Firebase', 'Gemini'],
     image: nutrivisionImg,
-    link: '#',
+    link: null,
     github: 'https://github.com/Andi-IM/meal_detection',
   },
 ]
@@ -85,8 +86,10 @@ const closeProject = () => {
   selectedProject.value = null
 }
 
-const openLink = (url: string) => {
-  window.open(url, '_blank')
+const openLink = (url?: string | null) => {
+  if (url) {
+    window.open(url, '_blank')
+  }
 }
 </script>
 
@@ -142,6 +145,7 @@ const openLink = (url: string) => {
             </div>
             <div class="flex gap-4 pt-4 border-t border-gray-700">
               <button
+                v-if="project.link"
                 @click.stop="openLink(project.link)"
                 class="flex items-center gap-2 text-sm text-white hover:text-blue-400 transition-colors"
               >
@@ -243,6 +247,7 @@ const openLink = (url: string) => {
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-gray-800">
           <a
+            v-if="selectedProject.link"
             :href="selectedProject.link"
             target="_blank"
             rel="noopener noreferrer"
