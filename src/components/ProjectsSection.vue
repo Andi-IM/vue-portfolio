@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ExternalLink, Github, X, Smartphone, Code, CheckCircle2 } from 'lucide-vue-next'
-import marketMingleImg from '../images/market-mingle.png'
-import lokapanduImg from '../images/lokapandu.png'
-import culinaryCompassImg from '../images/lokapandu.png'
+import marketMingleImg from '../images/market-mingle.webp'
+import lokapanduImg from '../images/lokapandu.webp'
+import culinaryCompassImg from '../images/lokapandu.webp'
+import nutrivisionImg from '../images/nutrivision.webp'
 
 interface Project {
   title: string
@@ -62,6 +63,17 @@ const projects = [
     image: culinaryCompassImg,
     link: 'https://culinary-compass.andi-irhamm.workers.dev/',
     github: 'https://github.com/Andi-IM/CulinaryCompass.git',
+  },
+  {
+    title: 'Nutrivision - Aplikasi Deteksi Makanan',
+    description: 'Aplikasi sederhana yang memanfaatkan API Gemini dan MLKit untuk mendeteksi makanan',
+    longDescription:
+      'Nutrivision adalah aplikasi yang menampilkan daftar rekomendasi restoran berdasarkan rating dan review pengguna. Aplikasi ini menggunakan API dari restaurant.com untuk mengambil data restoran dan menampilkan informasi lengkap tentang setiap restoran termasuk alamat, menu, rating, dan review. Pengguna dapat mencari restoran berdasarkan nama, kategori, atau lokasi. Aplikasi ini juga memiliki fitur untuk menyimpan restoran favorit dan memberikan pemberitahuan tentang acara restoran yang akan datang.',
+    features: ['nutrition information of food', 'recipe of food', 'ingredient of food'],
+    tags: ['Flutter', 'Dart', 'Provider', 'Firebase', 'Gemini'],
+    image: nutrivisionImg,
+    link: '#',
+    github: 'https://github.com/Andi-IM/meal_detection',
   },
 ]
 
