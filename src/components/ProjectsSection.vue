@@ -5,6 +5,7 @@ import marketMingleImg from '../images/market-mingle.webp'
 import lokapanduImg from '../images/lokapandu.webp'
 import culinaryCompassImg from '../images/culinary-compass.webp'
 import nutrivisionImg from '../images/nutrivision.webp'
+import deretsolverImg from '../images/deretsolver.webp'
 
 interface Project {
   title: string
@@ -76,6 +77,15 @@ const projects = [
     link: null,
     github: 'https://github.com/Andi-IM/meal_detection',
   },
+  {
+    title: 'deretsolver',
+    description: 'Enter a sequence to find the hidden pattern and predict the next number instantly.',
+    features: ['sequence prediction', 'pattern recognition', 'instant prediction'],
+    tags: ['Flutter', 'Dart', 'Provider'],
+    image: deretsolverImg,
+    link: 'https://deretsolver.web.app/',
+    github: 'https://github.com/Andi-IM/deretsolver',
+  }
 ]
 
 const openProject = (project: Project) => {
