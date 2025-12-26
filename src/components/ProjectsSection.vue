@@ -81,7 +81,7 @@ const projects = [
     title: 'deretsolver',
     description: 'Enter a sequence to find the hidden pattern and predict the next number instantly.',
     features: ['sequence prediction', 'pattern recognition', 'instant prediction'],
-    tags: ['Flutter', 'Dart', 'Provider'],
+    tags: ['React', 'JavaScript', 'Firebase', 'Tailwindcss', 'Gemini'],
     image: deretsolverImg,
     link: 'https://deretsolver.web.app/',
     github: 'https://github.com/Andi-IM/deretsolver',
