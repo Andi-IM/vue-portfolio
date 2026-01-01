@@ -32,12 +32,8 @@
     "@prettier/plugin-oxc": "^0.1.3",
     "@tailwindcss/vite": "^4.1.17",
     "@tsconfig/node22": "^22.0.2",
-<<<<<<< HEAD
     "@types/jsdom": "^27.0.0",
-    "@types/node": "^22.18.11",
-=======
     "@types/node": "^25.0.3",
->>>>>>> b5a298e5c314b29edb27d6276ef41e4b1ff0b698
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitejs/plugin-vue-jsx": "^5.1.1",
     "@vitest/coverage-v8": "^4.0.16",
