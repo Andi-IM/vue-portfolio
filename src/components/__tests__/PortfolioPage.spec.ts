@@ -9,12 +9,12 @@ describe('PortfolioPage', () => {
     // Shallow mount might stub child components, but we want to know they are there.
     // Mount renders everything.
     const wrapper = mount(PortfolioPage, {
-        global: {
-            stubs: {
-                // We can keep them real or stub them if we only care they exist.
-                // Let's keep them real for now unless it's too heavy.
-            }
-        }
+      global: {
+        stubs: {
+          // We can keep them real or stub them if we only care they exist.
+          // Let's keep them real for now unless it's too heavy.
+        },
+      },
     })
 
     expect(wrapper.findComponent(NavBar).exists()).toBe(true)
@@ -29,9 +29,9 @@ describe('PortfolioPage', () => {
     // Mock getElementById and scrollIntoView
     const scrollIntoViewMock = vi.fn()
     const getElementByIdSpy = vi.spyOn(document, 'getElementById').mockImplementation(() => {
-        return {
-            scrollIntoView: scrollIntoViewMock
-        } as unknown as HTMLElement
+      return {
+        scrollIntoView: scrollIntoViewMock,
+      } as unknown as HTMLElement
     })
 
     // Trigger scroll event from NavBar

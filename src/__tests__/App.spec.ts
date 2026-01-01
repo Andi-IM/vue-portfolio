@@ -5,9 +5,9 @@ import App from '../App.vue'
 describe('App', () => {
   it('renders router view', () => {
     const wrapper = mount(App, {
-        global: {
-            stubs: ['RouterView']
-        }
+      global: {
+        stubs: ['RouterView'],
+      },
     })
 
     expect(wrapper.findComponent({ name: 'RouterView' }).exists()).toBe(true)

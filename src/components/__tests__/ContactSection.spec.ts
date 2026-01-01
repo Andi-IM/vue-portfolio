@@ -13,9 +13,9 @@ describe('ContactSection', () => {
     const wrapper = mount(ContactSection)
     const links = wrapper.findAll('a')
 
-    const emailLink = links.find(l => l.attributes('href')?.startsWith('mailto:'))
-    const linkedinLink = links.find(l => l.attributes('href')?.includes('linkedin.com'))
-    const githubLink = links.find(l => l.attributes('href')?.includes('github.com'))
+    const emailLink = links.find((l) => l.attributes('href')?.startsWith('mailto:'))
+    const linkedinLink = links.find((l) => l.attributes('href')?.includes('linkedin.com'))
+    const githubLink = links.find((l) => l.attributes('href')?.includes('github.com'))
 
     expect(emailLink?.exists()).toBe(true)
     expect(linkedinLink?.exists()).toBe(true)

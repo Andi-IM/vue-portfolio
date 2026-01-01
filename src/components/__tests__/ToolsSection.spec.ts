@@ -11,12 +11,10 @@ describe('ToolsSection', () => {
 
   it('renders all skills', () => {
     const wrapper = mount(ToolsSection)
-    const skills = [
-      'Flutter', 'Dart', 'Firebase', 'Git', 'Android Studio', 'VS Code'
-    ]
+    const skills = ['Flutter', 'Dart', 'Firebase', 'Git', 'Android Studio', 'VS Code']
 
-    skills.forEach(skill => {
-        expect(wrapper.text()).toContain(skill)
+    skills.forEach((skill) => {
+      expect(wrapper.text()).toContain(skill)
     })
 
     const cards = wrapper.findAll('.group')

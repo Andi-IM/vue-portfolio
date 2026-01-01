@@ -51,16 +51,16 @@ describe('ProjectsSection', () => {
     // The card has a buttons for links.
 
     const githubButtons = wrapper.findAll('button')
-    const githubBtn = githubButtons.find(b => b.text().includes('GitHub'))
+    const githubBtn = githubButtons.find((b) => b.text().includes('GitHub'))
 
     if (githubBtn) {
-        await githubBtn.trigger('click')
-        expect(openSpy).toHaveBeenCalled()
+      await githubBtn.trigger('click')
+      expect(openSpy).toHaveBeenCalled()
     } else {
-        // Fallback if no visible buttons in card view (logic check)
-        // Access component internal method if necessary, but testing UI interaction is better.
-        // ProjectsSection has buttons in the card grid.
-        throw new Error('GitHub button not found')
+      // Fallback if no visible buttons in card view (logic check)
+      // Access component internal method if necessary, but testing UI interaction is better.
+      // ProjectsSection has buttons in the card grid.
+      throw new Error('GitHub button not found')
     }
 
     openSpy.mockRestore()

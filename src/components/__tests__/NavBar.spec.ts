@@ -34,7 +34,7 @@ describe('NavBar', () => {
     const buttons = wrapper.findAll('button')
 
     // Find the 'Tentang' button in desktop menu
-    const tentangButton = buttons.find(b => b.text().includes('Tentang'))
+    const tentangButton = buttons.find((b) => b.text().includes('Tentang'))
     await tentangButton?.trigger('click')
 
     expect(wrapper.emitted('scrollToSection')).toBeTruthy()
@@ -42,19 +42,19 @@ describe('NavBar', () => {
   })
 
   it('closes mobile menu when mobile nav item is clicked', async () => {
-     const wrapper = mount(NavBar)
+    const wrapper = mount(NavBar)
 
-     // Open menu first
-     ;(wrapper.vm as any).isMenuOpen = true
-     await wrapper.vm.$nextTick()
+    // Open menu first
+    ;(wrapper.vm as any).isMenuOpen = true
+    await wrapper.vm.$nextTick()
 
-     const mobileMenu = wrapper.find('.md\\:hidden.bg-gray-800')
-     const toolsButton = mobileMenu.findAll('button').find(b => b.text().includes('Tools'))
+    const mobileMenu = wrapper.find('.md\\:hidden.bg-gray-800')
+    const toolsButton = mobileMenu.findAll('button').find((b) => b.text().includes('Tools'))
 
-     await toolsButton?.trigger('click')
+    await toolsButton?.trigger('click')
 
-     expect(wrapper.emitted('scrollToSection')).toBeTruthy()
-     expect(wrapper.emitted('scrollToSection')?.[0]).toEqual(['tools'])
-     expect((wrapper.vm as any).isMenuOpen).toBe(false)
+    expect(wrapper.emitted('scrollToSection')).toBeTruthy()
+    expect(wrapper.emitted('scrollToSection')?.[0]).toEqual(['tools'])
+    expect((wrapper.vm as any).isMenuOpen).toBe(false)
   })
 })

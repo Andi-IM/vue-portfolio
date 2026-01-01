@@ -16,7 +16,7 @@ describe('BlogService', () => {
     const mockPosts = [{ id: '1' }]
     ;(global.fetch as any).mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockPosts)
+      json: () => Promise.resolve(mockPosts),
     })
 
     const posts = await service.getPosts()
@@ -33,7 +33,7 @@ describe('BlogService', () => {
     const mockPost = { id: '1', title: 'Test' }
     ;(global.fetch as any).mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve(mockPost)
+      json: () => Promise.resolve(mockPost),
     })
 
     const post = await service.getPost('1')
@@ -43,8 +43,8 @@ describe('BlogService', () => {
 
   it('fetches post by slug', async () => {
     const mockPosts = [
-        { id: '1', slug: 'test-slug' },
-        { id: '2', slug: 'other' }
+      { id: '1', slug: 'test-slug' },
+      { id: '2', slug: 'other' },
     ]
     const mockPost = { id: '1', slug: 'test-slug', content: '...' }
 
@@ -52,12 +52,12 @@ describe('BlogService', () => {
     ;(global.fetch as any)
       .mockResolvedValueOnce({
         ok: true,
-        json: () => Promise.resolve(mockPosts)
+        json: () => Promise.resolve(mockPosts),
       })
       // Second fetch mocks getPost
       .mockResolvedValueOnce({
         ok: true,
-        json: () => Promise.resolve(mockPost)
+        json: () => Promise.resolve(mockPost),
       })
 
     const result = await service.getPostBySlug('test-slug')
@@ -65,44 +65,53 @@ describe('BlogService', () => {
   })
 
   it('returns null if slug not found', async () => {
-     ;(global.fetch as any).mockResolvedValue({
-       ok: true,
-       json: () => Promise.resolve([])
-     })
+    ;(global.fetch as any).mockResolvedValue({
+      ok: true,
+      json: () => Promise.resolve([]),
+    })
 
-     const result = await service.getPostBySlug('unknown')
-     expect(result).toBeNull()
+    const result = await service.getPostBySlug('unknown')
+    expect(result).toBeNull()
   })
 
   it('saves post', async () => {
     const postData = { title: 'New' }
     ;(global.fetch as any).mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ ...postData, id: '1' })
+      json: () => Promise.resolve({ ...postData, id: '1' }),
     })
 
     await service.savePost(postData)
-    expect(global.fetch).toHaveBeenCalledWith('/api/posts', expect.objectContaining({
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/api/posts',
+      expect.objectContaining({
         method: 'POST',
-        body: JSON.stringify(postData)
-    }))
+        body: JSON.stringify(postData),
+      }),
+    )
   })
 
   it('deletes post', async () => {
     ;(global.fetch as any).mockResolvedValue({ ok: true })
     await service.deletePost('1')
-    expect(global.fetch).toHaveBeenCalledWith('/api/posts?id=1', expect.objectContaining({ method: 'DELETE' }))
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/api/posts?id=1',
+      expect.objectContaining({ method: 'DELETE' }),
+    )
   })
 
   it('uploads image', async () => {
     const file = new File([''], 'test.png', { type: 'image/png' })
     ;(global.fetch as any).mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ url: 'http://example.com/img.png' })
+      json: () => Promise.resolve({ url: 'http://example.com/img.png' }),
     })
 
     const url = await service.uploadImage(file)
     expect(url).toBe('http://example.com/img.png')
-    expect(global.fetch).toHaveBeenCalledWith('/api/upload', expect.objectContaining({ method: 'PUT' }))
+    expect(global.fetch).toHaveBeenCalledWith(
+      '/api/upload',
+      expect.objectContaining({ method: 'PUT' }),
+    )
   })
 })

@@ -6,21 +6,21 @@ import { useBlogService } from '@/composables/useBlogService'
 
 vi.mock('@/composables/useBlogService', () => ({
   useBlogService: vi.fn(),
-  BLOG_SERVICE_KEY: Symbol('BlogService')
+  BLOG_SERVICE_KEY: Symbol('BlogService'),
 }))
 
 describe('BlogIndex', () => {
   it('renders loading state initially', () => {
-    (useBlogService as any).mockReturnValue({
-      getPosts: vi.fn().mockImplementation(() => new Promise(() => {})) // Never resolves
+    ;(useBlogService as any).mockReturnValue({
+      getPosts: vi.fn().mockImplementation(() => new Promise(() => {})), // Never resolves
     })
     const wrapper = mount(BlogIndex)
     expect(wrapper.text()).toContain('Loading posts...')
   })
 
   it('renders empty state when no posts', async () => {
-    (useBlogService as any).mockReturnValue({
-      getPosts: vi.fn().mockResolvedValue([])
+    ;(useBlogService as any).mockReturnValue({
+      getPosts: vi.fn().mockResolvedValue([]),
     })
     const wrapper = mount(BlogIndex)
     await flushPromises()
@@ -29,21 +29,33 @@ describe('BlogIndex', () => {
 
   it('renders posts when available', async () => {
     const mockPosts = [
-        { id: '1', title: 'Test Post 1', slug: 'test-1', excerpt: 'Excerpt 1', createdAt: '2023-01-01' },
-        { id: '2', title: 'Test Post 2', slug: 'test-2', excerpt: 'Excerpt 2', createdAt: '2023-01-02' }
+      {
+        id: '1',
+        title: 'Test Post 1',
+        slug: 'test-1',
+        excerpt: 'Excerpt 1',
+        createdAt: '2023-01-01',
+      },
+      {
+        id: '2',
+        title: 'Test Post 2',
+        slug: 'test-2',
+        excerpt: 'Excerpt 2',
+        createdAt: '2023-01-02',
+      },
     ]
     ;(useBlogService as any).mockReturnValue({
-      getPosts: vi.fn().mockResolvedValue(mockPosts)
+      getPosts: vi.fn().mockResolvedValue(mockPosts),
     })
 
     const wrapper = mount(BlogIndex, {
-        global: {
-            stubs: {
-                RouterLink: {
-                    template: '<a><slot /></a>'
-                }
-            }
-        }
+      global: {
+        stubs: {
+          RouterLink: {
+            template: '<a><slot /></a>',
+          },
+        },
+      },
     })
     await flushPromises()
 

@@ -13,7 +13,7 @@ describe('HeroSection', () => {
   it('emits scrollToSection when "Lihat Karya Saya" is clicked', async () => {
     const wrapper = mount(HeroSection)
     const buttons = wrapper.findAll('button')
-    const button = buttons.find(b => b.text().includes('Lihat Karya Saya'))
+    const button = buttons.find((b) => b.text().includes('Lihat Karya Saya'))
 
     await button?.trigger('click')
 
@@ -24,7 +24,7 @@ describe('HeroSection', () => {
   it('emits scrollToSection when "Hubungi Saya" is clicked', async () => {
     const wrapper = mount(HeroSection)
     const buttons = wrapper.findAll('button')
-    const button = buttons.find(b => b.text().includes('Hubungi Saya'))
+    const button = buttons.find((b) => b.text().includes('Hubungi Saya'))
 
     await button?.trigger('click')
 

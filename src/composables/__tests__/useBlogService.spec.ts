@@ -4,7 +4,7 @@ import { inject } from 'vue'
 import { useBlogService, BLOG_SERVICE_KEY } from '../useBlogService'
 
 vi.mock('vue', () => ({
-  inject: vi.fn()
+  inject: vi.fn(),
 }))
 
 describe('useBlogService', () => {

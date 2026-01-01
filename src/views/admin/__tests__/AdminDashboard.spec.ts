@@ -6,26 +6,26 @@ import { useBlogService } from '@/composables/useBlogService'
 
 vi.mock('@/composables/useBlogService', () => ({
   useBlogService: vi.fn(),
-  BLOG_SERVICE_KEY: Symbol('BlogService')
+  BLOG_SERVICE_KEY: Symbol('BlogService'),
 }))
 
 describe('AdminDashboard', () => {
   it('renders posts list', async () => {
     const mockPosts = [
-        { id: '1', title: 'Post 1', createdAt: '2023-01-01' },
-        { id: '2', title: 'Post 2', createdAt: '2023-01-02' }
+      { id: '1', title: 'Post 1', createdAt: '2023-01-01' },
+      { id: '2', title: 'Post 2', createdAt: '2023-01-02' },
     ]
     ;(useBlogService as any).mockReturnValue({
       getPosts: vi.fn().mockResolvedValue(mockPosts),
-      deletePost: vi.fn()
+      deletePost: vi.fn(),
     })
 
     const wrapper = mount(AdminDashboard, {
-        global: {
-            stubs: {
-                RouterLink: { template: '<a><slot /></a>' }
-            }
-        }
+      global: {
+        stubs: {
+          RouterLink: { template: '<a><slot /></a>' },
+        },
+      },
     })
     await flushPromises()
 
@@ -36,23 +36,23 @@ describe('AdminDashboard', () => {
 
   it('deletes post after confirmation', async () => {
     const mockDelete = vi.fn().mockResolvedValue(undefined)
-    const mockGetPosts = vi.fn().mockResolvedValue([
-        { id: '1', title: 'Post 1', createdAt: '2023-01-01' }
-    ])
+    const mockGetPosts = vi
+      .fn()
+      .mockResolvedValue([{ id: '1', title: 'Post 1', createdAt: '2023-01-01' }])
     ;(useBlogService as any).mockReturnValue({
       getPosts: mockGetPosts,
-      deletePost: mockDelete
+      deletePost: mockDelete,
     })
 
     // Mock window.confirm
     const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true)
 
     const wrapper = mount(AdminDashboard, {
-        global: {
-            stubs: {
-                RouterLink: { template: '<a><slot /></a>' }
-            }
-        }
+      global: {
+        stubs: {
+          RouterLink: { template: '<a><slot /></a>' },
+        },
+      },
     })
     await flushPromises()
 
