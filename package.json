@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@prettier/plugin-oxc": "^0.0.4",
-    "@tailwindcss/vite": "^4.1.17",
+    "@tailwindcss/vite": "^4.1.18",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.18.11",
     "@vitejs/plugin-vue": "^6.0.1",
