@@ -12,16 +12,19 @@ import { Github, Linkedin, Mail } from 'lucide-vue-next'
         <a
           href="https://github.com/Andi-IM"
           class="text-gray-500 hover:text-white transition-colors"
+          aria-label="GitHub"
           ><Github :size="20"
         /></a>
         <a
           href="https://www.linkedin.com/in/andiirham/"
           class="text-gray-500 hover:text-white transition-colors"
+          aria-label="LinkedIn"
           ><Linkedin :size="20"
         /></a>
         <a
           href="mailto:andi.irhamm@gmail.com"
           class="text-gray-500 hover:text-white transition-colors"
+          aria-label="Email"
           ><Mail :size="20"
         /></a>
       </div>
