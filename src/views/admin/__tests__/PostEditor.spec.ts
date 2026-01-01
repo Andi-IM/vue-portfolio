@@ -105,4 +105,34 @@ describe('PostEditor', () => {
     const titleInput = wrapper.findAll('input')[0]!
     expect((titleInput.element as HTMLInputElement).value).toBe('Existing Post')
   })
+
+  it('updates form fields via v-model bindings', async () => {
+    ;(useRoute as any).mockReturnValue({ params: { id: 'new' } })
+    ;(useBlogService as any).mockReturnValue({ savePost: vi.fn() })
+
+    const wrapper = mount(PostEditor, {
+      global: {
+        stubs: { RichTextEditor: true },
+      },
+    })
+
+    const inputs = wrapper.findAll('input')
+    const textarea = wrapper.find('textarea')
+
+    // Test slug input (line 54)
+    const slugInput = inputs[1]! // Second input is slug
+    await slugInput.setValue('my-custom-slug')
+    expect((slugInput.element as HTMLInputElement).value).toBe('my-custom-slug')
+
+    // Test coverImage input (line 63)
+    const coverImageInput = inputs[2]! // Third input is coverImage
+    await coverImageInput.setValue('https://example.com/cover.jpg')
+    expect((coverImageInput.element as HTMLInputElement).value).toBe(
+      'https://example.com/cover.jpg',
+    )
+
+    // Test excerpt textarea (line 74)
+    await textarea.setValue('This is a test excerpt')
+    expect((textarea.element as HTMLTextAreaElement).value).toBe('This is a test excerpt')
+  })
 })

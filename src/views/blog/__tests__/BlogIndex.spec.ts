@@ -64,4 +64,54 @@ describe('BlogIndex', () => {
     expect(wrapper.text()).toContain('Test Post 2')
     expect(wrapper.findAll('article').length).toBe(2)
   })
+
+  it('handles error when fetching posts fails', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const error = new Error('Failed to fetch posts')
+
+    ;(useBlogService as any).mockReturnValue({
+      getPosts: vi.fn().mockRejectedValue(error),
+    })
+
+    const wrapper = mount(BlogIndex)
+    await flushPromises()
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(error)
+    expect(wrapper.text()).toContain('No posts found')
+
+    consoleErrorSpy.mockRestore()
+  })
+
+  it('renders cover image when post has coverImage', async () => {
+    const mockPosts = [
+      {
+        id: '1',
+        title: 'Test Post with Image',
+        slug: 'test-1',
+        excerpt: 'Excerpt 1',
+        createdAt: '2023-01-01',
+        coverImage: 'https://example.com/image.jpg',
+      },
+    ]
+
+    ;(useBlogService as any).mockReturnValue({
+      getPosts: vi.fn().mockResolvedValue(mockPosts),
+    })
+
+    const wrapper = mount(BlogIndex, {
+      global: {
+        stubs: {
+          RouterLink: {
+            template: '<a><slot /></a>',
+          },
+        },
+      },
+    })
+    await flushPromises()
+
+    const img = wrapper.find('img')
+    expect(img.exists()).toBe(true)
+    expect(img.attributes('src')).toBe('https://example.com/image.jpg')
+    expect(img.attributes('alt')).toBe('Test Post with Image')
+  })
 })

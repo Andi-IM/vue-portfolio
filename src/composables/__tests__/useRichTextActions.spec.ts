@@ -62,4 +62,24 @@ describe('useRichTextActions', () => {
 
     expect(commands.insertImage).toHaveBeenCalledWith(mockEditor, 'blob:url')
   })
+
+  it('logs error when uploader rejects', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const uploadError = new Error('Upload failed')
+    const uploader = vi.fn().mockRejectedValue(uploadError)
+    const { handleImageUpload } = useRichTextActions({ editor: mockEditor, uploader })
+
+    const event = {
+      target: {
+        files: [new File([''], 'test.png')],
+      },
+    } as any
+
+    await handleImageUpload(event)
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith('Upload error', uploadError)
+    expect(commands.insertImage).not.toHaveBeenCalled()
+
+    consoleErrorSpy.mockRestore()
+  })
 })

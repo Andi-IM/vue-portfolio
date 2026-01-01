@@ -25,6 +25,7 @@
     "clean": "rimraf dist coverage .nyc_output test-results playwright-report .eslintcache .wrangler tsconfig.app.tsbuildinfo"
   },
   "dependencies": {
+    "@codecov/vite-plugin": "^1.9.1",
     "lucide-vue-next": "^0.562.0",
     "slate": "^0.120.0",
     "slate-history": "^0.113.1",

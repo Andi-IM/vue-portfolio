@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { Editor, Transforms } from 'slate'
+import { Editor, Transforms, Element } from 'slate'
 import * as commands from '../slate-commands'
 
 vi.mock('slate', async () => {
@@ -60,6 +60,67 @@ describe('slate-commands', () => {
       vi.mocked(Editor.marks).mockReturnValue({ bold: true } as any)
       commands.toggleMark(mockEditor, 'bold')
       expect(Editor.removeMark).toHaveBeenCalledWith(mockEditor, 'bold')
+    })
+  })
+
+  describe('isBlockActive', () => {
+    it('returns true when block format matches', () => {
+      const mockNode = { type: 'heading-one' }
+      vi.mocked(Editor.nodes).mockReturnValue([[mockNode, [0]]] as any)
+
+      const result = commands.isBlockActive(mockEditor, 'heading-one')
+
+      expect(result).toBe(true)
+      expect(Editor.nodes).toHaveBeenCalledWith(
+        mockEditor,
+        expect.objectContaining({
+          at: mockEditor.selection,
+          match: expect.any(Function),
+        }),
+      )
+    })
+
+    it('returns false when no matching block found', () => {
+      vi.mocked(Editor.nodes).mockReturnValue([] as any)
+
+      const result = commands.isBlockActive(mockEditor, 'heading-one')
+
+      expect(result).toBe(false)
+    })
+
+    it('returns false when selection is null', () => {
+      const editorWithoutSelection = { selection: null } as any
+
+      const result = commands.isBlockActive(editorWithoutSelection, 'heading-one')
+
+      expect(result).toBe(false)
+      expect(Editor.nodes).not.toHaveBeenCalled()
+    })
+
+    it('match function filters correctly', () => {
+      // Capture the match function that was passed to Editor.nodes
+      let matchFunction: any
+      vi.mocked(Editor.nodes).mockImplementation((editor, options: any) => {
+        matchFunction = options.match
+        return [] as any
+      })
+
+      commands.isBlockActive(mockEditor, 'heading-one')
+
+      // Test the match function with different node types
+      const headingNode = { type: 'heading-one' }
+      const paragraphNode = { type: 'paragraph' }
+      const editorNode = mockEditor
+
+      // Mock Element.isElement to return true for element nodes
+      vi.spyOn(Element, 'isElement').mockImplementation((n: any) => n.type !== undefined)
+
+      // Mock Editor.isEditor to identify editor nodes
+      vi.spyOn(Editor, 'isEditor').mockImplementation((n: any) => n === mockEditor)
+
+      expect(matchFunction(headingNode)).toBe(true)
+      expect(matchFunction(paragraphNode)).toBe(false)
+      expect(matchFunction(editorNode)).toBe(false)
     })
   })
 

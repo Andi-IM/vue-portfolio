@@ -65,4 +65,62 @@ describe('AdminDashboard', () => {
 
     confirmSpy.mockRestore()
   })
+
+  it('handles error when fetching posts fails', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const error = new Error('Failed to fetch posts')
+
+    ;(useBlogService as any).mockReturnValue({
+      getPosts: vi.fn().mockRejectedValue(error),
+      deletePost: vi.fn(),
+    })
+
+    const wrapper = mount(AdminDashboard, {
+      global: {
+        stubs: {
+          RouterLink: { template: '<a><slot /></a>' },
+        },
+      },
+    })
+    await flushPromises()
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(error)
+    expect(wrapper.text()).toContain('No posts yet')
+
+    consoleErrorSpy.mockRestore()
+  })
+
+  it('handles error when deleting post fails', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {})
+    const error = new Error('Delete failed')
+
+    const mockDelete = vi.fn().mockRejectedValue(error)
+    ;(useBlogService as any).mockReturnValue({
+      getPosts: vi.fn().mockResolvedValue([{ id: '1', title: 'Post 1', createdAt: '2023-01-01' }]),
+      deletePost: mockDelete,
+    })
+
+    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true)
+
+    const wrapper = mount(AdminDashboard, {
+      global: {
+        stubs: {
+          RouterLink: { template: '<a><slot /></a>' },
+        },
+      },
+    })
+    await flushPromises()
+
+    const deleteBtn = wrapper.find('button.text-red-600')
+    await deleteBtn.trigger('click')
+    await flushPromises()
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(error)
+    expect(alertSpy).toHaveBeenCalledWith('Failed to delete')
+
+    consoleErrorSpy.mockRestore()
+    alertSpy.mockRestore()
+    confirmSpy.mockRestore()
+  })
 })

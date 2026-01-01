@@ -50,6 +50,28 @@ describe('slate-helpers', () => {
       expect(wrapper.find('li').exists()).toBe(true)
     })
 
+    it('renders numbered-list correctly', () => {
+      const vnode = renderElement({
+        attributes: {},
+        children: 'List items',
+        element: { type: 'numbered-list' },
+      })
+      const wrapper = mount({ render: () => vnode })
+      expect(wrapper.find('ol').exists()).toBe(true)
+      expect(wrapper.find('ol').attributes('class')).toContain('list-decimal')
+    })
+
+    it('renders bulleted-list correctly', () => {
+      const vnode = renderElement({
+        attributes: {},
+        children: 'List items',
+        element: { type: 'bulleted-list' },
+      })
+      const wrapper = mount({ render: () => vnode })
+      expect(wrapper.find('ul').exists()).toBe(true)
+      expect(wrapper.find('ul').attributes('class')).toContain('list-disc')
+    })
+
     it('renders image correctly', () => {
       const vnode = renderElement({
         attributes: {},
@@ -59,6 +81,20 @@ describe('slate-helpers', () => {
       const wrapper = mount({ render: () => vnode })
       expect(wrapper.find('img').exists()).toBe(true)
       expect(wrapper.find('img').attributes('src')).toBe('test.png')
+    })
+
+    it('renders image with my-6 class in read-only mode', () => {
+      const vnode = renderElement(
+        {
+          attributes: {},
+          children: 'caption',
+          element: { type: 'image', url: 'test.png' },
+        },
+        true,
+      )
+      const wrapper = mount({ render: () => vnode })
+      expect(wrapper.find('div').attributes('class')).toContain('my-6')
+      expect(wrapper.find('img').exists()).toBe(true)
     })
 
     it('renders paragraph as default', () => {

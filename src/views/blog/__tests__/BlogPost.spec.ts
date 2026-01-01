@@ -61,4 +61,48 @@ describe('BlogPost', () => {
     expect(wrapper.text()).toContain('Rich Content')
     expect(wrapper.find('img').attributes('src')).toBe('image.jpg')
   })
+
+  it('handles error when fetching post fails', async () => {
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const error = new Error('Failed to fetch post')
+
+    ;(useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } })
+    ;(useBlogService as any).mockReturnValue({
+      getPostBySlug: vi.fn().mockRejectedValue(error),
+    })
+
+    const wrapper = mount(BlogPost)
+    await flushPromises()
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(error)
+    expect(wrapper.text()).toContain('Post not found')
+
+    consoleErrorSpy.mockRestore()
+  })
+
+  it('renders formatted date when post has createdAt', async () => {
+    const mockPost = {
+      id: '1',
+      title: 'My Title',
+      createdAt: '2023-06-15',
+      content: '{"type":"doc"}',
+    }
+
+    ;(useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } })
+    ;(useBlogService as any).mockReturnValue({
+      getPostBySlug: vi.fn().mockResolvedValue(mockPost),
+    })
+
+    const wrapper = mount(BlogPost, {
+      global: {
+        stubs: {
+          RichTextRenderer: { template: '<div>Rich Content</div>' },
+        },
+      },
+    })
+    await flushPromises()
+
+    const expectedDate = new Date('2023-06-15').toLocaleDateString()
+    expect(wrapper.text()).toContain(expectedDate)
+  })
 })
