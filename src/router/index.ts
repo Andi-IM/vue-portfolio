@@ -28,6 +28,10 @@ const router = createRouter({
       name: 'admin-post-editor',
       component: () => import('../views/admin/PostEditor.vue'),
     },
+    {
+      path: '/admin/new',
+      redirect: '/admin/posts/new',
+    },
   ],
 })
 

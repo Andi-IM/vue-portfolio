@@ -91,6 +91,7 @@ const { toggleMark, isMarkActive, toggleBlock, isBlockActive, handleImageUpload 
       <!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -->
       <Slate :editor="editor as any" v-model="value">
         <Editable
+          v-bind="$attrs"
           :renderElement="renderElement"
           :renderLeaf="renderLeaf"
           placeholder="Start writing..."
