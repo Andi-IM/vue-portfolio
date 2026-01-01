@@ -1,3 +1,8 @@
+[![Dependabot Updates](https://github.com/Andi-IM/vue-portfolio/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/Andi-IM/vue-portfolio/actions/workflows/dependabot/dependabot-updates)
+[![E2E Tests](https://github.com/Andi-IM/vue-portfolio/actions/workflows/e2e.yml/badge.svg)](https://github.com/Andi-IM/vue-portfolio/actions/workflows/e2e.yml)
+[![Deploy to Cloudflare Pages](https://github.com/Andi-IM/vue-portfolio/actions/workflows/cloudflare_worker_deployment.yml/badge.svg)](https://github.com/Andi-IM/vue-portfolio/actions/workflows/cloudflare_worker_deployment.yml)
+[![CodeQL](https://github.com/Andi-IM/vue-portfolio/actions/workflows/codeql.yml/badge.svg)](https://github.com/Andi-IM/vue-portfolio/actions/workflows/codeql.yml)
+[![codecov](https://codecov.io/github/andi-im/vue-portfolio/graph/badge.svg?token=QRVAHQY6L9)](https://codecov.io/github/andi-im/vue-portfolio)
 # vue-portfolio
 
 This template should help get you started developing with Vue 3 in Vite.
