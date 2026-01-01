@@ -25,11 +25,13 @@ const scrollToSection = (id: string) => {
     class="bg-gray-900 min-h-screen text-gray-100 font-sans selection:bg-blue-500 selection:text-white"
   >
     <NavBar @scroll-to-section="scrollToSection" />
-    <HeroSection @scroll-to-section="scrollToSection" />
-    <ToolsSection />
-    <ProjectsSection />
-    <ExperienceSection />
-    <ContactSection />
-    <FooterSection />
+    <main>
+      <HeroSection @scroll-to-section="scrollToSection" />
+      <ToolsSection />
+      <ProjectsSection />
+      <ExperienceSection />
+      <ContactSection />
+      <FooterSection />
+    </main>
   </div>
 </template>

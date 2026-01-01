@@ -28,7 +28,7 @@ import { Mail, Linkedin, Github } from 'lucide-vue-next'
           <p class="text-gray-400 group-hover:text-blue-300 transition-colors font-medium">
             andi.irhamm@gmail.com
           </p>
-          <span class="text-sm text-gray-500 mt-4 group-hover:text-gray-300"
+          <span class="text-sm text-gray-400 mt-4 group-hover:text-gray-300"
             >Kirim Pesan &rarr;</span
           >
         </a>
@@ -49,7 +49,7 @@ import { Mail, Linkedin, Github } from 'lucide-vue-next'
           <p class="text-gray-400 group-hover:text-blue-300 transition-colors font-medium">
             linkedin.com/in/andiirham
           </p>
-          <span class="text-sm text-gray-500 mt-4 group-hover:text-gray-300">Terhubung &rarr;</span>
+          <span class="text-sm text-gray-400 mt-4 group-hover:text-gray-300">Terhubung &rarr;</span>
         </a>
 
         <!-- GitHub Card -->
@@ -68,7 +68,7 @@ import { Mail, Linkedin, Github } from 'lucide-vue-next'
           <p class="text-gray-400 group-hover:text-blue-300 transition-colors font-medium">
             github.com/Andi-IM
           </p>
-          <span class="text-sm text-gray-500 mt-4 group-hover:text-gray-300"
+          <span class="text-sm text-gray-400 mt-4 group-hover:text-gray-300"
             >Lihat Repositori &rarr;</span
           >
         </a>

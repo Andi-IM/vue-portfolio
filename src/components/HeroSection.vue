@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import portraitImg from '../images/portrait.webp'
 const emit = defineEmits<{
   (e: 'scrollToSection', id: string): void
 }>()
@@ -46,7 +45,7 @@ const emit = defineEmits<{
             >
               <!-- Placeholder Image for Developer -->
               <img
-                :src="portraitImg"
+                src="/images/portrait.webp"
                 alt="Developer Profile"
                 class="w-full h-full object-cover"
                 fetchpriority="high"
