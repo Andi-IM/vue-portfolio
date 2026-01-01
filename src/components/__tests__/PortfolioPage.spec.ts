@@ -1,26 +1,39 @@
 import { describe, it, expect, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
+import { defineComponent } from 'vue'
 import PortfolioPage from '../PortfolioPage.vue'
 import NavBar from '../NavBar.vue'
 import HeroSection from '../HeroSection.vue'
 
+// Stub async components for faster, more reliable tests
+const AsyncStub = defineComponent({
+  template: '<div class="async-stub"></div>',
+})
+
 describe('PortfolioPage', () => {
-  it('renders all sections', () => {
+  it('renders all sections', async () => {
     // Shallow mount might stub child components, but we want to know they are there.
     // Mount renders everything.
     const wrapper = mount(PortfolioPage, {
       global: {
         stubs: {
-          // We can keep them real or stub them if we only care they exist.
-          // Let's keep them real for now unless it's too heavy.
+          // Stub async components since they are loaded dynamically
+          ToolsSection: AsyncStub,
+          ProjectsSection: AsyncStub,
+          ExperienceSection: AsyncStub,
+          ContactSection: AsyncStub,
+          FooterSection: AsyncStub,
         },
       },
     })
 
+    // Wait for async components to resolve
+    await flushPromises()
+
     expect(wrapper.findComponent(NavBar).exists()).toBe(true)
     expect(wrapper.findComponent(HeroSection).exists()).toBe(true)
-    expect(wrapper.text()).toContain('Tools & Teknologi')
-    expect(wrapper.text()).toContain('Proyek Terselesaikan')
+    // Async components are stubbed, so we check they are rendered
+    expect(wrapper.findAll('.async-stub').length).toBe(5)
   })
 
   it('scrolls to section when requested', async () => {

@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
+
+// Critical above-the-fold components - load synchronously for fast FCP
 import NavBar from './NavBar.vue'
 import HeroSection from './HeroSection.vue'
-import ToolsSection from './ToolsSection.vue'
-import ProjectsSection from './ProjectsSection.vue'
-import ExperienceSection from './ExperienceSection.vue'
-import ContactSection from './ContactSection.vue'
-import FooterSection from './FooterSection.vue'
+
+// Below-the-fold components - load asynchronously to improve initial load
+const ToolsSection = defineAsyncComponent(() => import('./ToolsSection.vue'))
+const ProjectsSection = defineAsyncComponent(() => import('./ProjectsSection.vue'))
+const ExperienceSection = defineAsyncComponent(() => import('./ExperienceSection.vue'))
+const ContactSection = defineAsyncComponent(() => import('./ContactSection.vue'))
+const FooterSection = defineAsyncComponent(() => import('./FooterSection.vue'))
 
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id)

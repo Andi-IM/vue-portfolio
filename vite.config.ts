@@ -14,4 +14,17 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    modulePreload: {
+      polyfill: true,
+    },
+    rollupOptions: {
+      output: {
+        // Separate Vue vendor chunk for better caching
+        manualChunks: {
+          'vue-vendor': ['vue', 'vue-router'],
+        },
+      },
+    },
+  },
 })
