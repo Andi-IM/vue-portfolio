@@ -9,13 +9,21 @@ import { Github, Linkedin, Mail } from 'lucide-vue-next'
     >
       <div class="text-gray-400 text-sm">&copy; 2024 Andi Irham. All rights reserved.</div>
       <div class="flex gap-6">
-        <a href="https://github.com/Andi-IM" class="text-gray-500 hover:text-white transition-colors"
+        <a
+          href="https://github.com/Andi-IM"
+          class="text-gray-500 hover:text-white transition-colors"
           ><Github :size="20"
         /></a>
-        <a href="https://www.linkedin.com/in/andiirham/" class="text-gray-500 hover:text-white transition-colors"
+        <a
+          href="https://www.linkedin.com/in/andiirham/"
+          class="text-gray-500 hover:text-white transition-colors"
           ><Linkedin :size="20"
         /></a>
-        <a href="mailto:andi.irhamm@gmail.com" class="text-gray-500 hover:text-white transition-colors"><Mail :size="20" /></a>
+        <a
+          href="mailto:andi.irhamm@gmail.com"
+          class="text-gray-500 hover:text-white transition-colors"
+          ><Mail :size="20"
+        /></a>
       </div>
     </div>
   </footer>

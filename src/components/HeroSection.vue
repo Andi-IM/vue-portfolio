@@ -45,11 +45,7 @@ const emit = defineEmits<{
               class="relative w-64 h-64 md:w-96 md:h-96 rounded-3xl overflow-hidden border-4 border-gray-800 shadow-2xl"
             >
               <!-- Placeholder Image for Developer -->
-              <img
-                :src="portraitImg"
-                alt="Developer Profile"
-                class="w-full h-full object-cover"
-              />
+              <img :src="portraitImg" alt="Developer Profile" class="w-full h-full object-cover" />
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import { withHistory } from 'slate-history'
 // Define props
 const props = defineProps<{
   modelValue: Descendant[]
+  uploader?: (file: File) => Promise<string>
 }>()
 
 // Define emits
@@ -70,7 +71,15 @@ const insertImage = (url: string) => {
 }
 
 // Render Element
-const renderElement = ({ attributes, children, element }: { attributes: any, children: any, element: any }) => {
+const renderElement = ({
+  attributes,
+  children,
+  element,
+}: {
+  attributes: any
+  children: any
+  element: any
+}) => {
   switch (element.type) {
     case 'heading-one':
       return h('h1', { ...attributes, class: 'text-3xl font-bold mb-4' }, children)
@@ -95,7 +104,15 @@ const renderElement = ({ attributes, children, element }: { attributes: any, chi
 }
 
 // Render Leaf
-const renderLeaf = ({ attributes, children, leaf }: { attributes: any, children: any, leaf: any }) => {
+const renderLeaf = ({
+  attributes,
+  children,
+  leaf,
+}: {
+  attributes: any
+  children: any
+  leaf: any
+}) => {
   if (leaf.bold) {
     children = h('strong', {}, children)
   }
@@ -113,28 +130,18 @@ const handleImageUpload = async (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0]
   if (!file) return
 
-  // TODO: Implement actual upload to Cloudflare R2
-  // For now, use a local object URL to demonstrate functionality
-  // const url = URL.createObjectURL(file);
-  // insertImage(url);
-
-  // Real implementation plan:
-  const formData = new FormData()
-  formData.append('file', file)
-
-  try {
-    const response = await fetch('/api/upload', {
-      method: 'PUT',
-      body: formData,
-    })
-    if (response.ok) {
-      const data = await response.json()
-      insertImage(data.url)
-    } else {
-      console.error('Upload failed')
+  if (props.uploader) {
+    try {
+      const url = await props.uploader(file)
+      insertImage(url)
+    } catch (e) {
+      console.error('Upload error', e)
     }
-  } catch (e) {
-    console.error('Upload error', e)
+  } else {
+    // Fallback: Create blob URL
+    const url = URL.createObjectURL(file)
+    insertImage(url)
+    // TODO: Ideally warn that this is just a local preview
   }
 }
 </script>

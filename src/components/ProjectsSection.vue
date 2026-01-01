@@ -35,7 +35,8 @@ const projects = [
   },
   {
     title: 'Market Mingle - Aplikasi E-commerce sederhana',
-    description: 'Aplikasi multi platform sederhana yang menampilkan daftar produk untuk mempelajari state flutter',
+    description:
+      'Aplikasi multi platform sederhana yang menampilkan daftar produk untuk mempelajari state flutter',
     longDescription:
       'Market Mingle is a simple multi-platform e-commerce application developed using Flutter and Provider. It functions as a responsive digital product catalog, designed with a focus on a seamless product browsing experience across various platforms (Web, Mobile, Desktop).',
     features: ['Product exploration', 'multi-platform (web, mobile, desktop)'],
@@ -79,7 +80,8 @@ const projects = [
   },
   {
     title: 'deretsolver',
-    description: 'Enter a sequence to find the hidden pattern and predict the next number instantly.',
+    description:
+      'Enter a sequence to find the hidden pattern and predict the next number instantly.',
     longDescription:
       'DeretSolver helps you solve number sequences by identifying hidden patterns and predicting the next numbers instantly. Whether for study or fun, it leverages smart algorithms to crack the logic behind various numerical series.',
     features: ['sequence prediction', 'pattern recognition', 'instant prediction'],
@@ -87,7 +89,7 @@ const projects = [
     image: deretsolverImg,
     link: 'https://deretsolver.web.app/',
     github: 'https://github.com/Andi-IM/deretsolver',
-  }
+  },
 ]
 
 const openProject = (project: Project) => {

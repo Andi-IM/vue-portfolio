@@ -4,7 +4,7 @@ const experiences = [
     year: 'July 2025 - November 2025',
     role: 'Flutter Developer - Bekup Cohort',
     company: 'BEKUP - Baparekraf for Startup',
-    desc: "・Learning Flutter Development from understanding Dart language to create a beautiful Flutter app\n・Learning team project development by building a capstone project\n・Learning soft skills to support self development as a Flutter Developer\n・Learning project management",
+    desc: '・Learning Flutter Development from understanding Dart language to create a beautiful Flutter app\n・Learning team project development by building a capstone project\n・Learning soft skills to support self development as a Flutter Developer\n・Learning project management',
   },
   {
     year: 'July 2024 - November 2024',
