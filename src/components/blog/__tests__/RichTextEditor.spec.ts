@@ -1,3 +1,4 @@
+import type { Descendant } from 'slate'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import RichTextEditor from '../RichTextEditor.vue'
@@ -6,7 +7,7 @@ import { useRichTextActions } from '../../../composables/useRichTextActions'
 // Mock variables must be hoisted to be used in vi.mock
 const { mockEditor } = vi.hoisted(() => ({
   mockEditor: {
-    children: [],
+    children: [] as Descendant[],
     selection: null,
     operations: [],
     marks: null,
@@ -20,11 +21,13 @@ vi.mock('slate-vue3/core', () => ({
 
 // Mock slate-vue3/dom
 vi.mock('slate-vue3/dom', () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   withDOM: (e: any) => e,
 }))
 
 // Mock slate-vue3/history
 vi.mock('slate-vue3/history', () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   withHistory: (e: any) => e,
 }))
 
