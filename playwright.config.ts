@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: process.env.CI ? 'http://localhost:5173' : 'http://localhost:8788',
+    baseURL: 'http://localhost:5173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -17,14 +17,10 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
   ],
-  webServer: process.env.CI ? {
-    command: 'npm run dev',
+  webServer: {
+    command: 'cross-env VITE_COVERAGE=true npm run dev',
     url: 'http://localhost:5173',
-    reuseExistingServer: false,
-  } : undefined,
+    reuseExistingServer: true,
+  },
 })

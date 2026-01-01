@@ -42,8 +42,8 @@ export function usePostEditor({ blogService, route, router }: PostEditorDependen
 
   const save = async () => {
     if (!form.value.title) {
-       alert('Title is required')
-       return
+      alert('Title is required')
+      return
     }
 
     // Auto generate slug if empty

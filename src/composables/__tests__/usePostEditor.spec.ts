@@ -1,5 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, expect, vi, beforeEach, afterEach, type MockInstance, type Mocked } from 'vitest'
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  afterEach,
+  type MockInstance,
+  type Mocked,
+} from 'vitest'
 import { usePostEditor } from '../usePostEditor'
 import { mount } from '@vue/test-utils'
 import { defineComponent, nextTick } from 'vue'
@@ -40,7 +49,7 @@ describe('usePostEditor', () => {
 
   it('initializes with default empty post if new', () => {
     const { vm } = mount(TestComponent, {
-      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } }
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
     })
     const instance = vm as any
 
@@ -55,7 +64,7 @@ describe('usePostEditor', () => {
     mockBlogService.getPost.mockResolvedValue(postData as any)
 
     const { vm } = mount(TestComponent, {
-      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } }
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
     })
 
     await nextTick()
@@ -71,7 +80,7 @@ describe('usePostEditor', () => {
     mockBlogService.getPost.mockRejectedValue(new Error('Fetch Fail'))
 
     mount(TestComponent, {
-      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } }
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
     })
 
     await nextTick()
@@ -82,7 +91,7 @@ describe('usePostEditor', () => {
 
   it('validates title on save', async () => {
     const { vm } = mount(TestComponent, {
-      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } }
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
     })
     const instance = vm as any
 
@@ -93,7 +102,7 @@ describe('usePostEditor', () => {
 
   it('generates slug automatically if missing', async () => {
     const { vm } = mount(TestComponent, {
-      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } }
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
     })
     const instance = vm as any
 
@@ -101,14 +110,16 @@ describe('usePostEditor', () => {
     await instance.save()
 
     expect(instance.form.slug).toBe('hello-world')
-    expect(mockBlogService.savePost).toHaveBeenCalledWith(expect.objectContaining({
-      slug: 'hello-world'
-    }))
+    expect(mockBlogService.savePost).toHaveBeenCalledWith(
+      expect.objectContaining({
+        slug: 'hello-world',
+      }),
+    )
   })
 
   it('saves and redirects on success', async () => {
     const { vm } = mount(TestComponent, {
-      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } }
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
     })
     const instance = vm as any
 
@@ -123,7 +134,7 @@ describe('usePostEditor', () => {
 
   it('handles save error', async () => {
     const { vm } = mount(TestComponent, {
-      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } }
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
     })
     const instance = vm as any
 
@@ -138,7 +149,7 @@ describe('usePostEditor', () => {
 
   it('delegates image upload', async () => {
     const { vm } = mount(TestComponent, {
-      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } }
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
     })
     const instance = vm as any
 

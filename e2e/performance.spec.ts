@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect } from './coverage-fixture'
 
 test.describe('Performance Metrics', () => {
   test('home page loads within acceptable time', async ({ page }) => {
@@ -22,10 +22,12 @@ test.describe('Performance Metrics', () => {
 
     // Collect performance metrics using Performance API
     const metrics = await page.evaluate(() => {
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
+      const navigation = performance.getEntriesByType(
+        'navigation',
+      )[0] as PerformanceNavigationTiming
       const paint = performance.getEntriesByType('paint')
 
-      const fcp = paint.find(p => p.name === 'first-contentful-paint')
+      const fcp = paint.find((p) => p.name === 'first-contentful-paint')
 
       return {
         // Navigation timing
@@ -67,7 +69,10 @@ test.describe('Performance Metrics', () => {
 
         const observer = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            const layoutShift = entry as PerformanceEntry & { hadRecentInput?: boolean; value?: number }
+            const layoutShift = entry as PerformanceEntry & {
+              hadRecentInput?: boolean
+              value?: number
+            }
             if (!layoutShift.hadRecentInput) {
               clsValue += layoutShift.value ?? 0
             }

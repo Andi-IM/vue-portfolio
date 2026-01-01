@@ -12,13 +12,7 @@ describe('Router', () => {
   })
 
   it('can navigate to all routes', async () => {
-    const paths = [
-      '/',
-      '/blog',
-      '/blog/test-post',
-      '/admin',
-      '/admin/posts/new',
-    ]
+    const paths = ['/', '/blog', '/blog/test-post', '/admin', '/admin/posts/new']
 
     for (const path of paths) {
       await router.push(path)

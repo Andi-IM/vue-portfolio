@@ -18,12 +18,12 @@ describe('useRichTextActions', () => {
     vi.clearAllMocks()
     // Mock URL.createObjectURL if it doesn't exist in JSDOM
     if (typeof global.URL.createObjectURL === 'undefined') {
-       Object.defineProperty(global.URL, 'createObjectURL', {
-         value: vi.fn(() => 'blob:url'),
-         configurable: true
-       })
+      Object.defineProperty(global.URL, 'createObjectURL', {
+        value: vi.fn(() => 'blob:url'),
+        configurable: true,
+      })
     } else {
-       vi.spyOn(global.URL, 'createObjectURL').mockReturnValue('blob:url')
+      vi.spyOn(global.URL, 'createObjectURL').mockReturnValue('blob:url')
     }
   })
 
@@ -39,8 +39,8 @@ describe('useRichTextActions', () => {
 
     const event = {
       target: {
-        files: [new File([''], 'test.png')]
-      }
+        files: [new File([''], 'test.png')],
+      },
     } as any
 
     await handleImageUpload(event)
@@ -54,8 +54,8 @@ describe('useRichTextActions', () => {
 
     const event = {
       target: {
-        files: [new File([''], 'test.png')]
-      }
+        files: [new File([''], 'test.png')],
+      },
     } as any
 
     await handleImageUpload(event)

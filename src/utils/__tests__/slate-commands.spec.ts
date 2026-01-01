@@ -29,7 +29,7 @@ describe('slate-commands', () => {
     selection: {
       anchor: { path: [0, 0], offset: 0 },
       focus: { path: [0, 0], offset: 0 },
-    }
+    },
   } as any
 
   beforeEach(() => {
@@ -80,10 +80,13 @@ describe('slate-commands', () => {
   describe('insertImage', () => {
     it('inserts image node', () => {
       commands.insertImage(mockEditor, 'test.png')
-      expect(Transforms.insertNodes).toHaveBeenCalledWith(mockEditor, expect.objectContaining({
-        type: 'image',
-        url: 'test.png'
-      }))
+      expect(Transforms.insertNodes).toHaveBeenCalledWith(
+        mockEditor,
+        expect.objectContaining({
+          type: 'image',
+          url: 'test.png',
+        }),
+      )
     })
   })
 })
