@@ -1,70 +1,18 @@
 <script setup lang="ts">
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import RichTextEditor from '../../components/blog/RichTextEditor.vue'
 import { useBlogService } from '../../composables/useBlogService'
-import type { BlogPost } from '../../types/blog'
+import { usePostEditor } from '../../composables/usePostEditor'
 
 const route = useRoute()
 const router = useRouter()
 const blogService = useBlogService()
-const isNew = route.params.id === 'new'
 
-const form = ref<BlogPost>({
-  id: '',
-  title: '',
-  slug: '',
-  excerpt: '',
-  coverImage: '',
-  content: [
-    {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    },
-  ] as any, // Default empty state for Slate
+const { form, loading, isNew, save, handleImageUpload } = usePostEditor({
+  blogService,
+  route,
+  router,
 })
-
-const loading = ref(false)
-
-onMounted(async () => {
-  if (!isNew) {
-    try {
-      const post = await blogService.getPost(route.params.id as string)
-      form.value = post
-    } catch (e) {
-      console.error(e)
-    }
-  }
-})
-
-const save = async () => {
-  if (!form.value.title) return alert('Title is required')
-
-  // Auto generate slug if empty
-  if (!form.value.slug) {
-    form.value.slug = form.value.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '')
-  }
-
-  loading.value = true
-  try {
-    await blogService.savePost(form.value)
-    alert('Saved!')
-    router.push('/admin')
-  } catch (e) {
-    console.error(e)
-    alert('Error saving')
-  } finally {
-    loading.value = false
-  }
-}
-
-const handleImageUpload = async (file: File): Promise<string> => {
-  return await blogService.uploadImage(file)
-}
 </script>
 
 <template>
