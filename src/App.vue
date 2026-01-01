@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Portfolio from './components/PortfolioPage.vue'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <Portfolio />
+  <RouterView />
 </template>

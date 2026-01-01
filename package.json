@@ -15,10 +15,14 @@
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix --cache",
     "lint": "run-s lint:*",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "dev:wrangler": "npm run build && wrangler pages dev dist --kv=BLOG_KV --r2=BLOG_BUCKET"
   },
   "dependencies": {
     "lucide-vue-next": "^0.554.0",
+    "slate": "^0.120.0",
+    "slate-history": "^0.113.1",
+    "slate-vue3": "^0.11.4",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3"
   },
@@ -45,6 +49,7 @@
     "typescript": "~5.9.0",
     "vite": "^7.1.11",
     "vite-plugin-vue-devtools": "^8.0.3",
-    "vue-tsc": "^3.1.1"
+    "vue-tsc": "^3.1.1",
+    "wrangler": "^4.54.0"
   }
 }

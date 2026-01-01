@@ -80,6 +80,8 @@ const projects = [
   {
     title: 'deretsolver',
     description: 'Enter a sequence to find the hidden pattern and predict the next number instantly.',
+    longDescription:
+      'DeretSolver helps you solve number sequences by identifying hidden patterns and predicting the next numbers instantly. Whether for study or fun, it leverages smart algorithms to crack the logic behind various numerical series.',
     features: ['sequence prediction', 'pattern recognition', 'instant prediction'],
     tags: ['React', 'JavaScript', 'Firebase', 'Tailwindcss', 'Gemini'],
     image: deretsolverImg,
