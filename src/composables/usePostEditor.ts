@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ref, onMounted, computed } from 'vue'
 import type { Ref, ComputedRef } from 'vue'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
+import type { Descendant } from 'slate'
 import type { BlogPost, IBlogService } from '../types/blog'
 
 export interface PostEditorDependencies {
@@ -24,7 +24,7 @@ export function usePostEditor({ blogService, route, router }: PostEditorDependen
         type: 'paragraph',
         children: [{ text: '' }],
       },
-    ] as any,
+    ] as unknown as Descendant[],
   })
 
   const loading = ref(false)

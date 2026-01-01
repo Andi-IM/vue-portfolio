@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import RichTextRenderer from '../../components/blog/RichTextRenderer.vue'
-import { useBlogService } from '../../composables/useBlogService'
-import type { BlogPost } from '../../types/blog'
+import RichTextRenderer from '@/components/blog/RichTextRenderer.vue'
+import { useBlogService } from '@/composables/useBlogService'
+import type { BlogPost } from '@/types/blog'
 
 const route = useRoute()
 const blogService = useBlogService()

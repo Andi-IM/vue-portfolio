@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useBlogService } from '../../composables/useBlogService'
-import type { BlogPostIndex } from '../../types/blog'
+import { useBlogService } from '@/composables/useBlogService'
+import type { BlogPostIndex } from '@/types/blog'
 
 const blogService = useBlogService()
 const posts = ref<BlogPostIndex[]>([])

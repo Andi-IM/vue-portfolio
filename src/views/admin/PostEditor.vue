@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import RichTextEditor from '../../components/blog/RichTextEditor.vue'
-import { useBlogService } from '../../composables/useBlogService'
-import { usePostEditor } from '../../composables/usePostEditor'
+import RichTextEditor from '@/components/blog/RichTextEditor.vue'
+import { useBlogService } from '@/composables/useBlogService'
+import { usePostEditor } from '@/composables/usePostEditor'
 
 const route = useRoute()
 const router = useRouter()

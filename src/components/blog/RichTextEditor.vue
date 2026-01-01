@@ -88,6 +88,7 @@ const { toggleMark, isMarkActive, toggleBlock, isBlockActive, handleImageUpload 
 
     <!-- Editor Area -->
     <div class="p-4 min-h-[300px]">
+      <!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -->
       <Slate :editor="editor as any" v-model="value">
         <Editable
           :renderElement="renderElement"
