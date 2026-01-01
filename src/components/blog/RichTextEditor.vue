@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { createEditor } from 'slate'
+import { toRaw } from 'vue'
 import type { Descendant } from 'slate'
 import { Slate, Editable } from 'slate-vue3'
-import { withHistory } from 'slate-history'
+import { createEditor } from 'slate-vue3/core'
+import { withDOM } from 'slate-vue3/dom'
+import { withHistory } from 'slate-vue3/history'
 import { renderElement, renderLeaf } from '../../utils/slate-helpers'
 import { useRichTextActions } from '../../composables/useRichTextActions'
 
@@ -19,13 +20,35 @@ const emit = defineEmits<{
 }>()
 
 // Create editor instance
-const editor = withHistory(createEditor())
+const editor = withHistory(withDOM(createEditor()))
 
-// Local state for the editor content
-const value = computed({
-  get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
-})
+// Sync initial value and watch for external changes
+import { watch } from 'vue'
+
+const syncValue = () => {
+  const newValue = toRaw(props.modelValue)
+  if (newValue && editor.children !== newValue) {
+    editor.children = newValue
+  }
+}
+
+watch(() => props.modelValue, syncValue, { immediate: true })
+
+const handleChange = () => {
+  emit('update:modelValue', editor.children)
+}
+
+import { Transforms } from 'slate'
+
+const onKeyDown = (event: KeyboardEvent) => {
+  if (event.key === 'Backspace') {
+    // Explicitly handle backspace to ensure reliability
+    if (editor.selection) {
+      event.preventDefault() // Prevent double deletion if native handling also fires (though unexpected)
+      Transforms.delete(editor, { unit: 'character', reverse: true })
+    }
+  }
+}
 
 // Use business logic with dependency injection
 const { toggleMark, isMarkActive, toggleBlock, isBlockActive, handleImageUpload } =
@@ -89,13 +112,14 @@ const { toggleMark, isMarkActive, toggleBlock, isBlockActive, handleImageUpload 
     <!-- Editor Area -->
     <div class="p-4 min-h-[300px]">
       <!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -->
-      <Slate :editor="editor as any" v-model="value">
+      <Slate :editor="editor as any" @change="handleChange">
         <Editable
           v-bind="$attrs"
           :renderElement="renderElement"
           :renderLeaf="renderLeaf"
           placeholder="Start writing..."
           class="prose dark:prose-invert max-w-none focus:outline-none"
+          @keydown="onKeyDown"
         />
       </Slate>
     </div>
