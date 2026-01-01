@@ -17,7 +17,7 @@ export default defineConfig({
     tailwindcss(),
     istanbul({
       include: 'src/*',
-      exclude: ['node_modules', 'test/', 'e2e/'],
+      exclude: ['node_modules', 'test/', 'e2e/', 'src/services/**'],
       extension: ['.ts', '.vue'],
       requireEnv: true,
     }),

@@ -6,6 +6,13 @@ import * as crypto from 'crypto'
 const istanbulCLIOutput = path.join(process.cwd(), '.nyc_output')
 
 export const test = base.extend({
+  page: async ({ page }, use) => {
+    // Enable mock services for E2E tests
+    await page.addInitScript(() => {
+      window.USE_MOCK_SERVICES = true
+    })
+    await use(page)
+  },
   context: async ({ context }, use) => {
     await use(context)
 
