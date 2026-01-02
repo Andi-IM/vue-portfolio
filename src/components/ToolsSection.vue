@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Smartphone, Code, Database, GitBranch, Layers, Terminal } from 'lucide-vue-next'
+import { Smartphone, Code, Database, GitBranch, Layers, Terminal } from 'lucide-vue-next';
 
 const skills = [
   { name: 'Flutter', type: 'UI Toolkit', icon: Smartphone, iconClass: 'text-blue-400' },
@@ -8,7 +8,7 @@ const skills = [
   { name: 'Git', type: 'Version Control', icon: GitBranch, iconClass: 'text-red-500' },
   { name: 'Android Studio', type: 'IDE', icon: Layers, iconClass: 'text-green-400' },
   { name: 'VS Code', type: 'Editor', icon: Terminal, iconClass: 'text-blue-500' },
-]
+];
 </script>
 
 <template>

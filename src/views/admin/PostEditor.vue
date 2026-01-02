@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import QuasarEditor from '@/components/blog/QuasarEditor.vue'
-import { useBlogService } from '@/composables/useBlogService'
-import { usePostEditor } from '@/composables/usePostEditor'
+import { useRoute, useRouter } from 'vue-router';
+import QuasarEditor from '@/components/blog/QuasarEditor.vue';
+import { useBlogService } from '@/composables/useBlogService';
+import { usePostEditor } from '@/composables/usePostEditor';
 
-const route = useRoute()
-const router = useRouter()
-const blogService = useBlogService()
+const route = useRoute();
+const router = useRouter();
+const blogService = useBlogService();
 
 const { form, loading, isNew, save, handleImageUpload } = usePostEditor({
   blogService,
   route,
   router,
-})
+});
 </script>
 
 <template>

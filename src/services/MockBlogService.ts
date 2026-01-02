@@ -1,4 +1,4 @@
-import type { IBlogService, BlogPost, BlogPostIndex } from '../types/blog'
+import type { IBlogService, BlogPost, BlogPostIndex } from '../types/blog';
 
 export class MockBlogService implements IBlogService {
   private posts: BlogPost[] = [
@@ -22,22 +22,22 @@ export class MockBlogService implements IBlogService {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
-  ]
+  ];
 
   async getPosts(): Promise<BlogPostIndex[]> {
     // oxlint-disable-next-line no-unused-vars
-    return this.posts.map(({ content, ...index }) => index as BlogPostIndex)
+    return this.posts.map(({ content, ...index }) => index as BlogPostIndex);
   }
 
   async getPost(id: string): Promise<BlogPost> {
-    const post = this.posts.find((p) => p.id === id)
-    if (!post) throw new Error('Post not found')
-    return post
+    const post = this.posts.find((p) => p.id === id);
+    if (!post) throw new Error('Post not found');
+    return post;
   }
 
   async getPostBySlug(slug: string): Promise<BlogPost | null> {
-    const post = this.posts.find((p) => p.slug === slug || p.id === slug)
-    return post || null
+    const post = this.posts.find((p) => p.slug === slug || p.id === slug);
+    return post || null;
   }
 
   async savePost(post: Partial<BlogPost>): Promise<BlogPost> {
@@ -50,16 +50,16 @@ export class MockBlogService implements IBlogService {
       createdAt: post.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       ...post,
-    } as BlogPost
-    this.posts.push(newPost)
-    return newPost
+    } as BlogPost;
+    this.posts.push(newPost);
+    return newPost;
   }
 
   async deletePost(id: string): Promise<void> {
-    this.posts = this.posts.filter((p) => p.id !== id)
+    this.posts = this.posts.filter((p) => p.id !== id);
   }
 
   async uploadImage(_file: File): Promise<string> {
-    return 'https://example.com/mock-image.png'
+    return 'https://example.com/mock-image.png';
   }
 }

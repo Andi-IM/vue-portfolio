@@ -1,24 +1,24 @@
 ﻿<script setup lang="ts">
-import { ref } from 'vue'
-import { ExternalLink, Github, X, Smartphone, Code, CheckCircle2 } from 'lucide-vue-next'
-import marketMingleImg from '../images/market-mingle.webp'
-import lokapanduImg from '../images/lokapandu.webp'
-import culinaryCompassImg from '../images/culinary-compass.webp'
-import nutrivisionImg from '../images/nutrivision.webp'
-import deretsolverImg from '../images/deretsolver.webp'
+import { ref } from 'vue';
+import { ExternalLink, Github, X, Smartphone, Code, CheckCircle2 } from 'lucide-vue-next';
+import marketMingleImg from '../images/market-mingle.webp';
+import lokapanduImg from '../images/lokapandu.webp';
+import culinaryCompassImg from '../images/culinary-compass.webp';
+import nutrivisionImg from '../images/nutrivision.webp';
+import deretsolverImg from '../images/deretsolver.webp';
 
 interface Project {
-  title: string
-  description: string
-  longDescription: string
-  features: string[]
-  tags: string[]
-  image: string
-  link?: string | null
-  github: string
+  title: string;
+  description: string;
+  longDescription: string;
+  features: string[];
+  tags: string[];
+  image: string;
+  link?: string | null;
+  github: string;
 }
 
-const selectedProject = ref<Project | null>(null)
+const selectedProject = ref<Project | null>(null);
 
 const projects = [
   {
@@ -91,21 +91,21 @@ const projects = [
     link: 'https://deretsolver.web.app/',
     github: 'https://github.com/Andi-IM/deretsolver',
   },
-]
+];
 
 const openProject = (project: Project) => {
-  selectedProject.value = project
-}
+  selectedProject.value = project;
+};
 
 const closeProject = () => {
-  selectedProject.value = null
-}
+  selectedProject.value = null;
+};
 
 const openLink = (url?: string | null) => {
   if (url) {
-    window.open(url, '_blank')
+    window.open(url, '_blank');
   }
-}
+};
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const emit = defineEmits<{
-  (e: 'scrollToSection', id: string): void
-}>()
+  (e: 'scrollToSection', id: string): void;
+}>();
 </script>
 
 <template>

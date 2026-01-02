@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { h } from 'vue'
+import { h } from 'vue';
 
 export const renderElement = (
   {
@@ -7,9 +7,9 @@ export const renderElement = (
     children,
     element,
   }: {
-    attributes: any
-    children: any
-    element: any
+    attributes: any;
+    children: any;
+    element: any;
   },
   isReadOnly = false,
 ) => {
@@ -22,7 +22,7 @@ export const renderElement = (
           class: `text-3xl font-bold mb-4 ${isReadOnly ? 'mt-8' : ''}`.trim(),
         },
         children,
-      )
+      );
     case 'heading-two':
       return h(
         'h2',
@@ -31,13 +31,13 @@ export const renderElement = (
           class: `text-2xl font-semibold mb-3 ${isReadOnly ? 'mt-6' : ''}`.trim(),
         },
         children,
-      )
+      );
     case 'list-item':
-      return h('li', { ...attributes, class: 'ml-4' }, children)
+      return h('li', { ...attributes, class: 'ml-4' }, children);
     case 'numbered-list':
-      return h('ol', { ...attributes, class: 'list-decimal pl-5 mb-4' }, children)
+      return h('ol', { ...attributes, class: 'list-decimal pl-5 mb-4' }, children);
     case 'bulleted-list':
-      return h('ul', { ...attributes, class: 'list-disc pl-5 mb-4' }, children)
+      return h('ul', { ...attributes, class: 'list-disc pl-5 mb-4' }, children);
     case 'image':
       return h('div', { ...attributes, class: isReadOnly ? 'my-6' : 'my-4' }, [
         h('div', { contenteditable: false }, [
@@ -47,29 +47,29 @@ export const renderElement = (
           }),
         ]),
         children,
-      ])
+      ]);
     default:
-      return h('p', { ...attributes, class: 'mb-4 leading-relaxed' }, children)
+      return h('p', { ...attributes, class: 'mb-4 leading-relaxed' }, children);
   }
-}
+};
 
 export const renderLeaf = ({
   attributes,
   children,
   leaf,
 }: {
-  attributes: any
-  children: any
-  leaf: any
+  attributes: any;
+  children: any;
+  leaf: any;
 }) => {
   if (leaf.bold) {
-    children = h('strong', {}, children)
+    children = h('strong', {}, children);
   }
   if (leaf.italic) {
-    children = h('em', {}, children)
+    children = h('em', {}, children);
   }
   if (leaf.underline) {
-    children = h('u', {}, children)
+    children = h('u', {}, children);
   }
-  return h('span', { ...attributes }, children)
-}
+  return h('span', { ...attributes }, children);
+};

@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
 
 const props = defineProps<{
-  modelValue: string
-  uploader?: (file: File) => Promise<string>
-}>()
+  modelValue: string;
+  uploader?: (file: File) => Promise<string>;
+}>();
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void
-}>()
+  (e: 'update:modelValue', value: string): void;
+}>();
 
-const content = ref(props.modelValue || '')
+const content = ref(props.modelValue || '');
 
 watch(
   () => props.modelValue,
   (val) => {
     if (val !== content.value) {
-      content.value = val || ''
+      content.value = val || '';
     }
   },
-)
+);
 
 watch(content, (val) => {
-  emit('update:modelValue', val)
-})
+  emit('update:modelValue', val);
+});
 
 // Custom definitions for the toolbar
 const definitions = {
@@ -33,25 +33,25 @@ const definitions = {
     label: 'Image',
     handler: uploadImageHandler,
   },
-}
+};
 
 function uploadImageHandler() {
-  const input = document.createElement('input')
-  input.type = 'file'
-  input.accept = 'image/*'
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
   input.onchange = async (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0]
+    const file = (e.target as HTMLInputElement).files?.[0];
     if (file && props.uploader) {
       try {
-        const url = await props.uploader(file)
+        const url = await props.uploader(file);
         // Insert image at cursor
-        document.execCommand('insertHTML', false, `<img src="${url}" style="max-width: 100%;" />`)
+        document.execCommand('insertHTML', false, `<img src="${url}" style="max-width: 100%;" />`);
       } catch (err) {
-        console.error('Upload failed', err)
+        console.error('Upload failed', err);
       }
     }
-  }
-  input.click()
+  };
+  input.click();
 }
 </script>
 

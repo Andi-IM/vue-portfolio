@@ -18,7 +18,7 @@ const experiences = [
     company: 'PT. Elevasi Teknologi Aeronautika Nusantara (INAERO)',
     desc: 'Learning Fundamental concepts of AI, especially computer vision.',
   },
-]
+];
 </script>
 
 <template>

@@ -1,17 +1,17 @@
-import { ref, onMounted, computed } from 'vue'
-import type { Ref, ComputedRef } from 'vue'
-import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
+import { ref, onMounted, computed } from 'vue';
+import type { Ref, ComputedRef } from 'vue';
+import type { RouteLocationNormalizedLoaded, Router } from 'vue-router';
 
-import type { BlogPost, IBlogService } from '../types/blog'
+import type { BlogPost, IBlogService } from '../types/blog';
 
 export interface PostEditorDependencies {
-  blogService: IBlogService
-  route: RouteLocationNormalizedLoaded
-  router: Router
+  blogService: IBlogService;
+  route: RouteLocationNormalizedLoaded;
+  router: Router;
 }
 
 export function usePostEditor({ blogService, route, router }: PostEditorDependencies) {
-  const isNew: ComputedRef<boolean> = computed(() => route.params.id === 'new')
+  const isNew: ComputedRef<boolean> = computed(() => route.params.id === 'new');
 
   const form: Ref<BlogPost> = ref<BlogPost>({
     id: '',
@@ -20,25 +20,25 @@ export function usePostEditor({ blogService, route, router }: PostEditorDependen
     excerpt: '',
     coverImage: '',
     content: '',
-  })
+  });
 
-  const loading = ref(false)
+  const loading = ref(false);
 
   onMounted(async () => {
     if (!isNew.value) {
       try {
-        const post = await blogService.getPost(route.params.id as string)
-        form.value = post
+        const post = await blogService.getPost(route.params.id as string);
+        form.value = post;
       } catch (e) {
-        console.error('Failed to load post', e)
+        console.error('Failed to load post', e);
       }
     }
-  })
+  });
 
   const save = async () => {
     if (!form.value.title) {
-      alert('Title is required')
-      return
+      alert('Title is required');
+      return;
     }
 
     // Auto generate slug if empty
@@ -46,25 +46,25 @@ export function usePostEditor({ blogService, route, router }: PostEditorDependen
       form.value.slug = form.value.title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '')
+        .replace(/(^-|-$)/g, '');
     }
 
-    loading.value = true
+    loading.value = true;
     try {
-      await blogService.savePost(form.value)
-      alert('Saved!')
-      router.push('/admin')
+      await blogService.savePost(form.value);
+      alert('Saved!');
+      router.push('/admin');
     } catch (e) {
-      console.error('Save error', e)
-      alert('Error saving')
+      console.error('Save error', e);
+      alert('Error saving');
     } finally {
-      loading.value = false
+      loading.value = false;
     }
-  }
+  };
 
   const handleImageUpload = async (file: File): Promise<string> => {
-    return await blogService.uploadImage(file)
-  }
+    return await blogService.uploadImage(file);
+  };
 
   return {
     form,
@@ -72,5 +72,5 @@ export function usePostEditor({ blogService, route, router }: PostEditorDependen
     isNew,
     save,
     handleImageUpload,
-  }
+  };
 }

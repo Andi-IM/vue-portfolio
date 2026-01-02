@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
-import { useBlogService } from '@/composables/useBlogService'
-import type { BlogPost } from '@/types/blog'
+import { useBlogService } from '@/composables/useBlogService';
+import type { BlogPost } from '@/types/blog';
 
-const route = useRoute()
-const blogService = useBlogService()
-const post = ref<BlogPost | null>(null)
-const loading = ref(true)
+const route = useRoute();
+const blogService = useBlogService();
+const post = ref<BlogPost | null>(null);
+const loading = ref(true);
 
 onMounted(async () => {
   try {
-    const slugOrId = route.params.slug as string
-    post.value = await blogService.getPostBySlug(slugOrId)
+    const slugOrId = route.params.slug as string;
+    post.value = await blogService.getPostBySlug(slugOrId);
   } catch (e) {
-    console.error(e)
+    console.error(e);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-})
+});
 </script>
 
 <template>

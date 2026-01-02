@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Menu, X, Download } from 'lucide-vue-next'
+import { ref } from 'vue';
+import { Menu, X, Download } from 'lucide-vue-next';
 
-const isMenuOpen = ref(false)
+const isMenuOpen = ref(false);
 
 const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value
-}
+  isMenuOpen.value = !isMenuOpen.value;
+};
 
 const emit = defineEmits<{
-  (e: 'scrollToSection', id: string): void
-}>()
+  (e: 'scrollToSection', id: string): void;
+}>();
 
 const handleScroll = (id: string) => {
-  emit('scrollToSection', id)
-  isMenuOpen.value = false
-}
+  emit('scrollToSection', id);
+  isMenuOpen.value = false;
+};
 </script>
 
 <template>

@@ -1,4 +1,4 @@
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -30,6 +30,6 @@ const routes: RouteRecordRaw[] = [
     path: '/admin/new',
     redirect: '/admin/posts/new',
   },
-]
+];
 
-export default routes
+export default routes;

@@ -2,7 +2,6 @@
   "name": "vue-portfolio",
   "productName": "Andi IM | Portfolio",
   "productDescription": "Andi Irham - Mobile App Developer & AI Enthusiast. Specializing in Android, Kotlin, Flutter development.",
-
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -22,7 +21,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:coverage": "npx cross-env VITE_COVERAGE=true playwright test && npx nyc report --reporter=text --reporter=html",
-    "clean": "rimraf dist coverage .nyc_output test-results playwright-report .eslintcache .wrangler tsconfig.app.tsbuildinfo"
+    "clean": "rimraf dist coverage .nyc_output .quasar test-results playwright-report .eslintcache .wrangler tsconfig.app.tsbuildinfo"
   },
   "dependencies": {
     "@codecov/vite-plugin": "^1.9.1",

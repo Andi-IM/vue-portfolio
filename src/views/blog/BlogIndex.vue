@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
-import { useBlogService } from '@/composables/useBlogService'
-import type { BlogPostIndex } from '@/types/blog'
+import { ref, onMounted } from 'vue';
+import { RouterLink } from 'vue-router';
+import { useBlogService } from '@/composables/useBlogService';
+import type { BlogPostIndex } from '@/types/blog';
 
-const blogService = useBlogService()
-const posts = ref<BlogPostIndex[]>([])
-const loading = ref(true)
+const blogService = useBlogService();
+const posts = ref<BlogPostIndex[]>([]);
+const loading = ref(true);
 
 onMounted(async () => {
   try {
-    posts.value = await blogService.getPosts()
+    posts.value = await blogService.getPosts();
   } catch (e) {
-    console.error(e)
+    console.error(e);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-})
+});
 </script>
 
 <template>

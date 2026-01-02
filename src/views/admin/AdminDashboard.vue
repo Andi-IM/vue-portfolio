@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
-import { useBlogService } from '../../composables/useBlogService'
-import type { BlogPostIndex } from '../../types/blog'
+import { ref, onMounted } from 'vue';
+import { RouterLink } from 'vue-router';
+import { useBlogService } from '../../composables/useBlogService';
+import type { BlogPostIndex } from '../../types/blog';
 
-const blogService = useBlogService()
-const posts = ref<BlogPostIndex[]>([])
+const blogService = useBlogService();
+const posts = ref<BlogPostIndex[]>([]);
 
 const fetchPosts = async () => {
   try {
-    posts.value = await blogService.getPosts()
+    posts.value = await blogService.getPosts();
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
-}
+};
 
 const deletePost = async (id: string) => {
-  if (!confirm('Are you sure you want to delete this post?')) return
+  if (!confirm('Are you sure you want to delete this post?')) return;
 
   try {
-    await blogService.deletePost(id)
-    await fetchPosts()
+    await blogService.deletePost(id);
+    await fetchPosts();
   } catch (e) {
-    console.error(e)
-    alert('Failed to delete')
+    console.error(e);
+    alert('Failed to delete');
   }
-}
+};
 
 onMounted(() => {
-  fetchPosts()
-})
+  fetchPosts();
+});
 </script>
 
 <template>

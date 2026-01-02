@@ -54,4 +54,4 @@ export default {
     noPostsFound: 'No posts found.',
     readArticle: 'Read article',
   },
-}
+};

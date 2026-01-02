@@ -1,25 +1,25 @@
-import { describe, it, expect, vi } from 'vitest'
-import { mount, flushPromises } from '@vue/test-utils'
-import { defineComponent } from 'vue'
-import PortfolioPage from '../PortfolioPage.vue'
-import NavBar from '../NavBar.vue'
-import HeroSection from '../HeroSection.vue'
-import enUS from '../../i18n/en-US'
+import { describe, it, expect, vi } from 'vitest';
+import { mount, flushPromises } from '@vue/test-utils';
+import { defineComponent } from 'vue';
+import PortfolioPage from '../PortfolioPage.vue';
+import NavBar from '../NavBar.vue';
+import HeroSection from '../HeroSection.vue';
+import enUS from '../../i18n/en-US';
 
 // Stub async components for faster, more reliable tests
 const AsyncStub = defineComponent({
   template: '<div class="async-stub"></div>',
-})
+});
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const mocks = {
   $t: (msg: string) => {
-    const keys = msg.split('.')
-    let res: any = enUS
-    for (const key of keys) res = res[key]
-    return res
+    const keys = msg.split('.');
+    let res: any = enUS;
+    for (const key of keys) res = res[key];
+    return res;
   },
-}
+};
 
 describe('PortfolioPage', () => {
   it('renders all sections', async () => {
@@ -37,44 +37,44 @@ describe('PortfolioPage', () => {
           FooterSection: AsyncStub,
         },
       },
-    })
+    });
 
     // Wait for async components to resolve
-    await flushPromises()
+    await flushPromises();
 
-    expect(wrapper.findComponent(NavBar).exists()).toBe(true)
-    expect(wrapper.findComponent(HeroSection).exists()).toBe(true)
+    expect(wrapper.findComponent(NavBar).exists()).toBe(true);
+    expect(wrapper.findComponent(HeroSection).exists()).toBe(true);
     // Async components are stubbed, so we check they are rendered
-    expect(wrapper.findAll('.async-stub').length).toBe(5)
-  })
+    expect(wrapper.findAll('.async-stub').length).toBe(5);
+  });
 
   it('scrolls to section when requested', async () => {
     const wrapper = mount(PortfolioPage, {
       global: { mocks },
-    })
+    });
 
     // Mock getElementById and scrollIntoView
-    const scrollIntoViewMock = vi.fn()
+    const scrollIntoViewMock = vi.fn();
     const getElementByIdSpy = vi.spyOn(document, 'getElementById').mockImplementation(() => {
       return {
         scrollIntoView: scrollIntoViewMock,
-      } as unknown as HTMLElement
-    })
+      } as unknown as HTMLElement;
+    });
 
     // Trigger scroll event from NavBar
-    const navBar = wrapper.findComponent(NavBar)
-    navBar.vm.$emit('scrollToSection', 'about')
+    const navBar = wrapper.findComponent(NavBar);
+    navBar.vm.$emit('scrollToSection', 'about');
 
-    expect(getElementByIdSpy).toHaveBeenCalledWith('about')
-    expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: 'smooth' })
+    expect(getElementByIdSpy).toHaveBeenCalledWith('about');
+    expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: 'smooth' });
 
     // Trigger scroll from HeroSection
-    const heroSection = wrapper.findComponent(HeroSection)
-    heroSection.vm.$emit('scrollToSection', 'projects')
+    const heroSection = wrapper.findComponent(HeroSection);
+    heroSection.vm.$emit('scrollToSection', 'projects');
 
-    expect(getElementByIdSpy).toHaveBeenCalledWith('projects')
-    expect(scrollIntoViewMock).toHaveBeenCalledTimes(2)
+    expect(getElementByIdSpy).toHaveBeenCalledWith('projects');
+    expect(scrollIntoViewMock).toHaveBeenCalledTimes(2);
 
-    getElementByIdSpy.mockRestore()
-  })
-})
+    getElementByIdSpy.mockRestore();
+  });
+});

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Github, Linkedin, Mail } from 'lucide-vue-next'
+import { Github, Linkedin, Mail } from 'lucide-vue-next';
 </script>
 
 <template>
