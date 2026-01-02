@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npm run lint
+        run: quasar prepare && npm run lint
 
       - name: Type Check
         run: npm run type-check

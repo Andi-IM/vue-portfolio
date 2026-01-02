@@ -30,7 +30,7 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
-        run: npm run test:e2e -- --project=chromium
+        run: quasar prepare && npm run test:e2e -- --project=chromium
         env:
           CI: true
 
