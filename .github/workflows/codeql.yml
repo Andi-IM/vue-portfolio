@@ -34,7 +34,9 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
       - name: Lint
-        run: npm run lint && npm run type-check
+        run:  env:NODE_OPTIONS: --max-old-space-size=4096 && npm run lint
+      - name: type-check
+        run: npm run type-check
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v4
         with:
