@@ -10,7 +10,7 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "quasar build && vite preview --outDir dist",
     "build-only": "quasar build",
-    "type-check": "vue-tsc --build",
+    "type-check": "vue-tsc --build tsconfig.build.json",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix --cache",
     "lint": "run-s lint:*",

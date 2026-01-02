@@ -1,5 +1,7 @@
+import type { Plugin } from 'postcss';
+import type { ExportedAPI } from 'autoprefixer';
+
 declare namespace _default {
-    let plugins: (import("postcss").Plugin & autoprefixer.ExportedAPI)[];
+  let plugins: (Plugin & ExportedAPI)[];
 }
 export default _default;
-import autoprefixer from 'autoprefixer';

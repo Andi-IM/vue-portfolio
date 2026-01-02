@@ -1,7 +1,8 @@
-import { test, expect } from '@playwright/test'
+import { type Page } from '@playwright/test'
+import { test, expect } from './coverage-fixture.js'
 
 test.describe('Editor Functionality', () => {
-  test('should allow typing and backspace in RichTextEditor', async ({ page }) => {
+  test('should allow typing and backspace in RichTextEditor', async ({ page }: { page: Page }) => {
     // Navigate to the new post page
     page.on('console', (msg) => console.log('BROWSER LOG:', msg.text()))
     await page.goto('/admin/new')
