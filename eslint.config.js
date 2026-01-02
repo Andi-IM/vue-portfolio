@@ -20,8 +20,10 @@ export default defineConfigWithVueTs(
   },
 
   globalIgnores([
+    '**/node_modules/**',
     '**/dist/**',
     '**/dist-ssr/**',
+    '**/build/**',
     '**/coverage/**',
     '**/.quasar/**',
     '**/functions/**',
