@@ -38,13 +38,7 @@ jobs:
       - name: Prepare Quasar
         run: npx quasar prepare
       - name: Lint
-        env:
-          NODE_OPTIONS: --max-old-space-size=8192
-        run: npx eslint src --ext .js,.ts,.vue
-      - name: Lint
-        env:
-          NODE_OPTIONS: --max-old-space-size=4096
-        run: npx eslint src --ext .js,.ts,.vue
+        run: npm run lint
       - name: type-check
         run: npm run type-check
       - name: Perform CodeQL analysis
