@@ -29,8 +29,14 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Verify Quasar CLI
+        run: npx quasar info
+
+      - name: Prepare Quasar
+        run: npx quasar prepare
+
       - name: Run E2E tests
-        run: quasar prepare && npm run test:e2e -- --project=chromium
+        run: npm run test:e2e -- --project=chromium
         env:
           CI: true
 

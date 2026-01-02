@@ -25,22 +25,27 @@ export class MockBlogService implements IBlogService {
   ];
 
   async getPosts(): Promise<BlogPostIndex[]> {
+    await Promise.resolve();
     // oxlint-disable-next-line no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return this.posts.map(({ content, ...index }) => index as BlogPostIndex);
   }
 
   async getPost(id: string): Promise<BlogPost> {
+    await Promise.resolve();
     const post = this.posts.find((p) => p.id === id);
     if (!post) throw new Error('Post not found');
     return post;
   }
 
   async getPostBySlug(slug: string): Promise<BlogPost | null> {
+    await Promise.resolve();
     const post = this.posts.find((p) => p.slug === slug || p.id === slug);
     return post || null;
   }
 
   async savePost(post: Partial<BlogPost>): Promise<BlogPost> {
+    await Promise.resolve();
     const newPost = {
       id: post.id || Math.random().toString(36).substr(2, 9),
       title: post.title || 'Untitled',
@@ -56,10 +61,13 @@ export class MockBlogService implements IBlogService {
   }
 
   async deletePost(id: string): Promise<void> {
+    await Promise.resolve();
     this.posts = this.posts.filter((p) => p.id !== id);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async uploadImage(_file: File): Promise<string> {
+    await Promise.resolve();
     return 'https://example.com/mock-image.png';
   }
 }

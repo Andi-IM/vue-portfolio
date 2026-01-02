@@ -28,7 +28,7 @@ const deletePost = async (id: string) => {
 };
 
 onMounted(() => {
-  fetchPosts();
+  void fetchPosts();
 });
 </script>
 

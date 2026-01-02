@@ -48,7 +48,7 @@ describe('PortfolioPage', () => {
     expect(wrapper.findAll('.async-stub').length).toBe(5);
   });
 
-  it('scrolls to section when requested', async () => {
+  it('scrolls to section when requested', () => {
     const wrapper = mount(PortfolioPage, {
       global: { mocks },
     });

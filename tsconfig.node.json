@@ -6,9 +6,12 @@
     "nightwatch.conf.*",
     "playwright.config.*",
     "eslint.config.*",
-    "quasar.config.*"
+    "quasar.config.*",
+    "postcss.config.js",
+    "eslint-plugin-quasar.d.ts"
   ],
   "compilerOptions": {
+    "allowJs": true,
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
 

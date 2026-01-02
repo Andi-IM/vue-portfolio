@@ -53,7 +53,7 @@ export function usePostEditor({ blogService, route, router }: PostEditorDependen
     try {
       await blogService.savePost(form.value);
       alert('Saved!');
-      router.push('/admin');
+      await router.push('/admin');
     } catch (e) {
       console.error('Save error', e);
       alert('Error saving');
