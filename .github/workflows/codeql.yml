@@ -36,7 +36,7 @@ jobs:
       - name: Lint
         env:
           NODE_OPTIONS: --max-old-space-size=4096
-        run: npm run lint:eslint
+        run: npx eslint src --ext .js,.ts,.vue 
       - name: Lint
         env:
           NODE_OPTIONS: --max-old-space-size=4096
