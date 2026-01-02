@@ -28,7 +28,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build
-        run: quasar prepare && npm run build
+        run: npx quasar prepare && npm run build
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3

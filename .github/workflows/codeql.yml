@@ -40,7 +40,7 @@ jobs:
         with:
           category: '/language/javascript'
       - name: Run test analytics
-        run: quasar prepare && npx vitest run --reporter=junit --outputFile=coverage/test-report.junit.xml
+        run: npx quasar prepare && npx vitest run --reporter=junit --outputFile=coverage/test-report.junit.xml
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@v5
