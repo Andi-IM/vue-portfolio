@@ -36,7 +36,11 @@ jobs:
       - name: Lint
         env:
           NODE_OPTIONS: --max-old-space-size=4096
-        run: npm run lint
+        run: npm run lint:eslint
+      - name: Lint
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: npm run lint:oxlint
       - name: type-check
         run: npm run type-check
       - name: Perform CodeQL analysis
