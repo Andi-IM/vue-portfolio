@@ -13,7 +13,7 @@
     "build-only": "quasar build",
     "type-check": "vue-tsc --build tsconfig.build.json",
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
-    "lint:eslint": "eslint . --fix --cache",
+    "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
     "format": "prettier --write src/",
     "dev:wrangler": "npm run build && wrangler pages dev dist --kv=BLOG_KV --r2=BLOG_BUCKET",
