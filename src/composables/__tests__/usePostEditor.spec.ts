@@ -55,7 +55,7 @@ describe('usePostEditor', () => {
 
     expect(instance.isNew).toBe(true)
     expect(instance.form.title).toBe('')
-    expect((instance.form.content[0] as any).type).toBe('paragraph')
+    expect(instance.form.content).toBe('')
   })
 
   it('fetches post on mount if not new', async () => {

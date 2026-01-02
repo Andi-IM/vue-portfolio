@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref } from 'vue'
 import { ExternalLink, Github, X, Smartphone, Code, CheckCircle2 } from 'lucide-vue-next'
 import marketMingleImg from '../images/market-mingle.webp'
@@ -24,19 +24,19 @@ const projects = [
   {
     title: 'Lokapandu',
     description:
-      'Solusi terpusat bagi wisatawan untuk menemukan rekomendasi destinasi anti-mainstream dan menyusun rencana perjalanan secara visual dan efisien.',
+      'A centralized solution for travelers to find anti-mainstream destination recommendations and arrange itineraries visually and efficiently.',
     longDescription:
-      'Lokapandu dikembangkan untuk menjawab tantangan pariwisata Indonesia yang tumbuh pesat, di mana wisatawan kesulitan merencanakan perjalanan akibat informasi destinasi yang tersebar. Aplikasi ini menyatukan pencarian dan perencanaan wisata dalam satu platform. MVP aplikasi Lokapandu memiliki tiga fitur utama: Rekomendasi Wisata, Rencana Wisata, dan Asisten Wisata AI berbasis Gemini. Dibangun dengan Flutter dan Supabase, Lokapandu menghadirkan solusi modern, aman, dan siap pakai bagi wisatawan.',
-    features: ['Rekomendasi Wisata', 'Rencana Wisata', 'Asisten Wisata AI berbasis Gemini'],
+      "Lokapandu was developed to address the challenges of Indonesia's rapidly growing tourism, where travelers struggle to plan trips due to fragmented destination information. This app integrates travel search and planning into one platform. The Lokapandu MVP has three main features: Travel Recommendations, Travel Plan, and Gemini-based AI Travel Assistant. Built with Flutter and Supabase, Lokapandu delivers a modern, secure, and ready-to-use solution for travelers.",
+    features: ['Travel Recommendations', 'Travel Plan', 'Gemini-based AI Travel Assistant'],
     tags: ['Flutter', 'Supabase', 'Provider', 'Gemini', 'Dart'],
     image: lokapanduImg,
     link: 'https://drive.google.com/drive/folders/1HIW2WgRz-RxB3vCe9joTAXPQ5N1v3HqY?usp=drive_link',
     github: 'https://github.com/Lokapandu/Lokapandu',
   },
   {
-    title: 'Market Mingle - Aplikasi E-commerce sederhana',
+    title: 'Market Mingle - Simple E-commerce App',
     description:
-      'Aplikasi multi platform sederhana yang menampilkan daftar produk untuk mempelajari state flutter',
+      'A simple multi-platform application displaying product lists to learn Flutter state management.',
     longDescription:
       'Market Mingle is a simple multi-platform e-commerce application developed using Flutter and Provider. It functions as a responsive digital product catalog, designed with a focus on a seamless product browsing experience across various platforms (Web, Mobile, Desktop).',
     features: ['Product exploration', 'multi-platform (web, mobile, desktop)'],
@@ -46,17 +46,18 @@ const projects = [
     github: 'https://github.com/Andi-IM/market-mingle.git',
   },
   {
-    title: 'Culinary Compass - Aplikasi Rekomendasi Makanan',
-    description: 'Aplikasi multi platform sederhana yang menampilkan daftar',
+    title: 'Culinary Compass - Food Recommendation App',
+    description:
+      'A simple multi-platform application displaying a list of recommended restaurants.',
     longDescription:
-      'Culinary Compass adalah aplikasi yang menampilkan daftar rekomendasi restoran berdasarkan rating dan review pengguna. Aplikasi ini menggunakan API dari restaurant.com untuk mengambil data restoran dan menampilkan informasi lengkap tentang setiap restoran termasuk alamat, menu, rating, dan review. Pengguna dapat mencari restoran berdasarkan nama, kategori, atau lokasi. Aplikasi ini juga memiliki fitur untuk menyimpan restoran favorit dan memberikan pemberitahuan tentang acara restoran yang akan datang.',
+      'Culinary Compass is an application that displays a list of restaurant recommendations based on user ratings and reviews. The app uses an API from restaurant.com to fetch restaurant data and show comprehensive information for each restaurant, including address, menu, rating, and reviews. Users can search for restaurants by name, category, or location. The app also features the ability to save favorite restaurants and provides notifications for upcoming restaurant events.',
     features: [
       'Restaurant List with API Integration',
       'Restaurant Search by name',
       'Restaurant Detail View with comprehensive information',
       'Restaurant Review Submission with rating',
       'Favorite Restaurants management',
-      'Scheduled Restaurant Reminder notifications (more feature only on mobile)',
+      'Scheduled Restaurant Reminder notifications (mobile only)',
       'Dark/Light Theme support',
       'Cross-platform (web, mobile, desktop)',
       'Responsive Design for all device sizes',
@@ -67,11 +68,11 @@ const projects = [
     github: 'https://github.com/Andi-IM/CulinaryCompass.git',
   },
   {
-    title: 'Nutrivision - Aplikasi Deteksi Makanan',
+    title: 'Nutrivision - Food Detection App',
     description:
-      'Aplikasi sederhana yang memanfaatkan API Gemini dan MLKit untuk mendeteksi makanan',
+      'A simple application utilizing Gemini API and MLKit to detect food and nutrition.',
     longDescription:
-      'Nutrivision adalah aplikasi yang menampilkan daftar rekomendasi restoran berdasarkan rating dan review pengguna. Aplikasi ini menggunakan API dari restaurant.com untuk mengambil data restoran dan menampilkan informasi lengkap tentang setiap restoran termasuk alamat, menu, rating, dan review. Pengguna dapat mencari restoran berdasarkan nama, kategori, atau lokasi. Aplikasi ini juga memiliki fitur untuk menyimpan restoran favorit dan memberikan pemberitahuan tentang acara restoran yang akan datang.',
+      'Nutrivision is an application that helps users identify food items and their nutritional details. Using advanced AI capabilities through the Gemini API and MLKit, it provides instant information about calories, ingredients, and even suggested recipes. Designed for health-conscious users, it streamlines the process of tracking dietary intake and exploring new healthy options.',
     features: ['nutrition information of food', 'recipe of food', 'ingredient of food'],
     tags: ['Flutter', 'Dart', 'Provider', 'Firebase', 'Gemini'],
     image: nutrivisionImg,
@@ -108,10 +109,10 @@ const openLink = (url?: string | null) => {
 </script>
 
 <template>
-  <section id="proyek" class="py-20">
+  <section id="projects" class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold text-white mb-12">Proyek Terselesaikan</h2>
-      <p class="text-gray-400 mb-8 -mt-8">Klik pada kartu proyek untuk melihat detail lengkap.</p>
+      <h2 class="text-3xl font-bold text-white mb-12">{{ $t('projects.title') }}</h2>
+      <p class="text-gray-400 mb-8 -mt-8">{{ $t('projects.subtitle') }}</p>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div
@@ -132,7 +133,7 @@ const openLink = (url?: string | null) => {
             <div
               class="absolute bottom-4 right-4 bg-black/60 backdrop-blur text-white text-xs px-2 py-1 rounded z-20 opacity-0 group-hover:opacity-100 transition-opacity"
             >
-              Klik untuk detail
+              {{ $t('projects.clickForDetails') }}
             </div>
           </div>
           <div class="p-6">
@@ -163,13 +164,13 @@ const openLink = (url?: string | null) => {
                 @click.stop="openLink(project.link)"
                 class="flex items-center gap-2 text-sm text-white hover:text-blue-400 transition-colors"
               >
-                <ExternalLink :size="16" /> Website
+                <ExternalLink :size="16" /> {{ $t('projects.website') }}
               </button>
               <button
                 @click.stop="openLink(project.github)"
                 class="flex items-center gap-2 text-sm text-white hover:text-blue-400 transition-colors"
               >
-                <Github :size="16" /> GitHub
+                <Github :size="16" /> {{ $t('projects.github') }}
               </button>
             </div>
           </div>
@@ -218,7 +219,7 @@ const openLink = (url?: string | null) => {
         <!-- Description -->
         <div>
           <h4 class="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
-            <Smartphone :size="20" /> Tentang Aplikasi
+            <Smartphone :size="20" /> {{ $t('projects.aboutTheApp') }}
           </h4>
           <p class="text-gray-300 leading-relaxed text-lg">
             {{ selectedProject.longDescription }}
@@ -228,7 +229,7 @@ const openLink = (url?: string | null) => {
         <!-- Tech Stack -->
         <div>
           <h4 class="text-lg font-semibold text-blue-400 mb-4 flex items-center gap-2">
-            <Code :size="20" /> Teknologi yang Digunakan
+            <Code :size="20" /> {{ $t('projects.technologiesUsed') }}
           </h4>
           <div class="flex flex-wrap gap-2">
             <span
@@ -244,7 +245,7 @@ const openLink = (url?: string | null) => {
         <!-- Features List -->
         <div class="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50">
           <h4 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <CheckCircle2 :size="20" class="text-green-500" /> Fitur Utama
+            <CheckCircle2 :size="20" class="text-green-500" /> {{ $t('projects.keyFeatures') }}
           </h4>
           <div class="grid md:grid-cols-2 gap-3">
             <div
@@ -267,7 +268,7 @@ const openLink = (url?: string | null) => {
             rel="noopener noreferrer"
             class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl text-center transition-all hover:shadow-lg hover:shadow-blue-600/20 flex items-center justify-center gap-2"
           >
-            <ExternalLink :size="20" /> Kunjungi Website / Demo
+            <ExternalLink :size="20" /> {{ $t('projects.visitWebsite') }}
           </a>
           <a
             :href="selectedProject.github"
@@ -275,7 +276,7 @@ const openLink = (url?: string | null) => {
             rel="noopener noreferrer"
             class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-3.5 rounded-xl text-center transition-all border border-gray-700 flex items-center justify-center gap-2"
           >
-            <Github :size="20" /> Lihat Source Code
+            <Github :size="20" /> {{ $t('projects.viewSourceCode') }}
           </a>
         </div>
       </div>

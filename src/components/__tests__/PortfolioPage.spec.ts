@@ -4,11 +4,22 @@ import { defineComponent } from 'vue'
 import PortfolioPage from '../PortfolioPage.vue'
 import NavBar from '../NavBar.vue'
 import HeroSection from '../HeroSection.vue'
+import enUS from '../../i18n/en-US'
 
 // Stub async components for faster, more reliable tests
 const AsyncStub = defineComponent({
   template: '<div class="async-stub"></div>',
 })
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const mocks = {
+  $t: (msg: string) => {
+    const keys = msg.split('.')
+    let res: any = enUS
+    for (const key of keys) res = res[key]
+    return res
+  },
+}
 
 describe('PortfolioPage', () => {
   it('renders all sections', async () => {
@@ -16,6 +27,7 @@ describe('PortfolioPage', () => {
     // Mount renders everything.
     const wrapper = mount(PortfolioPage, {
       global: {
+        mocks,
         stubs: {
           // Stub async components since they are loaded dynamically
           ToolsSection: AsyncStub,
@@ -37,7 +49,9 @@ describe('PortfolioPage', () => {
   })
 
   it('scrolls to section when requested', async () => {
-    const wrapper = mount(PortfolioPage)
+    const wrapper = mount(PortfolioPage, {
+      global: { mocks },
+    })
 
     // Mock getElementById and scrollIntoView
     const scrollIntoViewMock = vi.fn()
@@ -49,16 +63,16 @@ describe('PortfolioPage', () => {
 
     // Trigger scroll event from NavBar
     const navBar = wrapper.findComponent(NavBar)
-    navBar.vm.$emit('scrollToSection', 'tentang')
+    navBar.vm.$emit('scrollToSection', 'about')
 
-    expect(getElementByIdSpy).toHaveBeenCalledWith('tentang')
+    expect(getElementByIdSpy).toHaveBeenCalledWith('about')
     expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: 'smooth' })
 
     // Trigger scroll from HeroSection
     const heroSection = wrapper.findComponent(HeroSection)
-    heroSection.vm.$emit('scrollToSection', 'proyek')
+    heroSection.vm.$emit('scrollToSection', 'projects')
 
-    expect(getElementByIdSpy).toHaveBeenCalledWith('proyek')
+    expect(getElementByIdSpy).toHaveBeenCalledWith('projects')
     expect(scrollIntoViewMock).toHaveBeenCalledTimes(2)
 
     getElementByIdSpy.mockRestore()

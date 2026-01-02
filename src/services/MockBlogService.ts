@@ -7,8 +7,8 @@ export class MockBlogService implements IBlogService {
       title: 'Mock Post 1',
       slug: 'mock-post-1',
       excerpt: 'This is a mock post for testing.',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      content: [{ type: 'paragraph', children: [{ text: 'Mock content here.' }] } as any],
+
+      content: '<p>Mock content here.</p>',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
@@ -17,8 +17,8 @@ export class MockBlogService implements IBlogService {
       title: 'Mock Post 2',
       slug: 'mock-post-2',
       excerpt: 'Another mock post.',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      content: [{ type: 'paragraph', children: [{ text: 'More mock content.' }] } as any],
+
+      content: '<p>More mock content.</p>',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
@@ -46,7 +46,7 @@ export class MockBlogService implements IBlogService {
       title: post.title || 'Untitled',
       slug: post.slug || 'untitled',
       excerpt: post.excerpt || '',
-      content: post.content || [],
+      content: post.content || '',
       createdAt: post.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       ...post,

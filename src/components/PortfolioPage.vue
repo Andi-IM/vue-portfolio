@@ -22,7 +22,7 @@ const scrollToSection = (id: string) => {
 
 <template>
   <div
-    class="bg-gray-900 min-h-screen text-gray-100 font-sans selection:bg-blue-500 selection:text-white"
+    class="bg-[#0A1628] min-h-screen text-gray-100 font-sans selection:bg-blue-500 selection:text-white"
   >
     <NavBar @scroll-to-section="scrollToSection" />
     <main>

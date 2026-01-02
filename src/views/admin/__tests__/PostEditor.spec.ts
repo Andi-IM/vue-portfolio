@@ -23,7 +23,7 @@ describe('PostEditor', () => {
     const wrapper = mount(PostEditor, {
       global: {
         stubs: {
-          RichTextEditor: { template: '<div>Editor</div>' },
+          QuasarEditor: { template: '<div>Editor</div>' },
         },
       },
     })
@@ -41,7 +41,7 @@ describe('PostEditor', () => {
 
     const wrapper = mount(PostEditor, {
       global: {
-        stubs: { RichTextEditor: true },
+        stubs: { QuasarEditor: true },
       },
     })
 
@@ -64,7 +64,7 @@ describe('PostEditor', () => {
 
     const wrapper = mount(PostEditor, {
       global: {
-        stubs: { RichTextEditor: true },
+        stubs: { QuasarEditor: true },
       },
     })
 
@@ -89,7 +89,7 @@ describe('PostEditor', () => {
       id: '123',
       title: 'Existing Post',
       slug: 'existing',
-      content: [],
+      content: 'Html content',
     })
     ;(useBlogService as any).mockReturnValue({
       getPost: mockGetPost,
@@ -97,7 +97,7 @@ describe('PostEditor', () => {
     })
 
     const wrapper = mount(PostEditor, {
-      global: { stubs: { RichTextEditor: true } },
+      global: { stubs: { QuasarEditor: true } },
     })
     await flushPromises() // Wait for onMounted
 
@@ -112,7 +112,7 @@ describe('PostEditor', () => {
 
     const wrapper = mount(PostEditor, {
       global: {
-        stubs: { RichTextEditor: true },
+        stubs: { QuasarEditor: true },
       },
     })
 

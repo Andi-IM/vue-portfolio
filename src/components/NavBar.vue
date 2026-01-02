@@ -19,37 +19,39 @@ const handleScroll = (id: string) => {
 </script>
 
 <template>
-  <nav class="fixed w-full z-40 bg-gray-900/90 backdrop-blur-md border-b border-gray-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
-        <div class="flex-shrink-0 font-bold text-2xl text-blue-500 tracking-wider">
-          Andi<span class="text-white">IM.</span>
-        </div>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <div class="navbar-inner">
+        <div class="navbar-logo">Andi<span>IM.</span></div>
 
         <!-- Desktop Menu -->
-        <div class="hidden md:block">
-          <div class="ml-10 flex items-baseline space-x-8">
-            <button
-              v-for="item in ['Tentang', 'Tools', 'Proyek', 'Pengalaman', 'Kontak']"
-              :key="item"
-              @click="handleScroll(item.toLowerCase())"
-              class="hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300"
-            >
-              {{ item }}
-            </button>
-            <a
-              href=""
-              download
-              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium flex items-center gap-2 transition-all hover:scale-105"
-            >
-              <Download :size="16" />
-              Unduh CV
-            </a>
-          </div>
+        <div class="navbar-desktop-menu">
+          <button
+            v-for="item in [
+              { label: $t('nav.about'), id: 'about' },
+              { label: $t('nav.tools'), id: 'tools' },
+              { label: $t('nav.projects'), id: 'projects' },
+              { label: $t('nav.experience'), id: 'experience' },
+              { label: $t('nav.contact'), id: 'contact' },
+            ]"
+            :key="item.id"
+            @click="handleScroll(item.id)"
+            class="navbar-link"
+          >
+            {{ item.label }}
+          </button>
+          <a
+            href="https://pub-1d2d5180bcb0450bb6d122152ab25b6d.r2.dev/cv-andi-irham-2025.pdf"
+            download
+            class="navbar-cta"
+          >
+            <Download :size="16" />
+            {{ $t('nav.downloadCv') }}
+          </a>
         </div>
 
         <!-- Mobile Menu Button -->
-        <div class="md:hidden">
+        <div class="navbar-mobile-btn">
           <button @click="toggleMenu" class="text-gray-300 hover:text-white p-2">
             <X v-if="isMenuOpen" :size="24" />
             <Menu v-else :size="24" />
@@ -59,15 +61,21 @@ const handleScroll = (id: string) => {
     </div>
 
     <!-- Mobile Menu Dropdown -->
-    <div v-if="isMenuOpen" class="md:hidden bg-gray-800 border-b border-gray-700">
+    <div v-if="isMenuOpen" class="navbar-mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
         <button
-          v-for="item in ['Tentang', 'Tools', 'Proyek', 'Pengalaman', 'Kontak']"
-          :key="item"
-          @click="handleScroll(item.toLowerCase())"
+          v-for="item in [
+            { label: $t('nav.about'), id: 'about' },
+            { label: $t('nav.tools'), id: 'tools' },
+            { label: $t('nav.projects'), id: 'projects' },
+            { label: $t('nav.experience'), id: 'experience' },
+            { label: $t('nav.contact'), id: 'contact' },
+          ]"
+          :key="item.id"
+          @click="handleScroll(item.id)"
           class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left"
         >
-          {{ item }}
+          {{ item.label }}
         </button>
         <a
           href="https://pub-1d2d5180bcb0450bb6d122152ab25b6d.r2.dev/cv-andi-irham-2025.pdf"
@@ -75,7 +83,7 @@ const handleScroll = (id: string) => {
           class="text-blue-400 hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium w-full text-left flex items-center gap-2"
         >
           <Download :size="16" />
-          Unduh CV
+          {{ $t('nav.downloadCv') }}
         </a>
       </div>
     </div>

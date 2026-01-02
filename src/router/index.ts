@@ -1,38 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createMemoryHistory, createRouter, createWebHistory } from 'vue-router'
+import routes from './routes'
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: () => import('../components/PortfolioPage.vue'),
-    },
-    {
-      path: '/blog',
-      name: 'blog',
-      component: () => import('../views/blog/BlogIndex.vue'),
-    },
-    {
-      path: '/blog/:slug',
-      name: 'blog-post',
-      component: () => import('../views/blog/BlogPost.vue'),
-    },
-    {
-      path: '/admin',
-      name: 'admin-dashboard',
-      component: () => import('../views/admin/AdminDashboard.vue'),
-    },
-    {
-      path: '/admin/posts/:id',
-      name: 'admin-post-editor',
-      component: () => import('../views/admin/PostEditor.vue'),
-    },
-    {
-      path: '/admin/new',
-      redirect: '/admin/posts/new',
-    },
-  ],
+const createHistory = process.env.SERVER ? createMemoryHistory : createWebHistory
+
+const Router = createRouter({
+  scrollBehavior: () => ({ left: 0, top: 0 }),
+  routes,
+  history: createHistory(process.env.VUE_ROUTER_BASE),
 })
 
-export default router
+export default Router

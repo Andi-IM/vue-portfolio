@@ -3,13 +3,12 @@ import { Mail, Linkedin, Github } from 'lucide-vue-next'
 </script>
 
 <template>
-  <section id="kontak" class="py-20">
+  <section id="contact" class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold text-white mb-6">Get In Touch</h2>
-        <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-          Saya saat ini terbuka untuk peluang baru dan kolaborasi. Jangan ragu untuk menghubungi
-          saya melalui salah satu platform di bawah ini.
+      <div class="flex flex-col items-center text-center mb-16">
+        <h2 class="text-3xl font-bold text-white mb-3 text-center">{{ $t('contact.title') }}</h2>
+        <p class="text-gray-400 text-lg max-w-2xl text-center leading-relaxed">
+          {{ $t('contact.description') }}
         </p>
       </div>
 
@@ -24,12 +23,12 @@ import { Mail, Linkedin, Github } from 'lucide-vue-next'
           >
             <Mail class="w-10 h-10 text-blue-500 group-hover:text-white transition-colors" />
           </div>
-          <h3 class="text-white font-bold text-xl mb-2">Email</h3>
+          <h3 class="text-white font-bold text-xl mb-2">{{ $t('contact.email') }}</h3>
           <p class="text-gray-400 group-hover:text-blue-300 transition-colors font-medium">
             andi.irhamm@gmail.com
           </p>
           <span class="text-sm text-gray-400 mt-4 group-hover:text-gray-300"
-            >Kirim Pesan &rarr;</span
+            >{{ $t('contact.sendMessage') }} &rarr;</span
           >
         </a>
 
@@ -45,11 +44,13 @@ import { Mail, Linkedin, Github } from 'lucide-vue-next'
           >
             <Linkedin class="w-10 h-10 text-blue-500 group-hover:text-white transition-colors" />
           </div>
-          <h3 class="text-white font-bold text-xl mb-2">LinkedIn</h3>
+          <h3 class="text-white font-bold text-xl mb-2">{{ $t('contact.linkedin') }}</h3>
           <p class="text-gray-400 group-hover:text-blue-300 transition-colors font-medium">
             linkedin.com/in/andiirham
           </p>
-          <span class="text-sm text-gray-400 mt-4 group-hover:text-gray-300">Terhubung &rarr;</span>
+          <span class="text-sm text-gray-400 mt-4 group-hover:text-gray-300"
+            >{{ $t('contact.connect') }} &rarr;</span
+          >
         </a>
 
         <!-- GitHub Card -->
@@ -64,12 +65,12 @@ import { Mail, Linkedin, Github } from 'lucide-vue-next'
           >
             <Github class="w-10 h-10 text-blue-500 group-hover:text-white transition-colors" />
           </div>
-          <h3 class="text-white font-bold text-xl mb-2">GitHub</h3>
+          <h3 class="text-white font-bold text-xl mb-2">{{ $t('contact.github') }}</h3>
           <p class="text-gray-400 group-hover:text-blue-300 transition-colors font-medium">
             github.com/Andi-IM
           </p>
           <span class="text-sm text-gray-400 mt-4 group-hover:text-gray-300"
-            >Lihat Repositori &rarr;</span
+            >{{ $t('contact.viewRepository') }} &rarr;</span
           >
         </a>
       </div>

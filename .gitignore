@@ -41,3 +41,6 @@ __screenshots__/
 playwright-report
 test-results
 .nyc_output
+
+# Quasar
+.quasar

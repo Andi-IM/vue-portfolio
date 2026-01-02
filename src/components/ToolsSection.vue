@@ -12,16 +12,12 @@ const skills = [
 </script>
 
 <template>
-  <section id="tools" class="py-20 bg-gray-800/50">
+  <section id="tools" class="py-20 bg-[#0A1628]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold text-white mb-12">Tools & Teknologi</h2>
+      <h2 class="text-3xl font-bold text-white mb-12">{{ $t('tools.title') }}</h2>
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-        <div
-          v-for="(skill, index) in skills"
-          :key="index"
-          class="bg-gray-800 p-6 rounded-xl border border-gray-700 hover:border-blue-500 transition-all hover:-translate-y-1 group"
-        >
-          <div class="mb-4 transform group-hover:scale-110 transition-transform duration-300">
+        <div v-for="(skill, index) in skills" :key="index" class="skill-card group">
+          <div class="skill-card-icon-wrapper">
             <component :is="skill.icon" class="w-8 h-8" :class="skill.iconClass" />
           </div>
           <h3 class="font-bold text-white">{{ skill.name }}</h3>

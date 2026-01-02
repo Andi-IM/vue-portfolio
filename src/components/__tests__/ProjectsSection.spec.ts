@@ -1,17 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ProjectsSection from '../ProjectsSection.vue'
+import enUS from '../../i18n/en-US'
+
+const mocks = {
+  $t: (msg: string) => {
+    const keys = msg.split('.')
+    let res: any = enUS
+    for (const key of keys) res = res[key]
+    return res
+  },
+}
 
 describe('ProjectsSection', () => {
   it('renders correctly', () => {
-    const wrapper = mount(ProjectsSection)
+    const wrapper = mount(ProjectsSection, {
+      global: { mocks },
+    })
     expect(wrapper.exists()).toBe(true)
-    expect(wrapper.text()).toContain('Proyek Terselesaikan')
+    expect(wrapper.text()).toContain(enUS.projects.title)
     expect(wrapper.findAll('.bg-gray-800').length).toBeGreaterThan(0) // Checks if projects are rendered
   })
 
   it('opens project modal on click', async () => {
-    const wrapper = mount(ProjectsSection)
+    const wrapper = mount(ProjectsSection, {
+      global: { mocks },
+    })
     const projectCards = wrapper.findAll('.group.cursor-pointer')
 
     // Initial state: no modal
@@ -26,7 +41,9 @@ describe('ProjectsSection', () => {
   })
 
   it('closes project modal on close button click', async () => {
-    const wrapper = mount(ProjectsSection)
+    const wrapper = mount(ProjectsSection, {
+      global: { mocks },
+    })
 
     // Open modal
     const projectCards = wrapper.findAll('.group.cursor-pointer')
@@ -42,7 +59,9 @@ describe('ProjectsSection', () => {
   })
 
   it('opens external link correctly', async () => {
-    const wrapper = mount(ProjectsSection)
+    const wrapper = mount(ProjectsSection, {
+      global: { mocks },
+    })
     const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null)
 
     // We need to access the openLink method or trigger element click that calls it
@@ -51,7 +70,7 @@ describe('ProjectsSection', () => {
     // The card has a buttons for links.
 
     const githubButtons = wrapper.findAll('button')
-    const githubBtn = githubButtons.find((b) => b.text().includes('GitHub'))
+    const githubBtn = githubButtons.find((b) => b.text().includes(enUS.projects.github))
 
     if (githubBtn) {
       await githubBtn.trigger('click')

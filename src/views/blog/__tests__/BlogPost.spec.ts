@@ -4,6 +4,7 @@ import { mount, flushPromises } from '@vue/test-utils'
 import BlogPost from '../BlogPost.vue'
 import { useBlogService } from '@/composables/useBlogService'
 import { useRoute } from 'vue-router'
+import enUS from '../../../i18n/en-US'
 
 vi.mock('@/composables/useBlogService', () => ({
   useBlogService: vi.fn(),
@@ -14,14 +15,25 @@ vi.mock('vue-router', () => ({
   useRoute: vi.fn(),
 }))
 
+const mocks = {
+  $t: (msg: string) => {
+    const keys = msg.split('.')
+    let res: any = enUS
+    for (const key of keys) res = res[key]
+    return res
+  },
+}
+
 describe('BlogPost', () => {
   it('renders loading state initially', () => {
     ;(useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } })
     ;(useBlogService as any).mockReturnValue({
       getPostBySlug: vi.fn().mockImplementation(() => new Promise(() => {})),
     })
-    const wrapper = mount(BlogPost)
-    expect(wrapper.text()).toContain('Loading...')
+    const wrapper = mount(BlogPost, {
+      global: { mocks },
+    })
+    expect(wrapper.text()).toContain(enUS.common.loading)
   })
 
   it('renders error/not found state', async () => {
@@ -29,9 +41,11 @@ describe('BlogPost', () => {
     ;(useBlogService as any).mockReturnValue({
       getPostBySlug: vi.fn().mockResolvedValue(null),
     })
-    const wrapper = mount(BlogPost)
+    const wrapper = mount(BlogPost, {
+      global: { mocks },
+    })
     await flushPromises()
-    expect(wrapper.text()).toContain('Post not found')
+    expect(wrapper.text()).toContain(enUS.common.postNotFound)
   })
 
   it('renders post content correctly', async () => {
@@ -39,7 +53,7 @@ describe('BlogPost', () => {
       id: '1',
       title: 'My Title',
       createdAt: '2023-01-01',
-      content: '{"type":"doc"}', // Mock rich text content
+      content: '<div class="rich-content">Rich Content</div>',
       coverImage: 'image.jpg',
     }
 
@@ -49,16 +63,12 @@ describe('BlogPost', () => {
     })
 
     const wrapper = mount(BlogPost, {
-      global: {
-        stubs: {
-          RichTextRenderer: { template: '<div>Rich Content</div>' },
-        },
-      },
+      global: { mocks },
     })
     await flushPromises()
 
     expect(wrapper.text()).toContain('My Title')
-    expect(wrapper.text()).toContain('Rich Content')
+    expect(wrapper.html()).toContain('Rich Content')
     expect(wrapper.find('img').attributes('src')).toBe('image.jpg')
   })
 
@@ -71,11 +81,13 @@ describe('BlogPost', () => {
       getPostBySlug: vi.fn().mockRejectedValue(error),
     })
 
-    const wrapper = mount(BlogPost)
+    const wrapper = mount(BlogPost, {
+      global: { mocks },
+    })
     await flushPromises()
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(error)
-    expect(wrapper.text()).toContain('Post not found')
+    expect(wrapper.text()).toContain(enUS.common.postNotFound)
 
     consoleErrorSpy.mockRestore()
   })
@@ -85,7 +97,7 @@ describe('BlogPost', () => {
       id: '1',
       title: 'My Title',
       createdAt: '2023-06-15',
-      content: '{"type":"doc"}',
+      content: 'Html content',
     }
 
     ;(useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } })
@@ -94,11 +106,7 @@ describe('BlogPost', () => {
     })
 
     const wrapper = mount(BlogPost, {
-      global: {
-        stubs: {
-          RichTextRenderer: { template: '<div>Rich Content</div>' },
-        },
-      },
+      global: { mocks },
     })
     await flushPromises()
 

@@ -3,28 +3,42 @@ import { describe, it, expect, vi } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import BlogIndex from '../BlogIndex.vue'
 import { useBlogService } from '@/composables/useBlogService'
+import enUS from '../../../i18n/en-US'
 
 vi.mock('@/composables/useBlogService', () => ({
   useBlogService: vi.fn(),
   BLOG_SERVICE_KEY: Symbol('BlogService'),
 }))
 
+const mocks = {
+  $t: (msg: string) => {
+    const keys = msg.split('.')
+    let res: any = enUS
+    for (const key of keys) res = res[key]
+    return res
+  },
+}
+
 describe('BlogIndex', () => {
   it('renders loading state initially', () => {
     ;(useBlogService as any).mockReturnValue({
       getPosts: vi.fn().mockImplementation(() => new Promise(() => {})), // Never resolves
     })
-    const wrapper = mount(BlogIndex)
-    expect(wrapper.text()).toContain('Loading posts...')
+    const wrapper = mount(BlogIndex, {
+      global: { mocks },
+    })
+    expect(wrapper.text()).toContain(enUS.common.loading)
   })
 
   it('renders empty state when no posts', async () => {
     ;(useBlogService as any).mockReturnValue({
       getPosts: vi.fn().mockResolvedValue([]),
     })
-    const wrapper = mount(BlogIndex)
+    const wrapper = mount(BlogIndex, {
+      global: { mocks },
+    })
     await flushPromises()
-    expect(wrapper.text()).toContain('No posts found')
+    expect(wrapper.text()).toContain(enUS.common.noPostsFound)
   })
 
   it('renders posts when available', async () => {
@@ -50,6 +64,7 @@ describe('BlogIndex', () => {
 
     const wrapper = mount(BlogIndex, {
       global: {
+        mocks,
         stubs: {
           RouterLink: {
             template: '<a><slot /></a>',
@@ -73,11 +88,13 @@ describe('BlogIndex', () => {
       getPosts: vi.fn().mockRejectedValue(error),
     })
 
-    const wrapper = mount(BlogIndex)
+    const wrapper = mount(BlogIndex, {
+      global: { mocks },
+    })
     await flushPromises()
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(error)
-    expect(wrapper.text()).toContain('No posts found')
+    expect(wrapper.text()).toContain(enUS.common.noPostsFound)
 
     consoleErrorSpy.mockRestore()
   })
@@ -100,6 +117,7 @@ describe('BlogIndex', () => {
 
     const wrapper = mount(BlogIndex, {
       global: {
+        mocks,
         stubs: {
           RouterLink: {
             template: '<a><slot /></a>',

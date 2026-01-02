@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import RichTextEditor from '@/components/blog/RichTextEditor.vue'
+import QuasarEditor from '@/components/blog/QuasarEditor.vue'
 import { useBlogService } from '@/composables/useBlogService'
 import { usePostEditor } from '@/composables/usePostEditor'
 
@@ -81,7 +81,7 @@ const { form, loading, isNew, save, handleImageUpload } = usePostEditor({
 
         <div class="grid gap-2">
           <label class="font-medium">Content</label>
-          <RichTextEditor v-model="form.content" :uploader="handleImageUpload" />
+          <QuasarEditor v-model="form.content" :uploader="handleImageUpload" />
         </div>
       </div>
     </div>

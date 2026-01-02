@@ -24,11 +24,11 @@ onMounted(async () => {
     <h1 class="text-4xl font-bold mb-8 text-zinc-900 dark:text-white">Blog</h1>
 
     <div v-if="loading" class="text-center py-12">
-      <span class="text-zinc-500">Loading posts...</span>
+      <span class="text-zinc-500">{{ $t('common.loading') }}</span>
     </div>
 
     <div v-else-if="posts.length === 0" class="text-center py-12">
-      <span class="text-zinc-500">No posts found.</span>
+      <span class="text-zinc-500">{{ $t('common.noPostsFound') }}</span>
     </div>
 
     <div v-else class="grid gap-8">
@@ -70,7 +70,7 @@ onMounted(async () => {
           aria-hidden="true"
           class="relative z-10 mt-4 flex items-center text-sm font-medium text-blue-500"
         >
-          Read article
+          {{ $t('common.readArticle') }}
           <svg
             viewBox="0 0 16 16"
             fill="none"

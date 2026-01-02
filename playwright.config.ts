@@ -19,7 +19,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'cross-env VITE_COVERAGE=true npm run dev',
+    command: 'cross-env VITE_COVERAGE=true npx quasar dev',
     url: 'http://localhost:5173',
     reuseExistingServer: true,
   },

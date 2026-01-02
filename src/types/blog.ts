@@ -1,11 +1,9 @@
-import type { Descendant } from 'slate'
-
 export interface BlogPost {
   id: string
   title: string
   slug: string
   excerpt: string
-  content: Descendant[]
+  content: string
   coverImage?: string
   createdAt?: string
   updatedAt?: string

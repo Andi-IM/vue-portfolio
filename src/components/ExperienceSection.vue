@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 const experiences = [
   {
     year: 'July 2025 - November 2025',
@@ -22,20 +22,20 @@ const experiences = [
 </script>
 
 <template>
-  <section id="pengalaman" class="py-20 bg-gray-800/30">
+  <section id="experience" class="py-20 bg-gray-800/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold text-white mb-12">Experiences</h2>
+      <h2 class="text-3xl font-bold text-white mb-12">{{ $t('experience.title') }}</h2>
       <div
-        class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-blue-500 before:to-transparent"
+        class="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-blue-500 before:to-transparent"
       >
         <div
           v-for="(exp, index) in experiences"
           :key="index"
-          class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active"
+          class="relative flex items-center justify-between group is-active"
         >
-          <!-- Timeline Dot -->
+          <!-- Timeline Dot (Absolute centered on the line) -->
           <div
-            class="flex items-center justify-center w-10 h-10 rounded-full border border-gray-700 bg-gray-900 group-hover:bg-blue-600 group-hover:border-blue-500 transition-colors shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow shadow-blue-900/20"
+            class="absolute left-5 md:left-1/2 -translate-x-1/2 flex items-center justify-center w-10 h-10 rounded-full border border-gray-700 bg-gray-900 group-hover:bg-blue-600 group-hover:border-blue-500 transition-colors z-10 shadow shadow-blue-900/20"
           >
             <div
               class="w-3 h-3 bg-blue-500 rounded-full group-hover:bg-white transition-colors"
@@ -44,7 +44,10 @@ const experiences = [
 
           <!-- Content Card -->
           <div
-            class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-xl border border-gray-700 bg-gray-800 hover:border-blue-500 transition-all shadow-lg"
+            :class="[
+              'w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] ml-auto p-6 rounded-xl border border-gray-700 bg-gray-800 hover:border-blue-500 transition-all shadow-lg',
+              index % 2 === 0 ? 'md:ml-auto' : 'md:mr-auto md:ml-0',
+            ]"
           >
             <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
               <h3 class="font-bold text-white text-lg">{{ exp.role }}</h3>

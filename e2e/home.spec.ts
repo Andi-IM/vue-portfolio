@@ -13,9 +13,9 @@ test.describe('Home Page', () => {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
 
     // Check for key sections
-    await expect(page.getByText('Tools & Teknologi')).toBeVisible()
-    await expect(page.getByText('Proyek Terselesaikan')).toBeVisible()
-    await expect(page.getByText('Experiences')).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Tools & Technology' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Projects' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Experiences' })).toBeVisible()
   })
 
   test('navigation links work correctly', async ({ page }) => {

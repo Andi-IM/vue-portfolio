@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import RichTextRenderer from '@/components/blog/RichTextRenderer.vue'
+
 import { useBlogService } from '@/composables/useBlogService'
 import type { BlogPost } from '@/types/blog'
 
@@ -24,8 +24,8 @@ onMounted(async () => {
 
 <template>
   <div class="max-w-3xl mx-auto px-4 py-12">
-    <div v-if="loading" class="text-center">Loading...</div>
-    <div v-else-if="!post" class="text-center">Post not found</div>
+    <div v-if="loading" class="text-center">{{ $t('common.loading') }}</div>
+    <div v-else-if="!post" class="text-center">{{ $t('common.postNotFound') }}</div>
     <article v-else class="space-y-8">
       <div class="text-center space-y-4">
         <time v-if="post.createdAt" class="text-zinc-400 dark:text-zinc-500">{{
@@ -43,7 +43,7 @@ onMounted(async () => {
         <img :src="post.coverImage" :alt="post.title" class="object-cover w-full h-full" />
       </div>
 
-      <RichTextRenderer :content="post.content" />
+      <div class="prose dark:prose-invert max-w-none" v-html="post.content"></div>
     </article>
   </div>
 </template>

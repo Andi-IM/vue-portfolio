@@ -1,84 +1,60 @@
-<!DOCTYPE html>
-<html lang="id">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="<%= productDescription %>" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/favicon-128x128.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="icons/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png" />
+    <link rel="icon" type="image/ico" href="/favicon.ico" />
+    <meta
+      name="viewport"
+      content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (ctx.mode.cordova || ctx.mode.capacitor) { %>, viewport-fit=cover<% } %>"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="google-adsense-account" content="ca-pub-1594065720287624" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="description"
-    content="Andi Irham - Mobile App Developer & AI Enthusiast. Specializing in Android, Kotlin, Flutter development.">
-  <link rel="icon" href="/favicon.ico">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="index, follow">
-  <meta name="google-adsense-account" content="ca-pub-1594065720287624">
+    <!-- Preload the Largest Contentful Paint image -->
+    <link rel="preload" as="image" href="/images/portrait.webp" fetchpriority="high" />
 
-  <!-- Preload the Largest Contentful Paint image -->
-  <link rel="preload" as="image" href="/images/portrait.webp" fetchpriority="high">
+    <!-- Preconnect to critical origins for faster resource loading -->
+    <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Preconnect to critical origins for faster resource loading -->
-  <link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin>
+    <title><%= productName %></title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Andi Irham",
+        "jobTitle": "Mobile App Developer",
+        "url": "https://andi-im.pages.dev",
+        "description": "Andi Irham - Mobile App Developer & AI Enthusiast. Specializing in Android, Kotlin, Flutter development.",
+        "sameAs": ["https://github.com/Andi-IM", "https://www.linkedin.com/in/andiirham/"]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Andi IM Portfolio",
+        "url": "https://andi-im.pages.dev",
+        "description": "Andi Irham Portfolio - Mobile App Developer & AI Enthusiast"
+      }
+    </script>
+  </head>
 
-  <title>Andi IM</title>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Andi Irham",
-      "jobTitle": "Mobile App Developer",
-      "url": "https://andi-im.pages.dev",
-      "description": "Andi Irham - Mobile App Developer & AI Enthusiast. Specializing in Android, Kotlin, Flutter development.",
-      "sameAs": [
-        "https://github.com/Andi-IM",
-        "https://www.linkedin.com/in/andiirham/"
-      ]
-    }
-  </script>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Andi IM Portfolio",
-      "url": "https://andi-im.pages.dev",
-      "description": "Portofolio Andi Irham - Mobile App Developer & AI Enthusiast"
-    }
-  </script>
-</head>
-
-<body class="bg-gray-900">
-  <div id="app">
-    <!-- Basic structure for FCP until Vue hydrates -->
-    <div class="bg-gray-900 min-h-screen text-gray-100 font-sans">
-      <nav class="fixed w-full z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-800 h-16">
-        <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
-          <div class="text-xl font-bold text-blue-500">Andi IM</div>
-        </div>
-      </nav>
-      <section class="pt-32 pb-20 md:pt-40 md:pb-28">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex flex-col-reverse md:flex-row items-center justify-between gap-12">
-            <div class="w-full md:w-1/2 space-y-6 text-center md:text-left">
-              <h2 class="text-blue-500 font-semibold tracking-wide uppercase text-sm">Mobile App Developer</h2>
-              <h1 class="text-4xl md:text-6xl font-bold leading-tight text-white">
-                Halo, Saya Andi Irham,<br />
-                <span class="text-blue-500">Mobile Developer & AI Enthusiast</span>
-              </h1>
-              <p class="text-gray-400 text-lg md:text-xl max-w-lg mx-auto md:mx-0">
-                Passionate Software Engineering graduate specializing in Android Mobile Development...
-              </p>
-            </div>
-            <div class="w-full md:w-1/2 flex justify-center md:justify-end">
-              <div class="relative">
-                <div class="absolute inset-0 bg-blue-600 rounded-3xl rotate-6 opacity-20 blur-lg"></div>
-                <div
-                  class="relative w-64 h-64 md:w-96 md:h-96 rounded-3xl overflow-hidden border-4 border-gray-800 shadow-2xl">
-                  <img src="/images/portrait.webp" alt="Developer Profile" class="w-full h-full object-cover">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+  <body class="bg-gray-900">
+    <div id="app">
+      <!-- quasar:entry-point -->
     </div>
-  </div>
-  <script type="module" src="/src/main.ts"></script>
-</body>
-
+  </body>
 </html>
