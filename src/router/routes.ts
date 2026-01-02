@@ -30,6 +30,13 @@ const routes: RouteRecordRaw[] = [
     path: '/admin/new',
     redirect: '/admin/posts/new',
   },
+
+  // Always leave this as last one,
+  // but you can also remove it
+  {
+    path: '/:catchAll(.*)*',
+    component: () => import('../views/ErrorNotFound.vue'),
+  },
 ];
 
 export default routes;
