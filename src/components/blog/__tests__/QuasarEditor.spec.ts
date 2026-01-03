@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
 import { mount } from '@vue/test-utils';
 import QuasarEditor from '../QuasarEditor.vue';
 import { ref } from 'vue';
@@ -157,8 +157,13 @@ describe('QuasarEditor.vue', () => {
     });
 
     const { useQuasarEditor } = await import('../../../composables/useQuasarEditor');
-    const calls = (useQuasarEditor as any).mock.calls;
+    const calls = (useQuasarEditor as unknown as Mock).mock.calls;
     const lastCall = calls[calls.length - 1];
+
+    if (!lastCall) {
+      throw new Error('useQuasarEditor was not called');
+    }
+
     const options = lastCall[0];
 
     // Trigger onUpdateModelValue

@@ -41,7 +41,7 @@ describe('Router', () => {
     // and invoke the component function.
     const catchAllRoute = routes.find((r) => r.path === '/:catchAll(.*)*');
     if (catchAllRoute && typeof catchAllRoute.component === 'function') {
-      await (catchAllRoute.component as () => Promise<any>)();
+      await (catchAllRoute.component as () => Promise<unknown>)();
     }
   });
 });
