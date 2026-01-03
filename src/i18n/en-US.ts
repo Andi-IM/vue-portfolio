@@ -48,6 +48,12 @@ export default {
   footer: {
     rights: 'All rights reserved.',
   },
+  module: {
+    not_found: {
+      message: 'Oops. Nothing here...',
+      go_home: 'Go Home',
+    },
+  },
   common: {
     loading: 'Loading...',
     postNotFound: 'Post not found',

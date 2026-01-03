@@ -1,9 +1,15 @@
 <template>
   <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
     <div>
-      <div style="font-size: 30vh">404</div>
+      <img
+        src="/images/404-illustration.png"
+        alt="404 - Page Not Found"
+        style="max-width: 400px; width: 100%"
+      />
 
-      <div class="text-h2" style="opacity: 0.4">Oops. Nothing here...</div>
+      <div class="text-h2" style="opacity: 0.4">
+        {{ t('module.not_found.message') }}
+      </div>
 
       <q-btn
         class="q-mt-xl"
@@ -11,7 +17,7 @@
         text-color="blue"
         unelevated
         to="/"
-        label="Go Home"
+        :label="t('module.not_found.go_home')"
         no-caps
       />
     </div>
@@ -19,5 +25,7 @@
 </template>
 
 <script setup lang="ts">
-//
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 </script>
