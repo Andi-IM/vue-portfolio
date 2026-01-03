@@ -26,9 +26,6 @@ jobs:
       - name: Verify Quasar CLI
         run: npx quasar info
 
-      - name: Prepare Quasar
-        run: npm run postinstall
-
       - name: Lint
         run: npm run lint
 
