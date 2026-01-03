@@ -33,6 +33,40 @@ describe('useRichTextActions', () => {
     expect(commands.toggleMark).toHaveBeenCalledWith(mockEditor, 'bold');
   });
 
+  it('checks if mark is active', () => {
+    (commands.isMarkActive as any).mockReturnValue(true);
+    const { isMarkActive } = useRichTextActions({ editor: mockEditor });
+    const isActive = isMarkActive('bold');
+    expect(commands.isMarkActive).toHaveBeenCalledWith(mockEditor, 'bold');
+    expect(isActive).toBe(true);
+  });
+
+  it('toggles block', () => {
+    const { toggleBlock } = useRichTextActions({ editor: mockEditor });
+    toggleBlock('heading-one');
+    expect(commands.toggleBlock).toHaveBeenCalledWith(mockEditor, 'heading-one');
+  });
+
+  it('checks if block is active', () => {
+    (commands.isBlockActive as any).mockReturnValue(true);
+    const { isBlockActive } = useRichTextActions({ editor: mockEditor });
+    const isActive = isBlockActive('heading-one');
+    expect(commands.isBlockActive).toHaveBeenCalledWith(mockEditor, 'heading-one');
+    expect(isActive).toBe(true);
+  });
+
+  it('returns early if no file selected in handleImageUpload', async () => {
+    const { handleImageUpload } = useRichTextActions({ editor: mockEditor });
+    const event = {
+      target: {
+        files: [],
+      },
+    } as any;
+
+    await handleImageUpload(event);
+    expect(commands.insertImage).not.toHaveBeenCalled();
+  });
+
   it('handles image upload via injected uploader', async () => {
     const uploader = vi.fn().mockResolvedValue('https://test.com/img.png');
     const { handleImageUpload } = useRichTextActions({ editor: mockEditor, uploader });

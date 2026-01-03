@@ -143,4 +143,32 @@ describe('QuasarEditor.vue', () => {
       }),
     );
   });
+
+  it('emits events when composable callbacks are triggered', async () => {
+    const wrapper = mount(QuasarEditor, {
+      props: { modelValue: 'content' },
+      global: {
+        components: {
+          'q-editor': QEditor,
+          'q-input': QInput,
+          'q-icon': QIcon,
+        },
+      },
+    });
+
+    const { useQuasarEditor } = await import('../../../composables/useQuasarEditor');
+    const calls = (useQuasarEditor as any).mock.calls;
+    const lastCall = calls[calls.length - 1];
+    const options = lastCall[0];
+
+    // Trigger onUpdateModelValue
+    options.onUpdateModelValue('updated content');
+    expect(wrapper.emitted('update:modelValue')).toBeTruthy();
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['updated content']);
+
+    // Trigger onImageInserted
+    options.onImageInserted('http://example.com/image.png');
+    expect(wrapper.emitted('image-inserted')).toBeTruthy();
+    expect(wrapper.emitted('image-inserted')?.[0]).toEqual(['http://example.com/image.png']);
+  });
 });
