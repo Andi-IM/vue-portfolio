@@ -11,3 +11,6 @@ id = "a3a278151de1448aa7ab4c730a5d04fc"
 [[r2_buckets]]
 binding = "BLOG_BUCKET"
 bucket_name = "blog-images"
+# Set to true to use the real R2 bucket in local dev (requires wrangler login)
+# Set to false or remove for local emulation
+remote = true

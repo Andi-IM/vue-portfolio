@@ -160,4 +160,60 @@ describe('usePostEditor', () => {
     expect(url).toBe('url');
     expect(mockBlogService.uploadImage).toHaveBeenCalledWith(file);
   });
+
+  it('sets coverImage from first image inserted if empty', () => {
+    const { vm } = mount(TestComponent, {
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
+    });
+    const instance = vm as any;
+
+    expect(instance.form.coverImage).toBe('');
+    instance.onImageInserted('https://example.com/image1.png');
+    expect(instance.form.coverImage).toBe('https://example.com/image1.png');
+  });
+
+  it('does not overwrite coverImage if already set', () => {
+    const { vm } = mount(TestComponent, {
+      props: { deps: { blogService: mockBlogService, route: mockRoute, router: mockRouter } },
+    });
+    const instance = vm as any;
+
+    instance.form.coverImage = 'https://example.com/existing.png';
+    instance.onImageInserted('https://example.com/new-image.png');
+    expect(instance.form.coverImage).toBe('https://example.com/existing.png');
+  });
+});
+
+describe('extractFirstImage', () => {
+  // Import the function directly
+  let extractFirstImage: (html: string) => string | null;
+
+  beforeEach(async () => {
+    const module = await import('../usePostEditor');
+    extractFirstImage = module.extractFirstImage;
+  });
+
+  it('extracts URL from img tag with double quotes', () => {
+    const html = '<p>Hello</p><img src="https://example.com/image.png" /><p>World</p>';
+    expect(extractFirstImage(html)).toBe('https://example.com/image.png');
+  });
+
+  it('extracts URL from img tag with single quotes', () => {
+    const html = "<img src='https://example.com/image.jpg' alt='test' />";
+    expect(extractFirstImage(html)).toBe('https://example.com/image.jpg');
+  });
+
+  it('returns first image when multiple images exist', () => {
+    const html = '<img src="https://first.png" /><img src="https://second.png" />';
+    expect(extractFirstImage(html)).toBe('https://first.png');
+  });
+
+  it('returns null for content without images', () => {
+    const html = '<p>No images here</p>';
+    expect(extractFirstImage(html)).toBeNull();
+  });
+
+  it('returns null for empty string', () => {
+    expect(extractFirstImage('')).toBeNull();
+  });
 });

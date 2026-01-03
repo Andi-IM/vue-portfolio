@@ -24,6 +24,10 @@ describe('PostEditor', () => {
       global: {
         stubs: {
           QuasarEditor: { template: '<div>Editor</div>' },
+          'q-tabs': { template: '<div><slot /></div>' },
+          'q-tab': { template: '<div><slot /></div>' },
+          'q-tab-panels': { template: '<div><slot /></div>' },
+          'q-tab-panel': { template: '<div><slot /></div>' },
         },
       },
     });
@@ -41,7 +45,13 @@ describe('PostEditor', () => {
 
     const wrapper = mount(PostEditor, {
       global: {
-        stubs: { QuasarEditor: true },
+        stubs: {
+          QuasarEditor: true,
+          'q-tabs': true,
+          'q-tab': true,
+          'q-tab-panels': true,
+          'q-tab-panel': true,
+        },
       },
     });
 
@@ -64,7 +74,13 @@ describe('PostEditor', () => {
 
     const wrapper = mount(PostEditor, {
       global: {
-        stubs: { QuasarEditor: true },
+        stubs: {
+          QuasarEditor: true,
+          'q-tabs': true,
+          'q-tab': true,
+          'q-tab-panels': true,
+          'q-tab-panel': true,
+        },
       },
     });
 
@@ -97,7 +113,15 @@ describe('PostEditor', () => {
     });
 
     const wrapper = mount(PostEditor, {
-      global: { stubs: { QuasarEditor: true } },
+      global: {
+        stubs: {
+          QuasarEditor: true,
+          'q-tabs': true,
+          'q-tab': true,
+          'q-tab-panels': true,
+          'q-tab-panel': true,
+        },
+      },
     });
     await flushPromises(); // Wait for onMounted
 
@@ -112,7 +136,13 @@ describe('PostEditor', () => {
 
     const wrapper = mount(PostEditor, {
       global: {
-        stubs: { QuasarEditor: true },
+        stubs: {
+          QuasarEditor: true,
+          'q-tabs': true,
+          'q-tab': true,
+          'q-tab-panels': true,
+          'q-tab-panel': true,
+        },
       },
     });
 
@@ -134,5 +164,59 @@ describe('PostEditor', () => {
     // Test excerpt textarea (line 74)
     await textarea.setValue('This is a test excerpt');
     expect((textarea.element as HTMLTextAreaElement).value).toBe('This is a test excerpt');
+  });
+
+  it('shows cover image preview when coverImage has value', async () => {
+    (useRoute as any).mockReturnValue({ params: { id: 'new' } });
+    (useBlogService as any).mockReturnValue({ savePost: vi.fn() });
+
+    const wrapper = mount(PostEditor, {
+      global: {
+        stubs: {
+          QuasarEditor: true,
+          'q-tabs': true,
+          'q-tab': true,
+          'q-tab-panels': true,
+          'q-tab-panel': true,
+        },
+      },
+    });
+
+    // Initially no preview image
+    let previewImg = wrapper.find('img[alt="Cover preview"]');
+    expect(previewImg.exists()).toBe(false);
+
+    // Set cover image URL
+    const coverImageInput = wrapper.findAll('input')[2]!;
+    await coverImageInput.setValue('https://example.com/cover.jpg');
+
+    // Now preview image should exist
+    previewImg = wrapper.find('img[alt="Cover preview"]');
+    expect(previewImg.exists()).toBe(true);
+    expect(previewImg.attributes('src')).toBe('https://example.com/cover.jpg');
+  });
+
+  it('has Editor and Preview tabs for content', () => {
+    (useRoute as any).mockReturnValue({ params: { id: 'new' } });
+    (useBlogService as any).mockReturnValue({ savePost: vi.fn() });
+
+    const wrapper = mount(PostEditor, {
+      global: {
+        stubs: {
+          QuasarEditor: { template: '<div>Editor</div>' },
+          'q-tabs': { template: '<div class="q-tabs"><slot /></div>' },
+          'q-tab': {
+            template: '<div class="q-tab" :data-name="name"><slot />{{ label }}</div>',
+            props: ['name', 'label'],
+          },
+          'q-tab-panels': { template: '<div class="q-tab-panels"><slot /></div>' },
+          'q-tab-panel': { template: '<div class="q-tab-panel"><slot /></div>' },
+        },
+      },
+    });
+
+    // Check for tab labels
+    expect(wrapper.text()).toContain('Editor');
+    expect(wrapper.text()).toContain('Preview');
   });
 });

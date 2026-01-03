@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import QuasarEditor from '@/components/blog/QuasarEditor.vue';
 import { useBlogService } from '@/composables/useBlogService';
@@ -8,11 +9,13 @@ const route = useRoute();
 const router = useRouter();
 const blogService = useBlogService();
 
-const { form, loading, isNew, save, handleImageUpload } = usePostEditor({
+const { form, loading, isNew, save, handleImageUpload, onImageInserted } = usePostEditor({
   blogService,
   route,
   router,
 });
+
+const contentTab = ref('editor');
 </script>
 
 <template>
@@ -66,6 +69,15 @@ const { form, loading, isNew, save, handleImageUpload } = usePostEditor({
               class="w-full px-4 py-2 border rounded-lg bg-transparent border-zinc-300 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="https://..."
             />
+            <div v-if="form.coverImage" class="mt-2">
+              <img
+                :src="form.coverImage"
+                alt="Cover preview"
+                class="max-h-32 rounded-lg border border-zinc-300 dark:border-zinc-700 object-cover"
+                @error="($event.target as HTMLImageElement).style.display = 'none'"
+                @load="($event.target as HTMLImageElement).style.display = 'block'"
+              />
+            </div>
           </div>
         </div>
 
@@ -81,7 +93,41 @@ const { form, loading, isNew, save, handleImageUpload } = usePostEditor({
 
         <div class="grid gap-2">
           <label class="font-medium">Content</label>
-          <QuasarEditor v-model="form.content" :uploader="handleImageUpload" />
+          <q-tabs
+            v-model="contentTab"
+            dense
+            class="text-zinc-600 dark:text-zinc-400"
+            active-color="primary"
+            indicator-color="primary"
+            align="left"
+          >
+            <q-tab name="editor" label="Editor" />
+            <q-tab name="preview" label="Preview" />
+          </q-tabs>
+
+          <q-tab-panels v-model="contentTab" animated class="bg-transparent">
+            <q-tab-panel name="editor" class="p-0">
+              <QuasarEditor
+                v-model="form.content"
+                :uploader="handleImageUpload"
+                @image-inserted="onImageInserted"
+              />
+            </q-tab-panel>
+
+            <q-tab-panel name="preview" class="p-0">
+              <div
+                v-if="form.content"
+                class="w-full p-6 min-h-[300px] border rounded-lg bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 prose dark:prose-invert max-w-none"
+                v-html="form.content"
+              />
+              <div
+                v-else
+                class="w-full p-6 min-h-[300px] border rounded-lg bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 text-zinc-400 italic"
+              >
+                No content to preview. Start typing in the Editor tab.
+              </div>
+            </q-tab-panel>
+          </q-tab-panels>
         </div>
       </div>
     </div>

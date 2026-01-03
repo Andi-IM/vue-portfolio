@@ -10,6 +10,15 @@ export interface PostEditorDependencies {
   router: Router;
 }
 
+/**
+ * Extract the first image URL from HTML content.
+ * Used for headline image unification - the first image in editor becomes the cover image.
+ */
+export function extractFirstImage(html: string): string | null {
+  const match = /<img[^>]+src=["']([^"']+)["']/i.exec(html);
+  return match?.[1] ?? null;
+}
+
 export function usePostEditor({ blogService, route, router }: PostEditorDependencies) {
   const isNew: ComputedRef<boolean> = computed(() => route.params.id === 'new');
 
@@ -66,11 +75,22 @@ export function usePostEditor({ blogService, route, router }: PostEditorDependen
     return await blogService.uploadImage(file);
   };
 
+  /**
+   * Handler for when an image is inserted into the editor.
+   * Auto-sets coverImage if it's currently empty (headline image unification).
+   */
+  const onImageInserted = (url: string) => {
+    if (!form.value.coverImage) {
+      form.value.coverImage = url;
+    }
+  };
+
   return {
     form,
     loading,
     isNew,
     save,
     handleImageUpload,
+    onImageInserted,
   };
 }

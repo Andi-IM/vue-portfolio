@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
+  (e: 'image-inserted', url: string): void;
 }>();
 
 const content = ref(props.modelValue || '');
@@ -46,6 +47,8 @@ function uploadImageHandler() {
         const url = await props.uploader(file);
         // Insert image at cursor
         document.execCommand('insertHTML', false, `<img src="${url}" style="max-width: 100%;" />`);
+        // Emit event for parent to react (e.g., set headline image)
+        emit('image-inserted', url);
       } catch (err) {
         console.error('Upload failed', err);
       }
