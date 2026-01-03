@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { useQuasarEditor } from '../../composables/useQuasarEditor';
 
 const props = defineProps<{
   modelValue: string;
@@ -11,20 +11,11 @@ const emit = defineEmits<{
   (e: 'image-inserted', url: string): void;
 }>();
 
-const content = ref(props.modelValue || '');
-const isSourceMode = ref(false);
-
-watch(
-  () => props.modelValue,
-  (val) => {
-    if (val !== content.value) {
-      content.value = val || '';
-    }
-  },
-);
-
-watch(content, (val) => {
-  emit('update:modelValue', val);
+const { content, isSourceMode, toggleSourceMode, uploadImageHandler } = useQuasarEditor({
+  modelValue: props.modelValue,
+  uploader: props.uploader,
+  onUpdateModelValue: (val) => emit('update:modelValue', val),
+  onImageInserted: (url) => emit('image-inserted', url),
 });
 
 // Custom definitions for the toolbar
@@ -38,32 +29,9 @@ const definitions = {
   viewsource: {
     tip: 'Toggle HTML Source',
     icon: 'code',
-    handler: () => {
-      isSourceMode.value = !isSourceMode.value;
-    },
+    handler: toggleSourceMode,
   },
 };
-
-function uploadImageHandler() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.onchange = async (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (file && props.uploader) {
-      try {
-        const url = await props.uploader(file);
-        // Insert image at cursor
-        document.execCommand('insertHTML', false, `<img src="${url}" style="max-width: 100%;" />`);
-        // Emit event for parent to react (e.g., set headline image)
-        emit('image-inserted', url);
-      } catch (err) {
-        console.error('Upload failed', err);
-      }
-    }
-  };
-  input.click();
-}
 </script>
 
 <template>
