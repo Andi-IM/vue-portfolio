@@ -42,7 +42,7 @@ describe('ErrorNotFound.vue', () => {
     });
     const img = wrapper.find('img');
     expect(img.exists()).toBe(true);
-    expect(img.attributes('src')).toBe('/images/404-illustration.png');
+    expect(img.attributes('src')).toBe('/src/images/404-illustration.png');
   });
 
   it('renders the message', () => {

@@ -1,11 +1,7 @@
 <template>
   <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center">
     <div>
-      <img
-        src="/images/404-illustration.png"
-        alt="404 - Page Not Found"
-        style="max-width: 400px; width: 100%"
-      />
+      <img :src="notFoundImage" alt="404 - Page Not Found" style="max-width: 400px; width: 100%" />
 
       <div class="text-h2" style="opacity: 0.4">
         {{ t('module.not_found.message') }}
@@ -26,6 +22,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
+import notFoundImage from '@/images/404-illustration.png';
 
 const { t } = useI18n();
 </script>

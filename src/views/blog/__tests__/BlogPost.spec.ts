@@ -110,7 +110,7 @@ describe('BlogPost', () => {
     });
     await flushPromises();
 
-    const expectedDate = new Date('2023-06-15').toLocaleDateString();
+    const expectedDate = '2023/06/15';
     expect(wrapper.text()).toContain(expectedDate);
   });
 });

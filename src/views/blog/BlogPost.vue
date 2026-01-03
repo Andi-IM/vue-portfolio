@@ -3,11 +3,13 @@ import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useBlogService } from '@/composables/useBlogService';
+import { useDate } from '@/composables/useDate';
 import { sanitizeHtml } from '@/utils/sanitize';
 import type { BlogPost } from '@/types/blog';
 
 const route = useRoute();
 const blogService = useBlogService();
+const { formatDate } = useDate();
 const post = ref<BlogPost | null>(null);
 const loading = ref(true);
 
@@ -35,7 +37,7 @@ onMounted(async () => {
     <article v-else class="space-y-8">
       <div class="text-center space-y-4">
         <time v-if="post.createdAt" class="text-zinc-400 dark:text-zinc-500">{{
-          new Date(post.createdAt).toLocaleDateString()
+          formatDate(post.createdAt)
         }}</time>
         <h1 class="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white">
           {{ post.title }}
