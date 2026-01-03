@@ -1,6 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import { defineComponent } from 'vue';
+
+vi.mock('quasar', () => ({
+  useMeta: vi.fn(),
+}));
+
 import PortfolioPage from '../PortfolioPage.vue';
 import NavBar from '../NavBar.vue';
 import HeroSection from '../HeroSection.vue';

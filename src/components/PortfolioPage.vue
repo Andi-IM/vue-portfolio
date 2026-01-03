@@ -1,5 +1,17 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue';
+import { useMeta } from 'quasar';
+
+useMeta({
+  link: {
+    preloadPortrait: {
+      rel: 'preload',
+      as: 'image',
+      href: '/images/portrait.webp',
+      fetchpriority: 'high',
+    },
+  },
+});
 
 // Critical above-the-fold components - load synchronously for fast FCP
 import NavBar from './NavBar.vue';
