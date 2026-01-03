@@ -27,7 +27,7 @@ jobs:
         run: npx quasar info
 
       - name: Prepare Quasar
-        run: npx quasar prepare
+        run: npm run postinstall
 
       - name: Lint
         run: npm run lint

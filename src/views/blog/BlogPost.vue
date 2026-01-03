@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 import { useBlogService } from '@/composables/useBlogService';
+import { sanitizeHtml } from '@/utils/sanitize';
 import type { BlogPost } from '@/types/blog';
 
 const route = useRoute();
 const blogService = useBlogService();
 const post = ref<BlogPost | null>(null);
 const loading = ref(true);
+
+// Sanitize content for safe rendering (XSS protection)
+const sanitizedContent = computed(() =>
+  post.value?.content ? sanitizeHtml(post.value.content) : '',
+);
 
 onMounted(async () => {
   try {
@@ -43,7 +49,7 @@ onMounted(async () => {
         <img :src="post.coverImage" :alt="post.title" class="object-cover w-full h-full" />
       </div>
 
-      <div class="prose dark:prose-invert max-w-none" v-html="post.content"></div>
+      <div class="prose dark:prose-invert max-w-none" v-html="sanitizedContent"></div>
     </article>
   </div>
 </template>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import QuasarEditor from '@/components/blog/QuasarEditor.vue';
 import { useBlogService } from '@/composables/useBlogService';
 import { usePostEditor } from '@/composables/usePostEditor';
+import { sanitizeHtml } from '@/utils/sanitize';
 
 const route = useRoute();
 const router = useRouter();
@@ -16,6 +17,9 @@ const { form, loading, isNew, save, handleImageUpload, onImageInserted } = usePo
 });
 
 const contentTab = ref('editor');
+
+// Sanitize content for safe preview (XSS protection)
+const sanitizedContent = computed(() => sanitizeHtml(form.value.content));
 </script>
 
 <template>
@@ -118,7 +122,7 @@ const contentTab = ref('editor');
               <div
                 v-if="form.content"
                 class="w-full p-6 min-h-[300px] border rounded-lg bg-white dark:bg-zinc-800 border-zinc-300 dark:border-zinc-700 prose dark:prose-invert max-w-none"
-                v-html="form.content"
+                v-html="sanitizedContent"
               />
               <div
                 v-else
