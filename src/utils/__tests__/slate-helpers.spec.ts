@@ -132,6 +132,17 @@ describe('slate-helpers', () => {
       expect(wrapper.find('strong').text()).toBe('bold');
     });
 
+    it('renders underline text', () => {
+      const vnode = renderLeaf({
+        attributes: {},
+        children: 'underlined',
+        leaf: { underline: true },
+      });
+      const wrapper = mount({ render: () => vnode });
+      expect(wrapper.find('u').exists()).toBe(true);
+      expect(wrapper.find('u').text()).toBe('underlined');
+    });
+
     it('renders combined marks', () => {
       const vnode = renderLeaf({
         attributes: {},

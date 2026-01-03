@@ -113,4 +113,46 @@ describe('BlogPost', () => {
     const expectedDate = '2023/06/15';
     expect(wrapper.text()).toContain(expectedDate);
   });
+  it('does not render date when createdAt is missing', async () => {
+    const mockPost = {
+      id: '1',
+      title: 'My Title',
+      createdAt: '',
+      content: 'Html content',
+    };
+
+    (useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } });
+    (useBlogService as any).mockReturnValue({
+      getPostBySlug: vi.fn().mockResolvedValue(mockPost),
+    });
+
+    const wrapper = mount(BlogPost, {
+      global: { mocks },
+    });
+    await flushPromises();
+
+    expect(wrapper.find('time').exists()).toBe(false);
+  });
+
+  it('does not render cover image when coverImage is missing', async () => {
+    const mockPost = {
+      id: '1',
+      title: 'My Title',
+      createdAt: '2023-01-01',
+      content: 'Html content',
+      coverImage: '',
+    };
+
+    (useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } });
+    (useBlogService as any).mockReturnValue({
+      getPostBySlug: vi.fn().mockResolvedValue(mockPost),
+    });
+
+    const wrapper = mount(BlogPost, {
+      global: { mocks },
+    });
+    await flushPromises();
+
+    expect(wrapper.find('img').exists()).toBe(false);
+  });
 });
