@@ -3,9 +3,9 @@ import { useBlogService } from './useBlogService';
 
 interface UseQuasarEditorOptions {
   modelValue: string;
-  uploader?: (file: File) => Promise<string>;
+  uploader?: ((file: File) => Promise<string>) | undefined;
   onUpdateModelValue: (value: string) => void;
-  onImageInserted?: (url: string) => void;
+  onImageInserted?: ((url: string) => void) | undefined;
 }
 
 export function useQuasarEditor(options: UseQuasarEditorOptions) {
