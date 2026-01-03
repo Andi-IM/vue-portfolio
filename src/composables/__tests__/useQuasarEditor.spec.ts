@@ -134,4 +134,42 @@ describe('useQuasarEditor', () => {
       'http://mock-service-url.com/img.png',
     );
   });
+
+  it('handles upload failure logs error', async () => {
+    const error = new Error('Upload failed');
+    const failingUploader = vi.fn().mockRejectedValue(error);
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    const { uploadImageHandler } = useQuasarEditor({
+      ...defaultOptions,
+      uploader: failingUploader,
+    });
+
+    const mockInput = {
+      click: vi.fn(),
+      type: '',
+      accept: '',
+      onchange: null as ((this: GlobalEventHandlers, ev: Event) => void) | null,
+    } as unknown as HTMLInputElement;
+
+    vi.spyOn(document, 'createElement').mockReturnValue(mockInput);
+
+    uploadImageHandler();
+
+    const file = new File([''], 'test.png', { type: 'image/png' });
+    const event = {
+      target: {
+        files: [file],
+      },
+    } as unknown as Event;
+
+    if (mockInput.onchange) {
+      await mockInput.onchange(event);
+    }
+
+    expect(failingUploader).toHaveBeenCalledWith(file);
+    expect(consoleSpy).toHaveBeenCalledWith('Upload failed', error);
+
+    consoleSpy.mockRestore();
+  });
 });
