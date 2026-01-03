@@ -33,7 +33,7 @@ jobs:
         run: npx quasar info
 
       - name: Prepare Quasar
-        run: npx quasar prepare
+        run: npm run postinstall
 
       - name: Run E2E tests
         run: npm run test:e2e -- --project=chromium
