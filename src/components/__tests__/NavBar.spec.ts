@@ -1,8 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeAll } from 'vitest';
 import { mount } from '@vue/test-utils';
 import NavBar from '../NavBar.vue';
 import enUS from '../../i18n/en-US';
+
+// Mock window.matchMedia for useTheme composable
+beforeAll(() => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+});
 
 describe('NavBar', () => {
   it('renders correctly', () => {
@@ -35,20 +52,22 @@ describe('NavBar', () => {
         },
       },
     });
-    const button = wrapper.find('.navbar-mobile-btn button');
-    expect(button.exists()).toBe(true);
+    // Get the second button (menu toggle), first is theme toggle
+    const buttons = wrapper.findAll('.navbar-mobile-btn button');
+    const menuButton = buttons[1];
+    expect(menuButton?.exists()).toBe(true);
 
     // Initial state: menu closed
     expect((wrapper.vm as any).isMenuOpen).toBe(false);
     expect(wrapper.find('.navbar-mobile-menu').exists()).toBe(false);
 
     // Open menu
-    await button.trigger('click');
+    await menuButton?.trigger('click');
     expect((wrapper.vm as any).isMenuOpen).toBe(true);
     expect(wrapper.find('.navbar-mobile-menu').exists()).toBe(true);
 
     // Close menu
-    await button.trigger('click');
+    await menuButton?.trigger('click');
     expect((wrapper.vm as any).isMenuOpen).toBe(false);
   });
 
@@ -94,12 +113,14 @@ describe('NavBar', () => {
     await wrapper.vm.$nextTick();
 
     const mobileMenu = wrapper.find('.navbar-mobile-menu');
-    const toolsButton = mobileMenu.findAll('button').find((b) => b.text().includes(enUS.nav.tools));
+    const projectsButton = mobileMenu
+      .findAll('button')
+      .find((b) => b.text().includes(enUS.nav.projects));
 
-    await toolsButton?.trigger('click');
+    await projectsButton?.trigger('click');
 
     expect(wrapper.emitted('scrollToSection')).toBeTruthy();
-    expect(wrapper.emitted('scrollToSection')?.[0]).toEqual(['tools']);
+    expect(wrapper.emitted('scrollToSection')?.[0]).toEqual(['projects']);
     expect((wrapper.vm as any).isMenuOpen).toBe(false);
   });
 });

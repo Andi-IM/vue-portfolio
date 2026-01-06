@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Menu, X, Download } from 'lucide-vue-next';
+import { Menu, X, Download, Sun, Moon } from 'lucide-vue-next';
+import { useTheme } from '../composables/useTheme';
 
 const isMenuOpen = ref(false);
+const { isDark, toggleTheme } = useTheme();
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -29,9 +31,7 @@ const handleScroll = (id: string) => {
           <button
             v-for="item in [
               { label: $t('nav.about'), id: 'about' },
-              { label: $t('nav.tools'), id: 'tools' },
               { label: $t('nav.projects'), id: 'projects' },
-              { label: $t('nav.experience'), id: 'experience' },
               { label: $t('nav.contact'), id: 'contact' },
             ]"
             :key="item.id"
@@ -40,6 +40,17 @@ const handleScroll = (id: string) => {
           >
             {{ item.label }}
           </button>
+
+          <!-- Theme Toggle Button -->
+          <button
+            @click="toggleTheme"
+            class="navbar-link p-2 rounded-lg hover:bg-[var(--color-bg-card-hover)] transition-colors"
+            :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+          >
+            <Sun v-if="isDark" :size="20" />
+            <Moon v-else :size="20" />
+          </button>
+
           <a
             href="https://pub-1d2d5180bcb0450bb6d122152ab25b6d.r2.dev/cv-andi-irham-2025.pdf"
             download
@@ -51,8 +62,18 @@ const handleScroll = (id: string) => {
         </div>
 
         <!-- Mobile Menu Button -->
-        <div class="navbar-mobile-btn">
-          <button @click="toggleMenu" class="text-gray-300 hover:text-white p-2">
+        <div class="navbar-mobile-btn flex items-center gap-2">
+          <!-- Theme Toggle Button (Mobile) -->
+          <button
+            @click="toggleTheme"
+            class="p-2 rounded-lg hover:bg-[var(--color-bg-card-hover)] transition-colors"
+            style="color: var(--color-text-body)"
+            :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+          >
+            <Sun v-if="isDark" :size="20" />
+            <Moon v-else :size="20" />
+          </button>
+          <button @click="toggleMenu" class="p-2" style="color: var(--color-text-body)">
             <X v-if="isMenuOpen" :size="24" />
             <Menu v-else :size="24" />
           </button>
@@ -66,21 +87,21 @@ const handleScroll = (id: string) => {
         <button
           v-for="item in [
             { label: $t('nav.about'), id: 'about' },
-            { label: $t('nav.tools'), id: 'tools' },
             { label: $t('nav.projects'), id: 'projects' },
-            { label: $t('nav.experience'), id: 'experience' },
             { label: $t('nav.contact'), id: 'contact' },
           ]"
           :key="item.id"
           @click="handleScroll(item.id)"
-          class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left"
+          class="block px-3 py-2 rounded-md text-base font-medium w-full text-left hover:bg-[var(--color-bg-card-hover)]"
+          style="color: var(--color-text-body)"
         >
           {{ item.label }}
         </button>
         <a
           href="https://pub-1d2d5180bcb0450bb6d122152ab25b6d.r2.dev/cv-andi-irham-2025.pdf"
           download
-          class="text-blue-400 hover:text-blue-300 block px-3 py-2 rounded-md text-base font-medium w-full text-left flex items-center gap-2"
+          class="block px-3 py-2 rounded-md text-base font-medium w-full text-left flex items-center gap-2"
+          style="color: var(--color-primary)"
         >
           <Download :size="16" />
           {{ $t('nav.downloadCv') }}

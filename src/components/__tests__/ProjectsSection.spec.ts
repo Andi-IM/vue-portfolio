@@ -20,7 +20,7 @@ describe('ProjectsSection', () => {
     });
     expect(wrapper.exists()).toBe(true);
     expect(wrapper.text()).toContain(enUS.projects.title);
-    expect(wrapper.findAll('.bg-gray-800').length).toBeGreaterThan(0); // Checks if projects are rendered
+    expect(wrapper.findAll('.group.cursor-pointer').length).toBeGreaterThan(0); // Checks if projects are rendered
   });
 
   it('opens project modal on click', async () => {

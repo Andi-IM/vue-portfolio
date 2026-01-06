@@ -20,13 +20,29 @@ const emit = defineEmits<{
           <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
             <button
               @click="emit('scrollToSection', 'projects')"
-              class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all hover:shadow-lg hover:shadow-blue-500/30"
+              class="px-8 py-3 rounded-lg font-semibold transition-all hover:shadow-lg"
+              style="background-color: var(--color-primary); color: white"
+              @mouseover="
+                ($event.target as HTMLElement).style.backgroundColor = 'var(--color-primary-hover)'
+              "
+              @mouseout="
+                ($event.target as HTMLElement).style.backgroundColor = 'var(--color-primary)'
+              "
             >
               {{ $t('hero.viewWork') }}
             </button>
             <button
               @click="emit('scrollToSection', 'contact')"
-              class="border border-gray-400 hover:border-blue-400 hover:text-blue-400 text-gray-200 px-8 py-3 rounded-lg font-semibold transition-all"
+              class="px-8 py-3 rounded-lg font-semibold transition-all"
+              style="border: 1px solid var(--color-border); color: var(--color-text-body)"
+              @mouseover="
+                ($event.target as HTMLElement).style.borderColor = 'var(--color-primary)';
+                ($event.target as HTMLElement).style.color = 'var(--color-primary)';
+              "
+              @mouseout="
+                ($event.target as HTMLElement).style.borderColor = 'var(--color-border)';
+                ($event.target as HTMLElement).style.color = 'var(--color-text-body)';
+              "
             >
               {{ $t('hero.getInTouch') }}
             </button>

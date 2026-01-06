@@ -1,6 +1,7 @@
 ﻿<script setup lang="ts">
 import { ref } from 'vue';
 import { ExternalLink, Github, X, Smartphone, Code, CheckCircle2 } from 'lucide-vue-next';
+import { Icon } from '@iconify/vue';
 import marketMingleImg from '../images/market-mingle.webp';
 import lokapanduImg from '../images/lokapandu.webp';
 import culinaryCompassImg from '../images/culinary-compass.webp';
@@ -17,6 +18,44 @@ interface Project {
   link?: string | null;
   github: string;
 }
+
+// Tech logo configuration using Iconify simple-icons
+// Format: { name: { icon: 'simple-icons:slug', color: '#hex' } }
+const techLogos: Record<string, { icon: string; color: string }> = {
+  Flutter: { icon: 'simple-icons:flutter', color: '#02569B' },
+  Dart: { icon: 'simple-icons:dart', color: '#0175C2' },
+  Firebase: { icon: 'simple-icons:firebase', color: '#FFCA28' },
+  Supabase: { icon: 'simple-icons:supabase', color: '#3ECF8E' },
+  Provider: { icon: 'simple-icons:flutter', color: '#02569B' }, // Use Flutter icon for Provider
+  Gemini: { icon: 'simple-icons:googlegemini', color: '#8E75B2' },
+  React: { icon: 'simple-icons:react', color: '#61DAFB' },
+  JavaScript: { icon: 'simple-icons:javascript', color: '#F7DF1E' },
+  TypeScript: { icon: 'simple-icons:typescript', color: '#3178C6' },
+  Tailwindcss: { icon: 'simple-icons:tailwindcss', color: '#06B6D4' },
+  Vue: { icon: 'simple-icons:vuedotjs', color: '#4FC08D' },
+  Node: { icon: 'simple-icons:nodedotjs', color: '#339933' },
+  Python: { icon: 'simple-icons:python', color: '#3776AB' },
+  Git: { icon: 'simple-icons:git', color: '#F05032' },
+};
+
+const getTechLogo = (tech: string) => {
+  const config = techLogos[tech];
+  if (config) {
+    return {
+      icon: config.icon,
+      color: config.color,
+      name: tech,
+      hasIcon: true,
+    };
+  }
+  // Fallback for unknown techs
+  return {
+    icon: '',
+    color: '#6B7280',
+    name: tech,
+    hasIcon: false,
+  };
+};
 
 const selectedProject = ref<Project | null>(null);
 
@@ -111,19 +150,24 @@ const openLink = (url?: string | null) => {
 <template>
   <section id="projects" class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold text-white mb-12">{{ $t('projects.title') }}</h2>
-      <p class="text-gray-400 mb-8 -mt-8">{{ $t('projects.subtitle') }}</p>
+      <h2 class="text-3xl font-bold mb-12">{{ $t('projects.title') }}</h2>
+      <p class="mb-8 -mt-8" style="color: var(--color-text-muted)">{{ $t('projects.subtitle') }}</p>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div
           v-for="(project, index) in projects"
           :key="index"
           @click="openProject(project)"
-          class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:shadow-xl hover:shadow-blue-900/20 transition-all duration-300 group cursor-pointer transform hover:-translate-y-2"
+          class="rounded-xl overflow-hidden transition-all duration-300 group cursor-pointer transform hover:-translate-y-2"
+          style="
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-card);
+          "
         >
           <div class="relative h-48 overflow-hidden">
             <div
-              class="absolute inset-0 bg-blue-900/20 group-hover:bg-transparent transition-colors z-10"
+              class="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors z-10"
             ></div>
             <img
               :src="project.image"
@@ -138,37 +182,59 @@ const openLink = (url?: string | null) => {
           </div>
           <div class="p-6">
             <h3
-              class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors"
+              class="text-xl font-bold mb-2 transition-colors"
+              style="color: var(--color-text-heading)"
             >
               {{ project.title }}
             </h3>
-            <p class="text-gray-400 text-sm mb-4 line-clamp-2">{{ project.description }}</p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span
-                v-for="(tag, tagIndex) in project.tags.slice(0, 3)"
+            <p class="text-sm mb-4 line-clamp-2" style="color: var(--color-text-muted)">
+              {{ project.description }}
+            </p>
+            <div class="flex flex-wrap gap-3 mb-6">
+              <q-avatar
+                v-for="(tag, tagIndex) in project.tags.slice(0, 5)"
                 :key="tagIndex"
-                class="bg-blue-900/30 text-blue-400 text-xs px-3 py-1 rounded-full border border-blue-900/50"
+                size="28px"
+                class="tech-logo-avatar"
+                style="background-color: var(--color-tag-bg)"
               >
-                {{ tag }}
-              </span>
-              <span
-                v-if="project.tags.length > 3"
-                class="bg-gray-800 text-gray-400 text-xs px-2 py-1 rounded-full border border-gray-700"
+                <Icon
+                  v-if="getTechLogo(tag).hasIcon"
+                  :icon="getTechLogo(tag).icon"
+                  :style="{ color: getTechLogo(tag).color }"
+                  class="w-4 h-4"
+                />
+                <span v-else class="text-xs font-bold" style="color: var(--color-tag-text)">
+                  {{ tag.charAt(0) }}
+                </span>
+                <q-tooltip class="text-sm">{{ tag }}</q-tooltip>
+              </q-avatar>
+              <q-avatar
+                v-if="project.tags.length > 5"
+                size="28px"
+                style="
+                  background-color: var(--color-bg-card-hover);
+                  border: 1px solid var(--color-border);
+                "
               >
-                +{{ project.tags.length - 3 }}
-              </span>
+                <span class="text-xs" style="color: var(--color-text-muted)">
+                  +{{ project.tags.length - 5 }}
+                </span>
+              </q-avatar>
             </div>
-            <div class="flex gap-4 pt-4 border-t border-gray-700">
+            <div class="flex gap-4 pt-4" style="border-top: 1px solid var(--color-border)">
               <button
                 v-if="project.link"
                 @click.stop="openLink(project.link)"
-                class="flex items-center gap-2 text-sm text-white hover:text-blue-400 transition-colors"
+                class="flex items-center gap-2 text-sm transition-colors"
+                style="color: var(--color-text-heading)"
               >
                 <ExternalLink :size="16" /> {{ $t('projects.website') }}
               </button>
               <button
                 @click.stop="openLink(project.github)"
-                class="flex items-center gap-2 text-sm text-white hover:text-blue-400 transition-colors"
+                class="flex items-center gap-2 text-sm transition-colors"
+                style="color: var(--color-text-heading)"
               >
                 <Github :size="16" /> {{ $t('projects.github') }}
               </button>
@@ -186,7 +252,8 @@ const openLink = (url?: string | null) => {
     @click="closeProject"
   >
     <div
-      class="bg-gray-900 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-gray-700 shadow-2xl relative animate-in zoom-in-95 duration-300"
+      class="rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative animate-in zoom-in-95 duration-300"
+      style="background-color: var(--color-bg-card); border: 1px solid var(--color-border)"
       @click.stop
     >
       <!-- Close Button -->
@@ -205,7 +272,8 @@ const openLink = (url?: string | null) => {
           class="w-full h-full object-cover"
         />
         <div
-          class="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"
+          class="absolute inset-0"
+          style="background: linear-gradient(to top, var(--color-bg-card), transparent)"
         ></div>
         <h3
           class="absolute bottom-6 left-6 text-3xl md:text-4xl font-bold text-white shadow-black drop-shadow-lg"
@@ -218,55 +286,92 @@ const openLink = (url?: string | null) => {
       <div class="p-6 sm:p-8 space-y-8">
         <!-- Description -->
         <div>
-          <h4 class="text-lg font-semibold text-blue-400 mb-3 flex items-center gap-2">
+          <h4
+            class="text-lg font-semibold mb-3 flex items-center gap-2"
+            style="color: var(--color-primary)"
+          >
             <Smartphone :size="20" /> {{ $t('projects.aboutTheApp') }}
           </h4>
-          <p class="text-gray-300 leading-relaxed text-lg">
+          <p class="leading-relaxed text-lg" style="color: var(--color-text-body)">
             {{ selectedProject.longDescription }}
           </p>
         </div>
 
         <!-- Tech Stack -->
         <div>
-          <h4 class="text-lg font-semibold text-blue-400 mb-4 flex items-center gap-2">
+          <h4
+            class="text-lg font-semibold mb-4 flex items-center gap-2"
+            style="color: var(--color-primary)"
+          >
             <Code :size="20" /> {{ $t('projects.technologiesUsed') }}
           </h4>
-          <div class="flex flex-wrap gap-2">
-            <span
+          <div class="flex flex-wrap gap-3">
+            <div
               v-for="(tag, idx) in selectedProject.tags"
               :key="idx"
-              class="bg-blue-900/20 text-blue-300 px-4 py-2 rounded-lg border border-blue-900/50 font-medium"
+              class="flex items-center gap-2 px-4 py-2 rounded-full"
+              style="background-color: var(--color-tag-bg)"
             >
-              {{ tag }}
-            </span>
+              <Icon
+                v-if="getTechLogo(tag).hasIcon"
+                :icon="getTechLogo(tag).icon"
+                :style="{ color: getTechLogo(tag).color }"
+                class="w-5 h-5"
+              />
+              <span
+                v-else
+                class="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold"
+                style="background-color: var(--color-primary); color: white"
+              >
+                {{ tag.charAt(0) }}
+              </span>
+              <span class="font-medium" style="color: var(--color-tag-text)">{{ tag }}</span>
+            </div>
           </div>
         </div>
 
         <!-- Features List -->
-        <div class="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50">
-          <h4 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <div
+          class="p-6 rounded-xl"
+          style="
+            background-color: var(--color-bg-card-hover);
+            border: 1px solid var(--color-border);
+          "
+        >
+          <h4
+            class="text-lg font-semibold mb-4 flex items-center gap-2"
+            style="color: var(--color-text-heading)"
+          >
             <CheckCircle2 :size="20" class="text-green-500" /> {{ $t('projects.keyFeatures') }}
           </h4>
           <div class="grid md:grid-cols-2 gap-3">
             <div
               v-for="(feature, idx) in selectedProject.features"
               :key="idx"
-              class="flex items-start gap-3 text-gray-300"
+              class="flex items-start gap-3"
+              style="color: var(--color-text-body)"
             >
-              <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mt-2.5 shrink-0"></span>
+              <span
+                class="w-1.5 h-1.5 rounded-full mt-2.5 shrink-0"
+                style="background-color: var(--color-primary)"
+              ></span>
               <span>{{ feature }}</span>
             </div>
           </div>
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-gray-800">
+        <div
+          class="flex flex-col sm:flex-row gap-4 pt-4"
+          style="border-top: 1px solid var(--color-border)"
+        >
           <a
             v-if="selectedProject.link"
             :href="selectedProject.link"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl text-center transition-all hover:shadow-lg hover:shadow-blue-600/20 flex items-center justify-center gap-2"
+            class="flex-1 text-white font-bold py-3.5 rounded-xl text-center transition-all hover:shadow-lg flex items-center justify-center gap-2"
+            style="background-color: var(--color-primary)"
           >
             <ExternalLink :size="20" /> {{ $t('projects.visitWebsite') }}
           </a>
@@ -274,7 +379,12 @@ const openLink = (url?: string | null) => {
             :href="selectedProject.github"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-3.5 rounded-xl text-center transition-all border border-gray-700 flex items-center justify-center gap-2"
+            class="flex-1 font-bold py-3.5 rounded-xl text-center transition-all flex items-center justify-center gap-2"
+            style="
+              background-color: var(--color-bg-card-hover);
+              color: var(--color-text-heading);
+              border: 1px solid var(--color-border);
+            "
           >
             <Github :size="20" /> {{ $t('projects.viewSourceCode') }}
           </a>

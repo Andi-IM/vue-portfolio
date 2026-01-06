@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "@codecov/vite-plugin": "^1.9.1",
+    "@iconify-json/simple-icons": "^1.2.65",
+    "@iconify/vue": "^5.0.0",
     "@intlify/unplugin-vue-i18n": "^11.0.3",
     "@quasar/extras": "^1.17.0",
     "@types/dompurify": "^3.0.5",

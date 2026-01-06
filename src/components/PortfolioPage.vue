@@ -18,9 +18,7 @@ import NavBar from './NavBar.vue';
 import HeroSection from './HeroSection.vue';
 
 // Below-the-fold components - load asynchronously to improve initial load
-const ToolsSection = defineAsyncComponent(() => import('./ToolsSection.vue'));
 const ProjectsSection = defineAsyncComponent(() => import('./ProjectsSection.vue'));
-const ExperienceSection = defineAsyncComponent(() => import('./ExperienceSection.vue'));
 const ActivitiesSection = defineAsyncComponent(() => import('./ActivitiesSection.vue'));
 const ContactSection = defineAsyncComponent(() => import('./ContactSection.vue'));
 const FooterSection = defineAsyncComponent(() => import('./FooterSection.vue'));
@@ -35,14 +33,19 @@ const scrollToSection = (id: string) => {
 
 <template>
   <div
-    class="bg-[#0A1628] min-h-screen text-gray-100 font-sans selection:bg-blue-500 selection:text-white"
+    class="min-h-screen font-sans"
+    style="
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-body);
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    "
   >
     <NavBar @scroll-to-section="scrollToSection" />
     <main>
       <HeroSection @scroll-to-section="scrollToSection" />
-      <ToolsSection />
       <ProjectsSection />
-      <ExperienceSection />
       <ActivitiesSection />
       <ContactSection />
       <FooterSection />

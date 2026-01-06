@@ -1,10 +1,27 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeAll } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import { defineComponent } from 'vue';
 
 vi.mock('quasar', () => ({
   useMeta: vi.fn(),
 }));
+
+// Mock window.matchMedia for useTheme composable
+beforeAll(() => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+});
 
 import PortfolioPage from '../PortfolioPage.vue';
 import NavBar from '../NavBar.vue';
@@ -35,9 +52,7 @@ describe('PortfolioPage', () => {
         mocks,
         stubs: {
           // Stub async components since they are loaded dynamically
-          ToolsSection: AsyncStub,
           ProjectsSection: AsyncStub,
-          ExperienceSection: AsyncStub,
           ActivitiesSection: AsyncStub,
           ContactSection: AsyncStub,
           FooterSection: AsyncStub,
@@ -51,7 +66,7 @@ describe('PortfolioPage', () => {
     expect(wrapper.findComponent(NavBar).exists()).toBe(true);
     expect(wrapper.findComponent(HeroSection).exists()).toBe(true);
     // Async components are stubbed, so we check they are rendered
-    expect(wrapper.findAll('.async-stub').length).toBe(6);
+    expect(wrapper.findAll('.async-stub').length).toBe(4);
   });
 
   it('scrolls to section when requested', () => {
@@ -59,9 +74,7 @@ describe('PortfolioPage', () => {
       global: {
         mocks,
         stubs: {
-          ToolsSection: AsyncStub,
           ProjectsSection: AsyncStub,
-          ExperienceSection: AsyncStub,
           ActivitiesSection: AsyncStub,
           ContactSection: AsyncStub,
           FooterSection: AsyncStub,
