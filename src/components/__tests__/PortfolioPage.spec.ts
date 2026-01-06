@@ -38,6 +38,7 @@ describe('PortfolioPage', () => {
           ToolsSection: AsyncStub,
           ProjectsSection: AsyncStub,
           ExperienceSection: AsyncStub,
+          ActivitiesSection: AsyncStub,
           ContactSection: AsyncStub,
           FooterSection: AsyncStub,
         },
@@ -50,12 +51,22 @@ describe('PortfolioPage', () => {
     expect(wrapper.findComponent(NavBar).exists()).toBe(true);
     expect(wrapper.findComponent(HeroSection).exists()).toBe(true);
     // Async components are stubbed, so we check they are rendered
-    expect(wrapper.findAll('.async-stub').length).toBe(5);
+    expect(wrapper.findAll('.async-stub').length).toBe(6);
   });
 
   it('scrolls to section when requested', () => {
     const wrapper = mount(PortfolioPage, {
-      global: { mocks },
+      global: {
+        mocks,
+        stubs: {
+          ToolsSection: AsyncStub,
+          ProjectsSection: AsyncStub,
+          ExperienceSection: AsyncStub,
+          ActivitiesSection: AsyncStub,
+          ContactSection: AsyncStub,
+          FooterSection: AsyncStub,
+        },
+      },
     });
 
     // Mock getElementById and scrollIntoView

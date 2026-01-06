@@ -21,6 +21,7 @@ import HeroSection from './HeroSection.vue';
 const ToolsSection = defineAsyncComponent(() => import('./ToolsSection.vue'));
 const ProjectsSection = defineAsyncComponent(() => import('./ProjectsSection.vue'));
 const ExperienceSection = defineAsyncComponent(() => import('./ExperienceSection.vue'));
+const ActivitiesSection = defineAsyncComponent(() => import('./ActivitiesSection.vue'));
 const ContactSection = defineAsyncComponent(() => import('./ContactSection.vue'));
 const FooterSection = defineAsyncComponent(() => import('./FooterSection.vue'));
 
@@ -42,6 +43,7 @@ const scrollToSection = (id: string) => {
       <ToolsSection />
       <ProjectsSection />
       <ExperienceSection />
+      <ActivitiesSection />
       <ContactSection />
       <FooterSection />
     </main>

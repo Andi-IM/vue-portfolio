@@ -3,6 +3,7 @@ export default {
     about: 'About',
     tools: 'Tools',
     projects: 'Projects',
+    activities: 'Activities',
     experience: 'Experience',
     contact: 'Contact',
     downloadCv: 'Download CV',
@@ -33,6 +34,9 @@ export default {
   },
   experience: {
     title: 'Experiences',
+  },
+  activities: {
+    title: 'Activities',
   },
   contact: {
     title: 'Get In Touch',
