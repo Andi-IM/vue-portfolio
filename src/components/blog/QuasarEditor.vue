@@ -29,6 +29,7 @@ const definitions = {
   viewsource: {
     tip: 'Toggle HTML Source',
     icon: 'code',
+    label: 'Source', // Added label for easier testing and clarity
     handler: toggleSourceMode,
   },
 };

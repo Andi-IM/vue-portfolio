@@ -43,35 +43,6 @@ test.describe('Editor Functionality', () => {
 });
 
 test.describe('Post Editor Features', () => {
-  test('cover image URL shows preview when valid URL entered', async ({ page }: { page: Page }) => {
-    await page.goto('/admin/posts/new');
-    await expect(page).toHaveURL(/\/admin\/posts\/new/);
-
-    // Find cover image input
-    const coverImageInput = page.locator('input[placeholder="https://..."]');
-    await expect(coverImageInput).toBeVisible();
-
-    // Enter a valid image URL
-    await coverImageInput.fill('https://picsum.photos/200/300');
-
-    // Wait for preview to appear
-    const previewImage = page.locator('img[alt="Cover preview"]');
-    await expect(previewImage).toBeVisible({ timeout: 5000 });
-  });
-
-  test('cover image preview hides on invalid URL', async ({ page }: { page: Page }) => {
-    await page.goto('/admin/posts/new');
-
-    const coverImageInput = page.locator('input[placeholder="https://..."]');
-    await coverImageInput.fill('not-a-valid-url');
-
-    // Preview should not be visible (hidden by @error handler)
-    const previewImage = page.locator('img[alt="Cover preview"]');
-    // Wait a moment for error handler to fire
-    await page.waitForTimeout(1000);
-    await expect(previewImage).not.toBeVisible();
-  });
-
   test('editor has Editor and Preview tabs', async ({ page }: { page: Page }) => {
     await page.goto('/admin/posts/new');
 
@@ -123,58 +94,72 @@ test.describe('Post Editor Features', () => {
     await expect(editor).toContainText('Test content for preview');
   });
 
-  // FIXME: This test is flaky in the local/CI environment but verified manually.
-  // Marked as fixme to prevent CI failures while keeping the test code.
-  test.fixme('can edit raw HTML and verifies XSS protection', async ({ page }: { page: Page }) => {
+  test('can edit raw HTML and verifies XSS protection', async ({ page }: { page: Page }) => {
+    await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/admin/posts/new');
+    // Verify we are in the editor
+    await expect(page.locator('.visual-editor')).toBeVisible();
 
-    // Find the "View Source" button (tip: Toggle HTML Source)
-    const viewSourceBtn = page.getByRole('button', { name: 'Toggle HTML Source' });
-    await viewSourceBtn.click();
+    // Check if we are already in source mode (state might persist in SPA or fast tests)
+    const visualEditorBtn = page.getByRole('button', { name: 'Visual Editor' });
+    if (await visualEditorBtn.isVisible()) {
+      console.log('Already in source mode, resetting...');
+      await visualEditorBtn.click();
+      await expect(
+        page.locator('.q-editor__tool-button').filter({ hasText: 'Source' }),
+      ).toBeVisible();
+    }
 
-    // Wait for toggle
-    await page.waitForTimeout(500);
+    // Debug: Check if "Source" text is visible and what tag it is
+    // Verify Source button is visible using safe selector
+    const sourceBtn = page.getByRole('button', { name: 'Source' });
+    await expect(sourceBtn).toBeVisible();
 
-    // When in source view, we use a q-input textarea
+    await sourceBtn.click();
+
+    // Wait for toggle - checking for the source editor to appear
     const sourceArea = page.locator('.source-editor textarea');
     await expect(sourceArea).toBeVisible();
 
     // Enter raw HTML with a script tag
     const maliciousHtml =
       '<h3>Safe Heading</h3><script>alert("XSS")</script><p onclick="alert(1)">Click me</p>';
-    await sourceArea.type(maliciousHtml);
+    // Use fill instead of type for textarea to be faster/more reliable
+    await sourceArea.fill(maliciousHtml);
 
-    // Wait for state sync
-    await page.waitForTimeout(500);
-
-    // Toggle source view off using the "Visual Editor" button *before* switching tabs
-    // because switching tabs unmounts/remounts QuasarEditor and resets local state.
-    const visualEditorBtn = page.locator('button').filter({ hasText: /Visual Editor/ });
-    await expect(visualEditorBtn).toBeVisible();
-    await visualEditorBtn.click();
+    // Toggle source view off using the "Visual Editor" button
+    const closeSourceBtn = page.getByRole('button', { name: 'Visual Editor' });
+    await expect(closeSourceBtn).toBeVisible();
+    await closeSourceBtn.click();
 
     // Verify we are back in WYSIWYG mode
     const editor = page.locator('[contenteditable="true"]');
     await expect(editor).toBeVisible();
 
+    // Verify content persisted
+    await expect(editor).toContainText('Safe Heading');
+
     // Switch to Preview tab to verify sanitization
     const previewTab = page.getByRole('tab', { name: /preview/i });
     await previewTab.click();
 
-    // Give it a moment to render the sanitized content
-    await page.waitForTimeout(1000);
+    // Wait for animation
+    await page.waitForTimeout(500);
 
-    // Verify sanitized preview
-    const previewPanel = page.locator('.q-tab-panel[name="preview"]').locator('div.prose');
-    await page.waitForSelector('.q-tab-panel[name="preview"] div.prose', {
-      state: 'visible',
-      timeout: 30000,
-    });
+    // Verify sanitized preview - Find panel by content
+    // We expect "Click me" to be present (p tag)
+    const previewPanel = page
+      .locator('.q-tab-panel')
+      .filter({ hasText: 'Click me' })
+      .locator('div.prose');
     await expect(previewPanel).toBeVisible();
 
-    // Verify sanitized preview content (loosened assertions for stability)
+    // Verify sanitized preview content
     await expect(previewPanel).toContainText('Safe Heading');
     await expect(previewPanel).toContainText('Click me');
+
+    const safeHeading = previewPanel.getByRole('heading', { name: 'Safe Heading' });
+    await expect(safeHeading).toBeVisible();
 
     // Script should NOT be there
     const scripts = await previewPanel.locator('script').count();

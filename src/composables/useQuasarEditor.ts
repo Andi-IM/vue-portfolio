@@ -27,6 +27,7 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
   });
 
   const toggleSourceMode = () => {
+    console.log('toggleSourceMode called, new state:', !isSourceMode.value);
     isSourceMode.value = !isSourceMode.value;
   };
 
