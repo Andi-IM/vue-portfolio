@@ -129,7 +129,7 @@ describe('usePostEditor', () => {
     await instance.save();
 
     expect(alertSpy).toHaveBeenCalledWith('Saved!');
-    expect(mockRouter.push).toHaveBeenCalledWith('/admin');
+    expect(mockRouter.push).toHaveBeenCalledWith('/admin/posts');
   });
 
   it('handles save error', async () => {

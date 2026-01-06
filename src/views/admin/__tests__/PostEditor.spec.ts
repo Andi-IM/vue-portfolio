@@ -100,7 +100,7 @@ describe('PostEditor', () => {
 
     expect(mockSave).toHaveBeenCalled();
     expect(mockSave.mock.calls[0]![0]).toMatchObject({ title: 'My New Post', slug: 'my-new-post' });
-    expect(mockRouterPush).toHaveBeenCalledWith('/admin');
+    expect(mockRouterPush).toHaveBeenCalledWith('/admin/posts');
 
     alertSpy.mockRestore();
   });
