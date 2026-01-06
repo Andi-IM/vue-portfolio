@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import QuasarEditor from '@/components/blog/QuasarEditor.vue';
 import { useBlogService } from '@/composables/useBlogService';
@@ -18,12 +18,47 @@ const { form, loading, isNew, save, handleImageUpload, onImageInserted } = usePo
 
 const contentTab = ref('editor');
 
+// Auto-generate slug from title
+watch(
+  () => form.value.title,
+  (newTitle) => {
+    // Only update validation-like logic or full slug if needed.
+    // Ideally we update the form.slug directly.
+    // Simple kebab-case transform:
+    const slug = newTitle
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+
+    // Try to avoid overwriting if user manually edited...
+    // BUT user said "automate it", implying we fully control it or it's hidden.
+    // Since we are removing the field, we MUST update it.
+    form.value.slug = slug;
+  },
+);
+
+// Auto-extract cover image from content
+watch(
+  () => form.value.content,
+  (newContent) => {
+    // Basic regex to find first img src
+    const match = newContent.match(/<img[^>]+src="([^">]+)"/);
+    if (match && match[1]) {
+      form.value.coverImage = match[1];
+    } else {
+      // should we clear it? maybe not if manually set (but field is gone)
+      form.value.coverImage = '';
+    }
+  },
+);
+
 // Sanitize content for safe preview (XSS protection)
 const sanitizedContent = computed(() => sanitizeHtml(form.value.content));
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50">
+  <div class="min-h-screen bg-zinc-900 text-zinc-900 dark:text-zinc-50">
     <div class="max-w-4xl mx-auto px-4 py-12">
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-2xl font-bold">{{ isNew ? 'New Post' : 'Edit Post' }}</h1>
@@ -53,46 +88,6 @@ const sanitizedContent = computed(() => sanitizeHtml(form.value.content));
             class="w-full px-4 py-2 border rounded-lg bg-transparent border-zinc-300 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Post Title"
           />
-        </div>
-
-        <div class="grid grid-cols-2 gap-6">
-          <div class="grid gap-2">
-            <label class="font-medium">Slug</label>
-            <input
-              v-model="form.slug"
-              type="text"
-              class="w-full px-4 py-2 border rounded-lg bg-transparent border-zinc-300 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="post-url-slug"
-            />
-          </div>
-          <div class="grid gap-2">
-            <label class="font-medium">Cover Image URL</label>
-            <input
-              v-model="form.coverImage"
-              type="text"
-              class="w-full px-4 py-2 border rounded-lg bg-transparent border-zinc-300 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="https://..."
-            />
-            <div v-if="form.coverImage" class="mt-2">
-              <img
-                :src="form.coverImage"
-                alt="Cover preview"
-                class="max-h-32 rounded-lg border border-zinc-300 dark:border-zinc-700 object-cover"
-                @error="($event.target as HTMLImageElement).style.display = 'none'"
-                @load="($event.target as HTMLImageElement).style.display = 'block'"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="grid gap-2">
-          <label class="font-medium">Excerpt</label>
-          <textarea
-            v-model="form.excerpt"
-            rows="3"
-            class="w-full px-4 py-2 border rounded-lg bg-transparent border-zinc-300 dark:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Short summary..."
-          ></textarea>
         </div>
 
         <div class="grid gap-2">

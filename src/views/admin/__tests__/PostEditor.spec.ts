@@ -130,9 +130,12 @@ describe('PostEditor', () => {
     expect((titleInput.element as HTMLInputElement).value).toBe('Existing Post');
   });
 
-  it('updates form fields via v-model bindings', async () => {
+  it('auto-generates slug from title', async () => {
     (useRoute as any).mockReturnValue({ params: { id: 'new' } });
-    (useBlogService as any).mockReturnValue({ savePost: vi.fn() });
+    const mockSave = vi.fn().mockResolvedValue({});
+    (useBlogService as any).mockReturnValue({ savePost: mockSave });
+    const mockRouterPush = vi.fn();
+    (useRouter as any).mockReturnValue({ push: mockRouterPush });
 
     const wrapper = mount(PostEditor, {
       global: {
@@ -146,54 +149,54 @@ describe('PostEditor', () => {
       },
     });
 
-    const inputs = wrapper.findAll('input');
-    const textarea = wrapper.find('textarea');
+    const titleInput = wrapper.findAll('input')[0]!;
+    await titleInput.setValue('Hello World');
 
-    // Test slug input (line 54)
-    const slugInput = inputs[1]!; // Second input is slug
-    await slugInput.setValue('my-custom-slug');
-    expect((slugInput.element as HTMLInputElement).value).toBe('my-custom-slug');
+    const saveBtn = wrapper.findAll('button').find((b) => b.text().includes('Save'));
+    await saveBtn?.trigger('click');
 
-    // Test coverImage input (line 63)
-    const coverImageInput = inputs[2]!; // Third input is coverImage
-    await coverImageInput.setValue('https://example.com/cover.jpg');
-    expect((coverImageInput.element as HTMLInputElement).value).toBe(
-      'https://example.com/cover.jpg',
-    );
-
-    // Test excerpt textarea (line 74)
-    await textarea.setValue('This is a test excerpt');
-    expect((textarea.element as HTMLTextAreaElement).value).toBe('This is a test excerpt');
+    expect(mockSave).toHaveBeenCalled();
+    expect(mockSave.mock.calls[0]![0]).toMatchObject({
+      title: 'Hello World',
+      slug: 'hello-world',
+    });
   });
 
-  it('shows cover image preview when coverImage has value', async () => {
+  it('auto-extracts cover image from content', async () => {
     (useRoute as any).mockReturnValue({ params: { id: 'new' } });
-    (useBlogService as any).mockReturnValue({ savePost: vi.fn() });
+    const mockSave = vi.fn().mockResolvedValue({});
+    (useBlogService as any).mockReturnValue({ savePost: mockSave });
 
     const wrapper = mount(PostEditor, {
       global: {
         stubs: {
-          QuasarEditor: true,
+          QuasarEditor: {
+            template:
+              '<div><input class="q-editor-input" :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" /></div>',
+            props: ['modelValue'],
+          },
           'q-tabs': true,
           'q-tab': true,
-          'q-tab-panels': true,
-          'q-tab-panel': true,
+          'q-tab-panels': { template: '<div><slot /></div>' },
+          'q-tab-panel': { template: '<div><slot /></div>' },
         },
       },
     });
 
-    // Initially no preview image
-    let previewImg = wrapper.find('img[alt="Cover preview"]');
-    expect(previewImg.exists()).toBe(false);
+    // Simulate content change with an image
+    const titleInput = wrapper.findAll('input')[0]!;
+    await titleInput.setValue('Test Title');
 
-    // Set cover image URL
-    const coverImageInput = wrapper.findAll('input')[2]!;
-    await coverImageInput.setValue('https://example.com/cover.jpg');
+    const contentInput = wrapper.find('.q-editor-input');
+    await contentInput.setValue('<p>Text</p><img src="https://example.com/image.png" />');
 
-    // Now preview image should exist
-    previewImg = wrapper.find('img[alt="Cover preview"]');
-    expect(previewImg.exists()).toBe(true);
-    expect(previewImg.attributes('src')).toBe('https://example.com/cover.jpg');
+    const saveBtn = wrapper.findAll('button').find((b) => b.text().includes('Save'));
+    await saveBtn?.trigger('click');
+
+    expect(mockSave).toHaveBeenCalled();
+    expect(mockSave.mock.calls[0]![0]).toMatchObject({
+      coverImage: 'https://example.com/image.png',
+    });
   });
 
   it('has Editor and Preview tabs for content', () => {
