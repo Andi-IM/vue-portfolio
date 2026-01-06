@@ -9,11 +9,19 @@ vi.mock('@/composables/useBlogService', () => ({
   BLOG_SERVICE_KEY: Symbol('BlogService'),
 }));
 
+vi.mock('vue-router', () => ({
+  useRoute: vi.fn(),
+  useRouter: vi.fn(),
+  RouterLink: {
+    template: '<a><slot /></a>',
+  },
+}));
+
 describe('AdminDashboard', () => {
-  it('renders posts list with view counts', async () => {
+  it('renders statistics cards and trend visualization', async () => {
     const mockPosts = [
-      { id: '1', title: 'Post 1', createdAt: '2023-01-01' },
-      { id: '2', title: 'Post 2', createdAt: '2023-01-02' },
+      { id: '1', title: 'Post 1', slug: 'post-1' },
+      { id: '2', title: 'Post 2', slug: 'post-2' },
     ];
     const mockViews = {
       '1': 100,
@@ -23,120 +31,71 @@ describe('AdminDashboard', () => {
     (useBlogService as any).mockReturnValue({
       getPosts: vi.fn().mockResolvedValue(mockPosts),
       getAllViews: vi.fn().mockResolvedValue(mockViews),
-      deletePost: vi.fn(),
     });
 
     const wrapper = mount(AdminDashboard, {
       global: {
         stubs: {
-          RouterLink: { template: '<a><slot /></a>' },
+          AdminLayout: { template: '<div><slot /></div>' },
         },
       },
     });
     await flushPromises();
 
-    expect(wrapper.text()).toContain('CMS Dashboard');
+    // Check heading
+    expect(wrapper.text()).toContain('Dashboard Overview');
+
+    // Check stat cards
+    expect(wrapper.text()).toContain('Total Posts');
+    expect(wrapper.find('.stat-value').text()).toBe('2');
+
+    expect(wrapper.text()).toContain('Total Views');
+    expect(wrapper.text()).toContain('150');
+
+    // Check trend visualization
+    expect(wrapper.text()).toContain('Views Trend');
     expect(wrapper.text()).toContain('Post 1');
-    expect(wrapper.text()).toContain('Post 2');
-
-    // Check view counts
-    expect(wrapper.text()).toContain('100');
-    expect(wrapper.text()).toContain('50');
+    expect(wrapper.text()).toContain('100 views');
   });
 
-  it('deletes post after confirmation', async () => {
-    const mockDelete = vi.fn().mockResolvedValue(undefined);
-    const mockGetPosts = vi
-      .fn()
-      .mockResolvedValue([{ id: '1', title: 'Post 1', createdAt: '2023-01-01' }]);
-    const mockGetAllViews = vi.fn().mockResolvedValue({});
-
+  it('shows empty state when no data exists', async () => {
     (useBlogService as any).mockReturnValue({
-      getPosts: mockGetPosts,
-      getAllViews: mockGetAllViews,
-      deletePost: mockDelete,
+      getPosts: vi.fn().mockResolvedValue([]),
+      getAllViews: vi.fn().mockResolvedValue({}),
     });
-
-    // Mock window.confirm
-    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
 
     const wrapper = mount(AdminDashboard, {
       global: {
         stubs: {
-          RouterLink: { template: '<a><slot /></a>' },
+          AdminLayout: { template: '<div><slot /></div>' },
         },
       },
     });
     await flushPromises();
 
-    const deleteBtn = wrapper.find('button.text-red-600');
-    await deleteBtn.trigger('click');
-
-    expect(confirmSpy).toHaveBeenCalled();
-    expect(mockDelete).toHaveBeenCalledWith('1');
-    expect(mockGetPosts).toHaveBeenCalledTimes(2); // Initial load + after delete reload
-    expect(mockGetAllViews).toHaveBeenCalledTimes(2);
-
-    confirmSpy.mockRestore();
+    expect(wrapper.text()).toContain('0');
+    expect(wrapper.text()).toContain('No data available yet');
   });
 
-  it('handles error when fetching posts fails', async () => {
+  it('handles error when fetching data fails', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const error = new Error('Failed to fetch posts');
+    const error = new Error('Failed to fetch');
 
     (useBlogService as any).mockReturnValue({
       getPosts: vi.fn().mockRejectedValue(error),
       getAllViews: vi.fn().mockResolvedValue({}),
-      deletePost: vi.fn(),
     });
 
-    const wrapper = mount(AdminDashboard, {
+    mount(AdminDashboard, {
       global: {
         stubs: {
-          RouterLink: { template: '<a><slot /></a>' },
+          AdminLayout: { template: '<div><slot /></div>' },
         },
       },
     });
     await flushPromises();
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(error);
-    expect(wrapper.text()).toContain('No posts yet');
-
     consoleErrorSpy.mockRestore();
-  });
-
-  it('handles error when deleting post fails', async () => {
-    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
-    const error = new Error('Delete failed');
-
-    const mockDelete = vi.fn().mockRejectedValue(error);
-    (useBlogService as any).mockReturnValue({
-      getPosts: vi.fn().mockResolvedValue([{ id: '1', title: 'Post 1', createdAt: '2023-01-01' }]),
-      getAllViews: vi.fn().mockResolvedValue({}),
-      deletePost: mockDelete,
-    });
-
-    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true);
-
-    const wrapper = mount(AdminDashboard, {
-      global: {
-        stubs: {
-          RouterLink: { template: '<a><slot /></a>' },
-        },
-      },
-    });
-    await flushPromises();
-
-    const deleteBtn = wrapper.find('button.text-red-600');
-    await deleteBtn.trigger('click');
-    await flushPromises();
-
-    expect(consoleErrorSpy).toHaveBeenCalledWith(error);
-    expect(alertSpy).toHaveBeenCalledWith('Failed to delete');
-
-    consoleErrorSpy.mockRestore();
-    alertSpy.mockRestore();
-    confirmSpy.mockRestore();
   });
 });

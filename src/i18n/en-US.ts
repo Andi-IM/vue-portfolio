@@ -7,6 +7,11 @@ export default {
     experience: 'Experience',
     contact: 'Contact',
     downloadCv: 'Download CV',
+    blog: {
+      title: 'Blog',
+      cerita: 'CeritaAndi',
+      tutorial: 'Tutorial',
+    },
   },
   hero: {
     subtitle: 'Mobile App Developer',

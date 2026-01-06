@@ -13,6 +13,10 @@ vi.mock('@/composables/useBlogService', () => ({
 
 vi.mock('vue-router', () => ({
   useRoute: vi.fn(),
+  useRouter: vi.fn(),
+  RouterLink: {
+    template: '<a><slot /></a>',
+  },
 }));
 
 const mocks = {
@@ -29,6 +33,7 @@ describe('BlogPost', () => {
     (useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } });
     (useBlogService as any).mockReturnValue({
       getPostBySlug: vi.fn().mockImplementation(() => new Promise(() => {})),
+      incrementView: vi.fn(),
     });
     const wrapper = mount(BlogPost, {
       global: { mocks },
@@ -40,6 +45,7 @@ describe('BlogPost', () => {
     (useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } });
     (useBlogService as any).mockReturnValue({
       getPostBySlug: vi.fn().mockResolvedValue(null),
+      incrementView: vi.fn(),
     });
     const wrapper = mount(BlogPost, {
       global: { mocks },
@@ -60,6 +66,7 @@ describe('BlogPost', () => {
     (useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } });
     (useBlogService as any).mockReturnValue({
       getPostBySlug: vi.fn().mockResolvedValue(mockPost),
+      incrementView: vi.fn(),
     });
 
     const wrapper = mount(BlogPost, {
@@ -79,6 +86,7 @@ describe('BlogPost', () => {
     (useRoute as any).mockReturnValue({ params: { slug: 'test-slug' } });
     (useBlogService as any).mockReturnValue({
       getPostBySlug: vi.fn().mockRejectedValue(error),
+      incrementView: vi.fn(),
     });
 
     const wrapper = mount(BlogPost, {

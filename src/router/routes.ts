@@ -22,6 +22,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/admin/AdminDashboard.vue'),
   },
   {
+    path: '/admin/posts',
+    name: 'admin-posts',
+    component: () => import('../views/admin/AdminPosts.vue'),
+  },
+  {
     path: '/admin/posts/:id',
     name: 'admin-post-editor',
     component: () => import('../views/admin/PostEditor.vue'),

@@ -10,6 +10,14 @@ vi.mock('@/composables/useBlogService', () => ({
   BLOG_SERVICE_KEY: Symbol('BlogService'),
 }));
 
+vi.mock('vue-router', () => ({
+  useRoute: vi.fn(),
+  useRouter: vi.fn(),
+  RouterLink: {
+    template: '<a><slot /></a>',
+  },
+}));
+
 const mocks = {
   $t: (msg: string) => {
     const keys = msg.split('.');
@@ -23,6 +31,7 @@ describe('BlogIndex', () => {
   it('renders loading state initially', () => {
     (useBlogService as any).mockReturnValue({
       getPosts: vi.fn().mockImplementation(() => new Promise(() => {})), // Never resolves
+      incrementView: vi.fn(),
     });
     const wrapper = mount(BlogIndex, {
       global: { mocks },
@@ -33,6 +42,7 @@ describe('BlogIndex', () => {
   it('renders empty state when no posts', async () => {
     (useBlogService as any).mockReturnValue({
       getPosts: vi.fn().mockResolvedValue([]),
+      incrementView: vi.fn(),
     });
     const wrapper = mount(BlogIndex, {
       global: { mocks },
@@ -86,6 +96,7 @@ describe('BlogIndex', () => {
 
     (useBlogService as any).mockReturnValue({
       getPosts: vi.fn().mockRejectedValue(error),
+      incrementView: vi.fn(),
     });
 
     const wrapper = mount(BlogIndex, {

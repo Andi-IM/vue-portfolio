@@ -13,6 +13,12 @@ vi.mock('@/composables/useBlogService', () => ({
 vi.mock('vue-router', () => ({
   useRoute: vi.fn(),
   useRouter: vi.fn(),
+  RouterLink: {
+    template: '<a><slot /></a>',
+  },
+  RouterView: {
+    template: '<div><slot /></div>',
+  },
 }));
 
 describe('PostEditor', () => {

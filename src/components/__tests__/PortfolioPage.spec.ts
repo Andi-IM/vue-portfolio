@@ -104,6 +104,12 @@ describe('PortfolioPage', () => {
     expect(getElementByIdSpy).toHaveBeenCalledWith('projects');
     expect(scrollIntoViewMock).toHaveBeenCalledTimes(2);
 
+    // Test non-existent element
+    getElementByIdSpy.mockReturnValueOnce(null);
+    navBar.vm.$emit('scrollToSection', 'non-existent');
+    expect(getElementByIdSpy).toHaveBeenCalledWith('non-existent');
+    expect(scrollIntoViewMock).toHaveBeenCalledTimes(2); // Should not be called again
+
     getElementByIdSpy.mockRestore();
   });
 });

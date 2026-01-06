@@ -6,6 +6,8 @@ import { useBlogService } from '@/composables/useBlogService';
 import { useDate } from '@/composables/useDate';
 import { sanitizeHtml } from '@/utils/sanitize';
 import type { BlogPost } from '@/types/blog';
+import NavBar from '@/components/NavBar.vue';
+import BlogHeader from '@/components/blog/BlogHeader.vue';
 
 const route = useRoute();
 const blogService = useBlogService();
@@ -34,27 +36,40 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="max-w-3xl mx-auto px-4 py-12">
-    <div v-if="loading" class="text-center">{{ $t('common.loading') }}</div>
-    <div v-else-if="!post" class="text-center">{{ $t('common.postNotFound') }}</div>
-    <article v-else class="space-y-8">
-      <div class="text-center space-y-4">
-        <time v-if="post.createdAt" class="text-zinc-400 dark:text-zinc-500">{{
-          formatDate(post.createdAt)
-        }}</time>
-        <h1 class="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white">
-          {{ post.title }}
-        </h1>
-      </div>
+  <div
+    class="min-h-screen font-sans"
+    style="
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-body);
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    "
+  >
+    <NavBar :menu-items="[]" />
+    <BlogHeader />
+    <main class="max-w-3xl mx-auto px-4 py-12">
+      <div v-if="loading" class="text-center">{{ $t('common.loading') }}</div>
+      <div v-else-if="!post" class="text-center">{{ $t('common.postNotFound') }}</div>
+      <article v-else class="space-y-8">
+        <div class="text-center space-y-4">
+          <time v-if="post.createdAt" class="text-zinc-400 dark:text-zinc-500">{{
+            formatDate(post.createdAt)
+          }}</time>
+          <h1 class="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-white">
+            {{ post.title }}
+          </h1>
+        </div>
 
-      <div
-        v-if="post.coverImage"
-        class="w-full aspect-video rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 shadow-lg"
-      >
-        <img :src="post.coverImage" :alt="post.title" class="object-cover w-full h-full" />
-      </div>
+        <div
+          v-if="post.coverImage"
+          class="w-full aspect-video rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 shadow-lg"
+        >
+          <img :src="post.coverImage" :alt="post.title" class="object-cover w-full h-full" />
+        </div>
 
-      <div class="prose dark:prose-invert max-w-none" v-html="sanitizedContent"></div>
-    </article>
+        <div class="prose dark:prose-invert max-w-none" v-html="sanitizedContent"></div>
+      </article>
+    </main>
   </div>
 </template>

@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { RouterLink } from 'vue-router';
+import { ref, onMounted, computed } from 'vue';
+import AdminLayout from '@/components/admin/AdminLayout.vue';
 import { useBlogService } from '../../composables/useBlogService';
 import type { BlogPostIndex } from '../../types/blog';
+import { LayoutDashboard, BookOpen, BarChart3, TrendingUp } from 'lucide-vue-next';
 
 const blogService = useBlogService();
 const posts = ref<BlogPostIndex[]>([]);
-
 const views = ref<Record<string, number>>({});
+const loading = ref(true);
 
-const fetchPosts = async () => {
+const fetchStats = async () => {
   try {
     const [fetchedPosts, fetchedViews] = await Promise.all([
       blogService.getPosts(),
@@ -19,80 +20,172 @@ const fetchPosts = async () => {
     views.value = fetchedViews;
   } catch (e) {
     console.error(e);
+  } finally {
+    loading.value = false;
   }
 };
 
-const deletePost = async (id: string) => {
-  if (!confirm('Are you sure you want to delete this post?')) return;
+const totalPosts = computed(() => posts.value.length);
+const totalViews = computed(() => Object.values(views.value).reduce((a, b) => a + b, 0));
 
-  try {
-    await blogService.deletePost(id);
-    await fetchPosts();
-  } catch (e) {
-    console.error(e);
-    alert('Failed to delete');
-  }
-};
+// Sort posts by views for the "trend" visualization
+const topPosts = computed(() => {
+  return [...posts.value]
+    .map((post) => ({
+      ...post,
+      viewCount: views.value[post.id] || 0,
+    }))
+    .sort((a, b) => b.viewCount - a.viewCount)
+    .slice(0, 5);
+});
+
+const maxViews = computed(() => Math.max(...topPosts.value.map((p) => p.viewCount), 1));
 
 onMounted(() => {
-  void fetchPosts();
+  void fetchStats();
 });
 </script>
 
 <template>
-  <div class="max-w-6xl mx-auto px-4 py-12">
-    <div class="flex justify-between items-center mb-8">
-      <h1 class="text-3xl font-bold text-zinc-900 dark:text-white">CMS Dashboard</h1>
-      <RouterLink
-        to="/admin/new"
-        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-      >
-        + New Post
-      </RouterLink>
-    </div>
+  <AdminLayout>
+    <div class="dashboard-container">
+      <header class="dashboard-header mb-8">
+        <h1 class="text-3xl font-bold flex items-center gap-3">
+          <LayoutDashboard class="text-blue-600" />
+          Dashboard Overview
+        </h1>
+        <p class="text-zinc-500 mt-2">Welcome back! Here's what's happening with your blog.</p>
+      </header>
 
-    <div
-      class="bg-white dark:bg-zinc-900 rounded-lg shadow border border-zinc-200 dark:border-zinc-800 overflow-hidden"
-    >
-      <table class="w-full text-left">
-        <thead class="bg-zinc-50 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700">
-          <tr>
-            <th class="p-4 font-semibold text-zinc-700 dark:text-zinc-300">Title</th>
-            <th class="p-4 font-semibold text-zinc-700 dark:text-zinc-300">Views</th>
-            <th class="p-4 font-semibold text-zinc-700 dark:text-zinc-300">Created At</th>
-            <th class="p-4 font-semibold text-zinc-700 dark:text-zinc-300 text-right">Actions</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
-          <tr
-            v-for="post in posts"
-            :key="post.id"
-            class="hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+      <!-- Stat Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+        <div class="stat-card">
+          <div class="stat-icon bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+            <BookOpen :size="24" />
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Total Posts</span>
+            <span class="stat-value">{{ totalPosts }}</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div
+            class="stat-icon bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400"
           >
-            <td class="p-4">
-              <RouterLink
-                :to="`/admin/posts/${post.id}`"
-                class="font-medium text-zinc-900 dark:text-zinc-100 hover:underline"
-              >
-                {{ post.title }}
-              </RouterLink>
-            </td>
-            <td class="p-4 text-zinc-600 dark:text-zinc-400">{{ views[post.id] || 0 }}</td>
-            <td class="p-4 text-zinc-500">{{ new Date(post.createdAt).toLocaleDateString() }}</td>
-            <td class="p-4 text-right space-x-2">
-              <RouterLink :to="`/admin/posts/${post.id}`" class="text-blue-600 hover:text-blue-500"
-                >Edit</RouterLink
-              >
-              <button @click="deletePost(post.id)" class="text-red-600 hover:text-red-500">
-                Delete
-              </button>
-            </td>
-          </tr>
-          <tr v-if="posts.length === 0">
-            <td colspan="4" class="p-8 text-center text-zinc-500">No posts yet.</td>
-          </tr>
-        </tbody>
-      </table>
+            <TrendingUp :size="24" />
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Total Views</span>
+            <span class="stat-value">{{ totalViews.toLocaleString() }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Views Trend Visualization -->
+      <section class="dashboard-section mb-10">
+        <div class="section-header flex items-center gap-2 mb-6">
+          <BarChart3 class="text-zinc-400" :size="20" />
+          <h2 class="text-xl font-semibold">Views Trend (Top Posts)</h2>
+        </div>
+
+        <div
+          class="trend-wrapper bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800"
+        >
+          <div v-if="loading" class="flex justify-center py-12">
+            <span class="text-zinc-500">Loading statistics...</span>
+          </div>
+
+          <div v-else-if="topPosts.length === 0" class="flex justify-center py-12">
+            <span class="text-zinc-500">No data available yet. Start posting!</span>
+          </div>
+
+          <div v-else class="space-y-6">
+            <div v-for="post in topPosts" :key="post.id" class="trend-item">
+              <div class="flex justify-between items-center mb-2">
+                <span
+                  class="text-sm font-medium text-zinc-700 dark:text-zinc-300 truncate max-w-[70%]"
+                >
+                  {{ post.title }}
+                </span>
+                <span class="text-sm font-bold text-blue-600 dark:text-blue-400">
+                  {{ post.viewCount }} views
+                </span>
+              </div>
+              <div class="h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                <div
+                  class="h-full bg-blue-600 transition-all duration-1000 ease-out"
+                  :style="{ width: `${(post.viewCount / maxViews) * 100}%` }"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
+  </AdminLayout>
 </template>
+
+<style scoped>
+.dashboard-container {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-primary);
+}
+
+.stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text-heading);
+}
+
+.trend-item {
+  position: relative;
+}
+</style>

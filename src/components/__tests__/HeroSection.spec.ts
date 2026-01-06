@@ -48,4 +48,33 @@ describe('HeroSection', () => {
     expect(wrapper.emitted('scrollToSection')).toBeTruthy();
     expect(wrapper.emitted('scrollToSection')?.[0]).toEqual(['contact']);
   });
+
+  it('handles mouseover and mouseout on buttons', async () => {
+    const wrapper = mount(HeroSection, {
+      global: { mocks },
+    });
+    const buttons = wrapper.findAll('button');
+    const primaryButton = buttons.find((b) => b.text().includes(enUS.hero.viewWork))!;
+    const secondaryButton = buttons.find((b) => b.text().includes(enUS.hero.getInTouch))!;
+
+    // Test Primary Button
+    await primaryButton.trigger('mouseover');
+    expect((primaryButton.element as HTMLElement).style.backgroundColor).toBe(
+      'var(--color-primary-hover)',
+    );
+
+    await primaryButton.trigger('mouseout');
+    expect((primaryButton.element as HTMLElement).style.backgroundColor).toBe(
+      'var(--color-primary)',
+    );
+
+    // Test Secondary Button
+    await secondaryButton.trigger('mouseover');
+    expect((secondaryButton.element as HTMLElement).style.borderColor).toBe('var(--color-primary)');
+    expect((secondaryButton.element as HTMLElement).style.color).toBe('var(--color-primary)');
+
+    await secondaryButton.trigger('mouseout');
+    expect((secondaryButton.element as HTMLElement).style.borderColor).toBe('var(--color-border)');
+    expect((secondaryButton.element as HTMLElement).style.color).toBe('var(--color-text-body)');
+  });
 });
