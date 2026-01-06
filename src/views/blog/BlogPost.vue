@@ -22,6 +22,9 @@ onMounted(async () => {
   try {
     const slugOrId = route.params.slug as string;
     post.value = await blogService.getPostBySlug(slugOrId);
+    if (post.value) {
+      void blogService.incrementView(post.value.id);
+    }
   } catch (e) {
     console.error(e);
   } finally {

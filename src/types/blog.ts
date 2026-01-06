@@ -26,4 +26,7 @@ export interface IBlogService {
   savePost(post: Partial<BlogPost>): Promise<BlogPost>;
   deletePost(id: string): Promise<void>;
   uploadImage(file: File): Promise<string>;
+  incrementView(id: string): Promise<void>;
+  getPostViews(id: string): Promise<number>;
+  getAllViews(): Promise<Record<string, number>>;
 }

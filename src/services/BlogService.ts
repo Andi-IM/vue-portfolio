@@ -50,4 +50,39 @@ export class BlogService implements IBlogService {
     const data = await res.json();
     return data.url;
   }
+
+  async incrementView(id: string): Promise<void> {
+    try {
+      await fetch('/api/views', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+    } catch (e) {
+      console.error('Failed to increment view', e);
+    }
+  }
+
+  async getPostViews(id: string): Promise<number> {
+    try {
+      const res = await fetch(`/api/views?id=${id}`);
+      if (!res.ok) return 0;
+      const data = await res.json();
+      return data.views || 0;
+    } catch (e) {
+      console.error('Failed to get post views', e);
+      return 0;
+    }
+  }
+
+  async getAllViews(): Promise<Record<string, number>> {
+    try {
+      const res = await fetch('/api/views');
+      if (!res.ok) return {};
+      return await res.json();
+    } catch (e) {
+      console.error('Failed to get all views', e);
+      return {};
+    }
+  }
 }

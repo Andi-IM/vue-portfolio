@@ -70,4 +70,23 @@ export class MockBlogService implements IBlogService {
     await Promise.resolve();
     return 'https://example.com/mock-image.png';
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async incrementView(_id: string): Promise<void> {
+    await Promise.resolve();
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async getPostViews(_id: string): Promise<number> {
+    await Promise.resolve();
+    return 100; // Mock view count
+  }
+
+  async getAllViews(): Promise<Record<string, number>> {
+    await Promise.resolve();
+    return {
+      '1': 150,
+      '2': 50,
+    };
+  }
 }

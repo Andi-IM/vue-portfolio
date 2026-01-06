@@ -7,9 +7,16 @@ import type { BlogPostIndex } from '../../types/blog';
 const blogService = useBlogService();
 const posts = ref<BlogPostIndex[]>([]);
 
+const views = ref<Record<string, number>>({});
+
 const fetchPosts = async () => {
   try {
-    posts.value = await blogService.getPosts();
+    const [fetchedPosts, fetchedViews] = await Promise.all([
+      blogService.getPosts(),
+      blogService.getAllViews(),
+    ]);
+    posts.value = fetchedPosts;
+    views.value = fetchedViews;
   } catch (e) {
     console.error(e);
   }
@@ -51,6 +58,7 @@ onMounted(() => {
         <thead class="bg-zinc-50 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700">
           <tr>
             <th class="p-4 font-semibold text-zinc-700 dark:text-zinc-300">Title</th>
+            <th class="p-4 font-semibold text-zinc-700 dark:text-zinc-300">Views</th>
             <th class="p-4 font-semibold text-zinc-700 dark:text-zinc-300">Created At</th>
             <th class="p-4 font-semibold text-zinc-700 dark:text-zinc-300 text-right">Actions</th>
           </tr>
@@ -69,6 +77,7 @@ onMounted(() => {
                 {{ post.title }}
               </RouterLink>
             </td>
+            <td class="p-4 text-zinc-600 dark:text-zinc-400">{{ views[post.id] || 0 }}</td>
             <td class="p-4 text-zinc-500">{{ new Date(post.createdAt).toLocaleDateString() }}</td>
             <td class="p-4 text-right space-x-2">
               <RouterLink :to="`/admin/posts/${post.id}`" class="text-blue-600 hover:text-blue-500"
@@ -80,7 +89,7 @@ onMounted(() => {
             </td>
           </tr>
           <tr v-if="posts.length === 0">
-            <td colspan="3" class="p-8 text-center text-zinc-500">No posts yet.</td>
+            <td colspan="4" class="p-8 text-center text-zinc-500">No posts yet.</td>
           </tr>
         </tbody>
       </table>

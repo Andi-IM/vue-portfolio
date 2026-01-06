@@ -114,4 +114,82 @@ describe('BlogService', () => {
       expect.objectContaining({ method: 'PUT' }),
     );
   });
+
+  describe('View Telemetry', () => {
+    it('increments view count', async () => {
+      (global.fetch as any).mockResolvedValue({ ok: true });
+      await service.incrementView('1');
+      expect(global.fetch).toHaveBeenCalledWith(
+        '/api/views',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify({ id: '1' }),
+        }),
+      );
+    });
+
+    it('handles increment view error silently', async () => {
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      (global.fetch as any).mockRejectedValue(new Error('Network error'));
+
+      await service.incrementView('1');
+      expect(consoleErrorSpy).toHaveBeenCalled();
+      consoleErrorSpy.mockRestore();
+    });
+
+    it('gets post views', async () => {
+      (global.fetch as any).mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve({ views: 42 }),
+      });
+
+      const views = await service.getPostViews('1');
+      expect(views).toBe(42);
+      expect(global.fetch).toHaveBeenCalledWith('/api/views?id=1');
+    });
+
+    it('returns 0 if getPostViews fails', async () => {
+      (global.fetch as any).mockResolvedValue({ ok: false });
+      const views = await service.getPostViews('1');
+      expect(views).toBe(0);
+    });
+
+    it('handles getPostViews network error', async () => {
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      (global.fetch as any).mockRejectedValue(new Error('Network error'));
+
+      const views = await service.getPostViews('1');
+      expect(views).toBe(0);
+      expect(consoleErrorSpy).toHaveBeenCalled();
+      consoleErrorSpy.mockRestore();
+    });
+
+    it('gets all views', async () => {
+      const mockViews = { '1': 100, '2': 50 };
+      (global.fetch as any).mockResolvedValue({
+        ok: true,
+        json: () => Promise.resolve(mockViews),
+      });
+
+      const result = await service.getAllViews();
+      expect(result).toEqual(mockViews);
+      expect(global.fetch).toHaveBeenCalledWith('/api/views');
+    });
+
+    it('returns empty object if getAllViews fails', async () => {
+      (global.fetch as any).mockResolvedValue({ ok: false });
+      const result = await service.getAllViews();
+      expect(result).toEqual({});
+    });
+
+    it('handles getAllViews network error', async () => {
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      (global.fetch as any).mockRejectedValue(new Error('Network error'));
+
+      const result = await service.getAllViews();
+      expect(result).toEqual({});
+      expect(consoleErrorSpy).toHaveBeenCalled();
+      consoleErrorSpy.mockRestore();
+    });
+  });
 });

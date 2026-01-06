@@ -43,6 +43,8 @@ describe('ErrorNotFound.vue', () => {
     const img = wrapper.find('img');
     expect(img.exists()).toBe(true);
     expect(img.attributes('src')).toBe('/src/images/404-illustration.png');
+    expect(img.classes()).toContain('block');
+    expect(img.classes()).toContain('q-mx-auto');
   });
 
   it('renders the message', () => {
