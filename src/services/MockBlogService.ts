@@ -1,28 +1,54 @@
 import type { IBlogService, BlogPost, BlogPostIndex } from '../types/blog';
 
 export class MockBlogService implements IBlogService {
-  private posts: BlogPost[] = [
-    {
-      id: '1',
-      title: 'Mock Post 1',
-      slug: 'mock-post-1',
-      excerpt: 'This is a mock post for testing.',
+  private posts: BlogPost[] = [];
+  private readonly STORAGE_KEY = 'mock_blog_posts';
 
-      content: '<p>Mock content here.</p>',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: '2',
-      title: 'Mock Post 2',
-      slug: 'mock-post-2',
-      excerpt: 'Another mock post.',
+  constructor() {
+    this.loadFromStorage();
+  }
 
-      content: '<p>More mock content.</p>',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-  ];
+  private loadFromStorage() {
+    try {
+      const stored = sessionStorage.getItem(this.STORAGE_KEY);
+      if (stored) {
+        this.posts = JSON.parse(stored);
+      } else {
+        // Default initial data
+        this.posts = [
+          {
+            id: '1',
+            title: 'Mock Post 1',
+            slug: 'mock-post-1',
+            excerpt: 'This is a mock post for testing.',
+            content: '<p>Mock content here.</p>',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+          {
+            id: '2',
+            title: 'Mock Post 2',
+            slug: 'mock-post-2',
+            excerpt: 'Another mock post.',
+            content: '<p>More mock content.</p>',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+        ];
+        this.persist();
+      }
+    } catch (e) {
+      console.warn('Failed to access sessionStorage', e);
+    }
+  }
+
+  private persist() {
+    try {
+      sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.posts));
+    } catch (e) {
+      console.warn('Failed to save to sessionStorage', e);
+    }
+  }
 
   async getPosts(): Promise<BlogPostIndex[]> {
     await Promise.resolve();
@@ -56,13 +82,22 @@ export class MockBlogService implements IBlogService {
       updatedAt: new Date().toISOString(),
       ...post,
     } as BlogPost;
-    this.posts.push(newPost);
+
+    const existingIndex = this.posts.findIndex((p) => p.id === newPost.id);
+    if (existingIndex >= 0) {
+      this.posts[existingIndex] = newPost;
+    } else {
+      this.posts.push(newPost);
+    }
+
+    this.persist();
     return newPost;
   }
 
   async deletePost(id: string): Promise<void> {
     await Promise.resolve();
     this.posts = this.posts.filter((p) => p.id !== id);
+    this.persist();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

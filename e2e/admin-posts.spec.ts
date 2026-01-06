@@ -12,7 +12,7 @@ test.describe('Admin Posts Management', () => {
     await expect(page.locator('table')).toBeVisible();
   });
 
-  test.skip('can create and then delete a post', async ({ page }: { page: Page }) => {
+  test('can create and then delete a post', async ({ page }: { page: Page }) => {
     // 0. Setup dialog handler
     page.on('dialog', async (dialog) => {
       console.log(`Dialog message: ${dialog.message()}`);
@@ -45,20 +45,14 @@ test.describe('Admin Posts Management', () => {
     const newRow = page.locator('tbody tr').filter({ hasText: testTitle });
     await expect(newRow).toBeVisible();
 
-    /*
-    // Flaky interaction in E2E environment - skipping delete verification for now
     // 2. Delete the post
-    // Handle the confirm dialog before clicking
-    // page.once('dialog', async (dialog) => {
-    //   await dialog.accept();
-    // });
+    // The global dialog handler defined above will handle the confirmation ("Are you sure...")
 
     // Find the delete button within that specific row
-    // const deleteBtn = newRow.getByRole('button', { name: 'Delete' });
-    // await deleteBtn.click();
+    const deleteBtn = newRow.getByRole('button', { name: 'Delete' });
+    await deleteBtn.click();
 
     // Verify removal
-    // await expect(newRow).not.toBeVisible();
-    */
+    await expect(newRow).not.toBeVisible();
   });
 });
