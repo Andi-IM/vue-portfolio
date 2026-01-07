@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Menu, X, Download, Sun, Moon } from 'lucide-vue-next';
 import { useTheme } from '../composables/useTheme';
+import { getCVDownloadUrl } from '../services/CVExporter';
 
 export interface NavItem {
   label: string;
@@ -82,11 +83,7 @@ defineExpose({
             <Moon v-else :size="20" />
           </button>
 
-          <a
-            href="https://pub-1d2d5180bcb0450bb6d122152ab25b6d.r2.dev/cv-andi-irham-2025.pdf"
-            download
-            class="navbar-cta"
-          >
+          <a :href="getCVDownloadUrl()" download class="navbar-cta">
             <Download :size="16" />
             {{ $t('nav.downloadCv') }}
           </a>
@@ -141,7 +138,7 @@ defineExpose({
           </button>
         </template>
         <a
-          href="https://pub-1d2d5180bcb0450bb6d122152ab25b6d.r2.dev/cv-andi-irham-2025.pdf"
+          :href="getCVDownloadUrl()"
           download
           class="block px-3 py-2 rounded-md text-base font-medium w-full text-left flex items-center gap-2"
           style="color: var(--color-primary)"
