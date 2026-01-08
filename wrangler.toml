@@ -6,7 +6,7 @@ compatibility_date = "2024-01-01"
 [[d1_databases]]
 binding = "BLOG_DB"
 database_name = "blog-portfolio"
-database_id = "YOUR_D1_DATABASE_ID"
+database_id = "ad047f20-6a71-4048-bb25-415748436b72"
 
 # KV Namespace Binding (cache layer)
 [[kv_namespaces]]
