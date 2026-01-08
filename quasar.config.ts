@@ -1,10 +1,10 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { defineConfig } from '#q-app/wrappers'
-import tailwindcss from '@tailwindcss/vite'
-import istanbul from 'vite-plugin-istanbul'
-import { codecovVitePlugin } from '@codecov/vite-plugin'
-import checker from 'vite-plugin-checker'
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfig } from '#q-app/wrappers';
+import tailwindcss from '@tailwindcss/vite';
+import istanbul from 'vite-plugin-istanbul';
+import { codecovVitePlugin } from '@codecov/vite-plugin';
+import checker from 'vite-plugin-checker';
 
 export default defineConfig((ctx) => {
   return {
@@ -69,8 +69,8 @@ export default defineConfig((ctx) => {
 
       extendViteConf(viteConf) {
         // Add plugins that return Plugin[] instead of Plugin via extendViteConf
-        viteConf.plugins = viteConf.plugins || []
-        viteConf.plugins.push(tailwindcss())
+        viteConf.plugins = viteConf.plugins || [];
+        viteConf.plugins.push(tailwindcss());
         viteConf.plugins.push(
           codecovVitePlugin({
             enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
@@ -78,19 +78,19 @@ export default defineConfig((ctx) => {
             uploadToken: process.env.CODECOV_TOKEN,
             gitService: 'github',
           }),
-        )
+        );
 
-        viteConf.build = viteConf.build || {}
+        viteConf.build = viteConf.build || {};
         viteConf.build.modulePreload = {
           polyfill: true,
-        }
+        };
         viteConf.build.rollupOptions = {
           output: {
             manualChunks: {
               'vue-vendor': ['vue', 'vue-router'],
             },
           },
-        }
+        };
       },
     },
 
@@ -126,7 +126,7 @@ export default defineConfig((ctx) => {
       },
     },
     bex: {
-      extraScripts: []
+      extraScripts: [],
     },
-  }
-})
+  };
+});
