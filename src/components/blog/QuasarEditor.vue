@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useQuasarEditor } from '../../composables/useQuasarEditor';
+import ImageEditor from './ImageEditor.vue';
 
 const props = defineProps<{
   modelValue: string;
@@ -11,11 +13,29 @@ const emit = defineEmits<{
   (e: 'image-inserted', url: string): void;
 }>();
 
-const { content, isSourceMode, toggleSourceMode, uploadImageHandler } = useQuasarEditor({
+const {
+  content,
+  isSourceMode,
+  toggleSourceMode,
+  uploadImageHandler,
+  makeImagesClickable,
+  selectedImage,
+  showImageEditor,
+  getCurrentImageConfig,
+  applyImageConfig,
+  closeImageEditor,
+} = useQuasarEditor({
   modelValue: props.modelValue,
   uploader: props.uploader,
   onUpdateModelValue: (val) => emit('update:modelValue', val),
   onImageInserted: (url) => emit('image-inserted', url),
+});
+
+// Make images clickable on mount (for existing content)
+onMounted(() => {
+  setTimeout(() => {
+    makeImagesClickable();
+  }, 500);
 });
 
 // Custom definitions for the toolbar
@@ -79,6 +99,21 @@ const definitions = {
         class="bg-white dark:bg-zinc-900"
       />
     </div>
+
+    <!-- Image Editor Modal -->
+    <ImageEditor
+      v-if="showImageEditor && selectedImage && getCurrentImageConfig()"
+      :src="getCurrentImageConfig()!.src"
+      :current-width="getCurrentImageConfig()!.width"
+      :current-height="getCurrentImageConfig()!.height"
+      :current-rotation="getCurrentImageConfig()!.rotation"
+      :current-align="getCurrentImageConfig()!.align"
+      :current-border="getCurrentImageConfig()!.border"
+      :current-shadow="getCurrentImageConfig()!.shadow"
+      :current-caption="getCurrentImageConfig()!.caption"
+      @apply="applyImageConfig"
+      @cancel="closeImageEditor"
+    />
   </div>
 </template>
 

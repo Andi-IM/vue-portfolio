@@ -15,10 +15,36 @@ const { formatDate } = useDate();
 const post = ref<BlogPost | null>(null);
 const loading = ref(true);
 
+// Extract the first image from content to use as thumbnail
+const thumbnailImage = computed(() => {
+  if (post.value?.coverImage) {
+    return post.value.coverImage;
+  }
+
+  // Extract first image from content
+  const content = post.value?.content || '';
+  const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["'][^>]*>/i);
+  return imgMatch ? imgMatch[1] : null;
+});
+
 // Sanitize content for safe rendering (XSS protection)
 const sanitizedContent = computed(() =>
   post.value?.content ? sanitizeHtml(post.value.content) : '',
 );
+
+// Remove the first image from content to avoid duplication with thumbnail
+const contentWithoutThumbnail = computed(() => {
+  let content = sanitizedContent.value;
+
+  // Only remove first image if we don't have an explicit coverImage
+  // (if coverImage exists, content and cover are different)
+  if (!post.value?.coverImage && content) {
+    // Remove the first <img> tag from the content
+    content = content.replace(/<img[^>]+>/i, '');
+  }
+
+  return content;
+});
 
 onMounted(async () => {
   try {
@@ -69,15 +95,15 @@ onMounted(async () => {
         </header>
 
         <div
-          v-if="post.coverImage"
+          v-if="thumbnailImage"
           class="w-full aspect-video rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 shadow-lg"
         >
-          <img :src="post.coverImage" :alt="post.title" class="object-cover w-full h-full" />
+          <img :src="thumbnailImage" :alt="post.title" class="object-cover w-full h-full" />
         </div>
 
         <div
           class="prose dark:prose-invert max-w-none blog-content"
-          v-html="sanitizedContent"
+          v-html="contentWithoutThumbnail"
         ></div>
       </article>
     </main>
