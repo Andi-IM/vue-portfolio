@@ -269,6 +269,24 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
       wrapper.appendChild(img);
     }
 
+    // Sync the DOM content back to the content ref so it gets saved
+    // Sync the DOM content back to the content ref so it gets saved
+    // Manual sync is required because direct DOM manipulation doesn't trigger v-model
+    // We use closest() to find the correct editor element
+    const editorElement = img.closest('[contenteditable="true"]');
+    if (editorElement) {
+      content.value = editorElement.innerHTML;
+      // Force update locally in case change isn't detected
+      options.onUpdateModelValue(content.value);
+    } else {
+      // Fallback
+      const editorContent = document.querySelector('.q-editor__content');
+      if (editorContent) {
+        content.value = editorContent.innerHTML;
+        options.onUpdateModelValue(content.value);
+      }
+    }
+
     showImageEditor.value = false;
     selectedImage.value = null;
   };
