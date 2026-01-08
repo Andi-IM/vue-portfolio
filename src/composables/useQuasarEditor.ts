@@ -110,7 +110,7 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
 
     if (editorElement) {
       const images = editorElement.querySelectorAll('img');
-      console.log('Found ${images.length} images in editor');
+      console.log(`Found ${images.length} images in editor`);
 
       images.forEach((img, index) => {
         // Remove old listener if it exists
