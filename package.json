@@ -17,7 +17,7 @@
     "lint:eslint": "eslint src --ext .js,.ts,.vue --fix --cache",
     "lint": "run-s lint:*",
     "format": "prettier --write src/",
-    "dev:wrangler": "npm run build && wrangler pages dev dist/spa --d1=BLOG_DB --kv=BLOG_CACHE --r2=BLOG_BUCKET",
+    "dev:wrangler": "npm run build && wrangler pages dev dist/spa --d1=BLOG_DB=ad047f20-6a71-4048-bb25-415748436b72 --kv=BLOG_CACHE --r2=BLOG_BUCKET --persist-to=.wrangler/state",
     "dev:remote": "npm run build && wrangler pages dev dist/spa",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
