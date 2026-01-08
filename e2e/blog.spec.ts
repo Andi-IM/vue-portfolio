@@ -25,28 +25,29 @@ test.describe('Blog Pages', () => {
   });
 
   test('can navigate to a post from index', async ({ page }: { page: Page }) => {
-    await page.goto('/blog');
+    await page.goto('/blog', { waitUntil: 'networkidle' });
 
-    // Wait for posts to load
-    // Assuming posts are rendered inside article tags on the blog index
+    // Wait for posts to load with explicit timeout
     const firstPostArticle = page.locator('article').first();
-    await expect(firstPostArticle).toBeVisible();
+    await expect(firstPostArticle).toBeVisible({ timeout: 10000 });
 
-    // Get title to verify
-    // Adjust selector based on actual BlogIndex implementation (h2 inside article usually)
+    // Get title to verify - wait for h2 to be visible first
     const firstPostTitle = firstPostArticle.locator('h2');
+    await expect(firstPostTitle).toBeVisible({ timeout: 5000 });
     const titleText = await firstPostTitle.innerText();
 
     // Click the title link
     await firstPostTitle.locator('a').click();
 
-    // Verify navigation
-    await expect(page).toHaveURL(/\/blog\//);
+    // Wait for navigation to complete
+    await page.waitForURL(/\/blog\//, { timeout: 10000 });
 
     // Verify title matches on detail page
     const postArticle = page.locator('article');
+    await expect(postArticle).toBeVisible({ timeout: 10000 });
+
     const postHeading = postArticle.locator('h1');
-    await expect(postHeading).toBeVisible();
+    await expect(postHeading).toBeVisible({ timeout: 5000 });
     await expect(postHeading).toContainText(titleText);
   });
 });

@@ -1,52 +1,73 @@
+import { getFromCache, setCache, invalidateCache, CACHE_KEYS } from '../lib/cache.js';
+
 export async function onRequestGet(context) {
-  const { env, request } = context
-  const url = new URL(request.url)
-  const id = url.searchParams.get('id')
+  const { env, request } = context;
+  const url = new URL(request.url);
+  const id = url.searchParams.get('id');
 
   try {
     if (id) {
-      // Get single post
-      const post = await env.BLOG_KV.get(id, { type: 'json' })
-      if (!post) {
-        return new Response('Post not found', { status: 404 })
+      // Get single post - check cache first
+      const cached = await getFromCache(env, CACHE_KEYS.post(id));
+      if (cached) {
+        return new Response(JSON.stringify(cached), {
+          headers: { 'Content-Type': 'application/json', 'X-Cache': 'HIT' },
+        });
       }
-      return new Response(JSON.stringify(post), {
-        headers: { 'Content-Type': 'application/json' },
-      })
+
+      // Cache miss - query D1
+      const result = await env.BLOG_DB.prepare(
+        'SELECT id, title, slug, excerpt, content, cover_image as coverImage, created_at as createdAt, updated_at as updatedAt FROM posts WHERE id = ?',
+      )
+        .bind(id)
+        .first();
+
+      if (!result) {
+        return new Response('Post not found', { status: 404 });
+      }
+
+      // Store in cache
+      await setCache(env, CACHE_KEYS.post(id), result);
+
+      return new Response(JSON.stringify(result), {
+        headers: { 'Content-Type': 'application/json', 'X-Cache': 'MISS' },
+      });
     } else {
-      // List all posts
-      // Note: KV list is eventually consistent and might not be suitable for very large lists without pagination
-      // For a simple personal blog, listing keys is fine.
+      // List all posts - check cache first
+      const cached = await getFromCache(env, CACHE_KEYS.POSTS_INDEX);
+      if (cached) {
+        return new Response(JSON.stringify(cached), {
+          headers: { 'Content-Type': 'application/json', 'X-Cache': 'HIT' },
+        });
+      }
 
-      // Fetch details for each key (or we could store a separate index)
-      // For performance in a real app, you'd want a separate "index" key containing the list of posts metadata.
-      // Here we will just return the list of keys/metadata if available.
-      // Better approach: Store a secondary index or just metadata in the value?
-      // Let's iterate and fetch for now (okay for small blog).
+      // Cache miss - query D1
+      const { results } = await env.BLOG_DB.prepare(
+        'SELECT id, title, slug, excerpt, cover_image as coverImage, created_at as createdAt, updated_at as updatedAt FROM posts ORDER BY created_at DESC',
+      ).all();
 
-      // Optimization: We will assume the frontend just needs the list first.
-      // Let's actually store "posts_index" as a separate key for the list of posts
-      const postsIndex = await env.BLOG_KV.get('posts_index', { type: 'json' })
-      return new Response(JSON.stringify(postsIndex || []), {
-        headers: { 'Content-Type': 'application/json' },
-      })
+      const postsIndex = results || [];
+
+      // Store in cache
+      await setCache(env, CACHE_KEYS.POSTS_INDEX, postsIndex);
+
+      return new Response(JSON.stringify(postsIndex), {
+        headers: { 'Content-Type': 'application/json', 'X-Cache': 'MISS' },
+      });
     }
   } catch (e) {
-    return new Response(e.message, { status: 500 })
+    console.error('GET /api/posts error:', e);
+    return new Response(e.message, { status: 500 });
   }
 }
 
 export async function onRequestPost(context) {
-  const { env, request } = context
-
-  // Basic Auth check (replace with real auth or assume Cloudflare Access handles it)
-  // Since user said they implemented Cloudflare Access, we can assume the request is authenticated if it reaches here,
-  // OR we can check for identity headers if we want to be strict.
+  const { env, request } = context;
 
   try {
-    const data = await request.json()
-    const id = data.id || Date.now().toString()
-    const now = new Date().toISOString()
+    const data = await request.json();
+    const id = data.id || Date.now().toString();
+    const now = new Date().toISOString();
 
     const post = {
       id,
@@ -54,56 +75,75 @@ export async function onRequestPost(context) {
       slug: data.slug,
       excerpt: data.excerpt,
       content: data.content,
-      coverImage: data.coverImage,
+      coverImage: data.coverImage || null,
       createdAt: data.createdAt || now,
       updatedAt: now,
-    }
+    };
 
-    // Save full post
-    await env.BLOG_KV.put(id, JSON.stringify(post))
+    // Upsert into D1
+    await env.BLOG_DB.prepare(
+      `
+      INSERT INTO posts (id, title, slug, excerpt, content, cover_image, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(id) DO UPDATE SET
+        title = excluded.title,
+        slug = excluded.slug,
+        excerpt = excluded.excerpt,
+        content = excluded.content,
+        cover_image = excluded.cover_image,
+        updated_at = excluded.updated_at
+    `,
+    )
+      .bind(
+        post.id,
+        post.title,
+        post.slug,
+        post.excerpt,
+        post.content,
+        post.coverImage,
+        post.createdAt,
+        post.updatedAt,
+      )
+      .run();
 
-    // Update index
-    let index = (await env.BLOG_KV.get('posts_index', { type: 'json' })) || []
-    // Remove existing entry if update
-    index = index.filter((p) => p.id !== id)
-    // Add new metadata (smaller payload for list view)
-    index.unshift({
-      id,
-      title: post.title,
-      slug: post.slug,
-      excerpt: post.excerpt,
-      coverImage: post.coverImage,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-    })
+    // Initialize views counter if new post
+    await env.BLOG_DB.prepare(
+      `
+      INSERT OR IGNORE INTO views (post_id, count) VALUES (?, 0)
+    `,
+    )
+      .bind(post.id)
+      .run();
 
-    await env.BLOG_KV.put('posts_index', JSON.stringify(index))
+    // Invalidate cache
+    await invalidateCache(env, [CACHE_KEYS.POSTS_INDEX, CACHE_KEYS.post(id)]);
 
     return new Response(JSON.stringify(post), {
       headers: { 'Content-Type': 'application/json' },
-    })
+    });
   } catch (e) {
-    return new Response(e.message, { status: 500 })
+    console.error('POST /api/posts error:', e);
+    return new Response(e.message, { status: 500 });
   }
 }
 
 export async function onRequestDelete(context) {
-  const { env, request } = context
-  const url = new URL(request.url)
-  const id = url.searchParams.get('id')
+  const { env, request } = context;
+  const url = new URL(request.url);
+  const id = url.searchParams.get('id');
 
-  if (!id) return new Response('Missing ID', { status: 400 })
+  if (!id) return new Response('Missing ID', { status: 400 });
 
   try {
-    await env.BLOG_KV.delete(id)
+    // Delete from D1 (cascade will handle views and seen_visitors)
+    await env.BLOG_DB.prepare('DELETE FROM posts WHERE id = ?').bind(id).run();
 
-    // Update index
-    let index = (await env.BLOG_KV.get('posts_index', { type: 'json' })) || []
-    index = index.filter((p) => p.id !== id)
-    await env.BLOG_KV.put('posts_index', JSON.stringify(index))
+    // Invalidate cache
+    await invalidateCache(env, [CACHE_KEYS.POSTS_INDEX, CACHE_KEYS.post(id)]);
 
-    return new Response('Deleted', { status: 200 })
+    return new Response('Deleted', { status: 200 });
   } catch (e) {
-    return new Response(e.message, { status: 500 })
+    console.error('DELETE /api/posts error:', e);
+    return new Response(e.message, { status: 500 });
   }
 }

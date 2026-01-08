@@ -2,9 +2,15 @@ name = "portfolio"
 pages_build_output_dir = "dist/spa"
 compatibility_date = "2024-01-01"
 
-# KV Namespace Binding
+# D1 Database Binding (primary storage)
+[[d1_databases]]
+binding = "BLOG_DB"
+database_name = "blog-portfolio"
+database_id = "YOUR_D1_DATABASE_ID"
+
+# KV Namespace Binding (cache layer)
 [[kv_namespaces]]
-binding = "BLOG_KV"
+binding = "BLOG_CACHE"
 id = "a3a278151de1448aa7ab4c730a5d04fc"
 
 # R2 Bucket Binding
@@ -13,4 +19,4 @@ binding = "BLOG_BUCKET"
 bucket_name = "blog-images"
 # Set to true to use the real R2 bucket in local dev (requires wrangler login)
 # Set to false or remove for local emulation
-remote = true
+remote = false
