@@ -325,7 +325,7 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
 
     // Handle Caption / Figure
     let figure: HTMLElement | null = null;
-    let parent = img.parentElement;
+    const parent = img.parentElement;
 
     // 1. Identify or Create Figure
     if (parent && parent.tagName === 'FIGURE') {
