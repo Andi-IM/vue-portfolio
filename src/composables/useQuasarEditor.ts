@@ -1,7 +1,7 @@
 import { ref, watch } from 'vue';
 import { useBlogService } from './useBlogService';
 
-interface UseQuasarEditorOptions {
+export interface UseQuasarEditorOptions {
   modelValue: string;
   uploader?: ((file: File) => Promise<string>) | undefined;
   onUpdateModelValue: (value: string) => void;
@@ -184,6 +184,7 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
   };
 
   // Extract current image configuration
+  // Extract current image configuration
   const getCurrentImageConfig = () => {
     if (!selectedImage.value) return null;
 
@@ -199,11 +200,60 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
       rotation = parseInt(rotateMatch[1], 10);
     }
 
+    // Helper to identify if an image is wrapped for alignment
+    const getAlignmentWrapper = (element: HTMLElement): HTMLElement | null => {
+      const parent = element.parentElement;
+      if (!parent || parent.tagName !== 'DIV' || parent.children.length !== 1) {
+        return null;
+      }
+
+      const p = parent;
+      if (!p.style) return null;
+
+      // Check for flex alignment
+      if (
+        (p.style.display === 'flex' || window.getComputedStyle(p).display === 'flex') &&
+        p.style.justifyContent
+      ) {
+        return p;
+      }
+
+      // Check for legacy text-align
+      if (
+        p.style.textAlign === 'left' ||
+        p.style.textAlign === 'right' ||
+        p.style.textAlign === 'center'
+      ) {
+        return p;
+      }
+
+      return null;
+    };
+
     // Extract alignment from parent or inline style
     let align: 'left' | 'center' | 'right' = 'center';
-    const textAlign = style.textAlign || computedStyle.textAlign;
-    if (textAlign === 'left' || textAlign === 'right' || textAlign === 'center') {
-      align = textAlign;
+
+    // Check wrapper first
+    const wrapper = getAlignmentWrapper(img);
+    if (wrapper) {
+      // Check Flex
+      if (wrapper.style.display === 'flex') {
+        const justify = wrapper.style.justifyContent;
+        if (justify === 'center') align = 'center';
+        else if (justify === 'flex-start') align = 'left';
+        else if (justify === 'flex-end') align = 'right';
+      } else {
+        // Fallback to text-align
+        const wrapperAlign = wrapper.style.textAlign;
+        if (wrapperAlign === 'left' || wrapperAlign === 'right' || wrapperAlign === 'center') {
+          align = wrapperAlign;
+        }
+      }
+    } else {
+      const textAlign = style.textAlign || computedStyle.textAlign;
+      if (textAlign === 'left' || textAlign === 'right' || textAlign === 'center') {
+        align = textAlign;
+      }
     }
 
     return {
@@ -261,15 +311,49 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
       img.alt = config.caption;
     }
 
-    // Apply alignment by wrapping in a div
-    if (config.align !== 'center') {
-      const wrapper = document.createElement('div');
-      wrapper.style.textAlign = config.align;
-      img.parentNode?.insertBefore(wrapper, img);
-      wrapper.appendChild(img);
+    // Handle Alignment
+    const parent = img.parentElement;
+    let wrapper: HTMLElement | null = null;
+
+    // Helper to check if parent is already a valid wrapper we can reuse/modify
+    const isReusableWrapper = (el: HTMLElement) => {
+      return (
+        el.tagName === 'DIV' &&
+        el.children.length === 1 &&
+        el.style &&
+        ((el.style.display === 'flex' && el.style.justifyContent) ||
+          el.style.textAlign === 'left' ||
+          el.style.textAlign === 'right' ||
+          el.style.textAlign === 'center')
+      );
+    };
+
+    if (parent && isReusableWrapper(parent)) {
+      wrapper = parent;
     }
 
-    // Sync the DOM content back to the content ref so it gets saved
+    // Determine target flex justification
+    let targetJustify = 'center';
+    if (config.align === 'left') targetJustify = 'flex-start';
+    if (config.align === 'right') targetJustify = 'flex-end';
+
+    if (wrapper) {
+      // Update existing wrapper to flex
+      wrapper.style.display = 'flex';
+      wrapper.style.justifyContent = targetJustify;
+      wrapper.style.textAlign = ''; // Clear legacy
+    } else {
+      // Create new wrapper
+      const newWrapper = document.createElement('div');
+      newWrapper.style.display = 'flex';
+      newWrapper.style.justifyContent = targetJustify;
+      img.parentNode?.insertBefore(newWrapper, img);
+      newWrapper.appendChild(img);
+    }
+
+    // Clean inline alignment on image itself if any
+    img.style.textAlign = '';
+
     // Sync the DOM content back to the content ref so it gets saved
     // Manual sync is required because direct DOM manipulation doesn't trigger v-model
     // We use closest() to find the correct editor element

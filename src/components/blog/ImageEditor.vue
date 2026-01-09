@@ -33,7 +33,7 @@ interface ImageConfig {
 const width = ref<string | number>(props.currentWidth || 'auto');
 const height = ref<string | number>(props.currentHeight || 'auto');
 const rotation = ref(props.currentRotation || 0);
-const align = ref(props.currentAlign || 'center');
+const align = ref(props.currentAlign || 'left');
 const lockAspectRatio = ref(true);
 const border = ref(props.currentBorder || false);
 const shadow = ref(props.currentShadow || false);

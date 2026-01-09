@@ -18,7 +18,7 @@ describe('useQuasarEditor', () => {
   };
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.restoreAllMocks();
     // Mock document.execCommand
     document.execCommand = vi.fn();
   });
@@ -171,5 +171,117 @@ describe('useQuasarEditor', () => {
     expect(consoleSpy).toHaveBeenCalledWith('Upload failed', error);
 
     consoleSpy.mockRestore();
+  });
+
+  describe('Image Alignment', () => {
+    it('applies flexbox center alignment', () => {
+      const { selectedImage, applyImageConfig } = useQuasarEditor(defaultOptions);
+
+      const container = document.createElement('div');
+      const img = document.createElement('img');
+      img.src = 'test.png';
+      container.appendChild(img);
+
+      selectedImage.value = img;
+
+      applyImageConfig({
+        rotation: 0,
+        align: 'center',
+        border: false,
+        shadow: false,
+        caption: '',
+      });
+
+      const parent = img.parentElement as HTMLElement;
+      expect(parent.tagName).toBe('DIV');
+      expect(parent.style.display).toBe('flex');
+      expect(parent.style.justifyContent).toBe('center');
+      expect(img.style.textAlign).toBe('');
+    });
+
+    it('applies flexbox left alignment', () => {
+      const { selectedImage, applyImageConfig } = useQuasarEditor(defaultOptions);
+
+      const container = document.createElement('div');
+      const img = document.createElement('img');
+      container.appendChild(img);
+      selectedImage.value = img;
+
+      applyImageConfig({
+        rotation: 0,
+        align: 'left',
+        border: false,
+        shadow: false,
+        caption: '',
+      });
+
+      const parent = img.parentElement as HTMLElement;
+      expect(parent.tagName).toBe('DIV');
+      expect(parent.style.display).toBe('flex');
+      expect(parent.style.justifyContent).toBe('flex-start');
+    });
+
+    it('updates existing flex wrapper', () => {
+      const { selectedImage, applyImageConfig } = useQuasarEditor(defaultOptions);
+
+      // Setup existing centered wrapper
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.justifyContent = 'center';
+
+      const img = document.createElement('img');
+      wrapper.appendChild(img);
+      const container = document.createElement('div');
+      container.appendChild(wrapper);
+
+      selectedImage.value = img;
+
+      // Change to right
+      applyImageConfig({
+        rotation: 0,
+        align: 'right',
+        border: false,
+        shadow: false,
+        caption: '',
+      });
+
+      expect(wrapper.style.justifyContent).toBe('flex-end');
+      expect(img.parentElement).toBe(wrapper); // Should stay in same wrapper
+    });
+
+    it('detects existing flexbox alignment', () => {
+      const { selectedImage, getCurrentImageConfig } = useQuasarEditor(defaultOptions);
+
+      const wrapper = document.createElement('div');
+      wrapper.style.display = 'flex';
+      wrapper.style.justifyContent = 'center';
+
+      const img = document.createElement('img');
+      img.src = 'test.png'; // required for config extraction
+      wrapper.appendChild(img);
+      selectedImage.value = img;
+
+      // Need to mock getComputedStyle since JSDOM might not fully compute style from inline styles automatically in all versions,
+      // but usually it works if attached to document? Or we can rely on inline style check in code.
+      // The code checks inline style first: `parent.style.justifyContent`
+
+      const config = getCurrentImageConfig();
+      expect(config?.align).toBe('center');
+    });
+
+    it('detects legacy text-align alignment', () => {
+      const { selectedImage, getCurrentImageConfig } = useQuasarEditor(defaultOptions);
+
+      const wrapper = document.createElement('div');
+      wrapper.style.textAlign = 'right';
+
+      const img = document.createElement('img');
+      img.src = 'test.png';
+      wrapper.appendChild(img);
+      selectedImage.value = img;
+
+      const config = getCurrentImageConfig();
+      expect(config?.align).toBe('right');
+    });
   });
 });
