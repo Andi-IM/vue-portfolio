@@ -202,7 +202,14 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
 
     // Helper to identify if an image is wrapped for alignment
     const getAlignmentWrapper = (element: HTMLElement): HTMLElement | null => {
-      const parent = element.parentElement;
+      let parent = element.parentElement;
+      if (!parent) return null;
+
+      // Unwind figure if present
+      if (parent.tagName === 'FIGURE') {
+        parent = parent.parentElement;
+      }
+
       if (!parent || parent.tagName !== 'DIV' || parent.children.length !== 1) {
         return null;
       }
@@ -256,6 +263,16 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
       }
     }
 
+    // Caption Extraction
+    let caption = img.alt || '';
+    const parent = img.parentElement;
+    if (parent && parent.tagName === 'FIGURE') {
+      const figCaption = parent.querySelector('figcaption');
+      if (figCaption && figCaption.textContent) {
+        caption = figCaption.textContent;
+      }
+    }
+
     return {
       src: img.src,
       width: img.style.width || img.width || 'auto',
@@ -264,7 +281,7 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
       align,
       border: style.border?.includes('2px') || false,
       shadow: (style.boxShadow !== 'none' && style.boxShadow !== '') || false,
-      caption: img.alt || '',
+      caption,
     };
   };
 
@@ -306,13 +323,66 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
     // Apply styles
     img.setAttribute('style', styles.join('; '));
 
-    // Apply caption
-    if (config.caption) {
+    // Handle Caption / Figure
+    let figure: HTMLElement | null = null;
+    let parent = img.parentElement;
+
+    // 1. Identify or Create Figure
+    if (parent && parent.tagName === 'FIGURE') {
+      figure = parent;
+    } else if (config.caption) {
+      // Create figure if we have a caption and one doesn't exist
+      figure = document.createElement('figure');
+      figure.style.margin = '0'; // Reset browser margin
+      figure.style.display = 'table'; // Use table to make width fit content (image)
+      // or simply nothing if we want block. But checking center alignment.
+      // Actually 'max-content' width behavior is tricky for centered images.
+      // If we use 'display: inline-block' or similar?
+      // Let's stick to default block or table to shrink-wrap?
+      // If we want caption to center relative to image:
+      figure.style.display = 'flex';
+      figure.style.flexDirection = 'column';
+      figure.style.alignItems = 'center';
+
+      img.parentNode?.insertBefore(figure, img);
+      figure.appendChild(img);
+    }
+
+    // 2. Update Caption Content
+    if (figure) {
+      let figCaption = figure.querySelector('figcaption');
+      if (config.caption) {
+        if (!figCaption) {
+          figCaption = document.createElement('figcaption');
+          figCaption.style.marginTop = '0.5rem';
+          figCaption.style.textAlign = 'center';
+          figCaption.style.fontSize = '0.875rem';
+          figCaption.style.color = '#71717a';
+          figure.appendChild(figCaption);
+        }
+        figCaption.textContent = config.caption;
+      } else if (figCaption) {
+        figCaption.remove();
+        // Fallback: If figure empty logic?
+        // We might want to remove figure if no caption to clean up?
+        // Let's opt to remove figure if no caption
+        if (figure.parentElement && figure.children.length === 1 && figure.children[0] === img) {
+          const grandParent = figure.parentElement;
+          grandParent.insertBefore(img, figure);
+          figure.remove();
+          figure = null;
+        }
+      }
+      // Also update alt for fallback
+      img.alt = config.caption;
+    } else {
       img.alt = config.caption;
     }
 
-    // Handle Alignment
-    const parent = img.parentElement;
+    // Handle Alignment (Wrapper)
+    // The "content" unit is either the figure or the naked image
+    const contentElement = figure || img;
+    const contentParent = contentElement.parentElement;
     let wrapper: HTMLElement | null = null;
 
     // Helper to check if parent is already a valid wrapper we can reuse/modify
@@ -328,8 +398,8 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
       );
     };
 
-    if (parent && isReusableWrapper(parent)) {
-      wrapper = parent;
+    if (contentParent && isReusableWrapper(contentParent)) {
+      wrapper = contentParent;
     }
 
     // Determine target flex justification
@@ -347,8 +417,8 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
       const newWrapper = document.createElement('div');
       newWrapper.style.display = 'flex';
       newWrapper.style.justifyContent = targetJustify;
-      img.parentNode?.insertBefore(newWrapper, img);
-      newWrapper.appendChild(img);
+      contentElement.parentNode?.insertBefore(newWrapper, contentElement);
+      newWrapper.appendChild(contentElement);
     }
 
     // Clean inline alignment on image itself if any
