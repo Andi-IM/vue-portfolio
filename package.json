@@ -36,7 +36,7 @@
     "dompurify": "^3.3.1",
     "google-auth-library": "^10.5.0",
     "googleapis": "^169.0.0",
-    "lucide-vue-next": "^0.562.0",
+    "lucide-vue-next": "^0.563.0",
     "quasar": "^2.18.6",
     "sass": "^1.97.1",
     "slate": "^0.120.0",
