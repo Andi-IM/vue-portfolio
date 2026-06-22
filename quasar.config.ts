@@ -88,7 +88,7 @@ export default defineConfig((ctx) => {
           output: {
             manualChunks: {
               'vue-vendor': ['vue', 'vue-router'],
-            },
+            } as any,
           },
         };
       },
