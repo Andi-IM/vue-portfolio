@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.4.0...v1.5.0) (2026-06-22)
+
+
+### Features
+
+* implement Contact, Projects, and Footer sections with project modal and localization support ([af99686](https://github.com/Andi-IM/vue-portfolio/commit/af9968612a813fc910fac78d5caecda2c1e570eb))
+
 # [1.4.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.3.0...v1.4.0) (2026-06-22)
 
 
