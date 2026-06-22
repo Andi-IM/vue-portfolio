@@ -1,0 +1,45 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['**']
+
+jobs:
+  codeql:
+    name: CodeQL Analysis
+    uses: ./.github/workflows/codeql.yml
+    secrets: inherit
+
+  ci:
+    name: Continuous Integration
+    needs: codeql
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
+  e2e:
+    name: End-to-End Tests
+    needs: ci
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    uses: ./.github/workflows/e2e.yml
+    secrets: inherit
+
+  deploy:
+    name: Deploy to Cloudflare Pages
+    needs: e2e
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/cloudflare_worker_deployment.yml
+    secrets: inherit
+
+  release:
+    name: Semantic Release
+    needs: [ci, e2e, deploy]
+    if: |
+      always() && 
+      (github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) && 
+      needs.ci.result == 'success' && 
+      (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') && 
+      (needs.deploy.result == 'success' || needs.deploy.result == 'skipped')
+    uses: ./.github/workflows/release.yml
+    secrets: inherit
