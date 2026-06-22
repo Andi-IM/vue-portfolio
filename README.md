@@ -1,8 +1,8 @@
-[![Dependabot Updates](https://github.com/Andi-IM/vue-portfolio/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/Andi-IM/vue-portfolio/actions/workflows/dependabot/dependabot-updates)
-[![E2E Tests](https://github.com/Andi-IM/vue-portfolio/actions/workflows/e2e.yml/badge.svg)](https://github.com/Andi-IM/vue-portfolio/actions/workflows/e2e.yml)
-[![Deploy to Cloudflare Pages](https://github.com/Andi-IM/vue-portfolio/actions/workflows/cloudflare_worker_deployment.yml/badge.svg)](https://github.com/Andi-IM/vue-portfolio/actions/workflows/cloudflare_worker_deployment.yml)
-[![CodeQL](https://github.com/Andi-IM/vue-portfolio/actions/workflows/codeql.yml/badge.svg)](https://github.com/Andi-IM/vue-portfolio/actions/workflows/codeql.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/Andi-IM/vue-portfolio?style=flat-square)](https://github.com/Andi-IM/vue-portfolio/releases)
+[![CI/CD Pipeline](https://github.com/Andi-IM/vue-portfolio/actions/workflows/pipeline.yml/badge.svg)](https://github.com/Andi-IM/vue-portfolio/actions/workflows/pipeline.yml)
 [![codecov](https://codecov.io/github/andi-im/vue-portfolio/graph/badge.svg?token=QRVAHQY6L9)](https://codecov.io/github/andi-im/vue-portfolio)
+[![Vue](https://img.shields.io/badge/Vue.js-v3.5.22-35495E?style=flat-square&logo=vue.js&logoColor=4FC08D)](https://vuejs.org/)
+[![Quasar](https://img.shields.io/badge/Quasar-v2.18.6-1976D2?style=flat-square&logo=quasar&logoColor=white)](https://quasar.dev/)
 # vue-portfolio
 
 This template should help get you started developing with Vue 3 in Vite.
