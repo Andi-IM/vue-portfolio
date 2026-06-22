@@ -309,12 +309,12 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
     }
 
     if (config.border) {
-      styles.push('border: 2px solid #d4d4d8');
-      styles.push('border-radius: 8px');
+      styles.push('border: 2px solid var(--color-border)');
+      styles.push('border-radius: 1rem');
     }
 
     if (config.shadow) {
-      styles.push('box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)');
+      styles.push('box-shadow: var(--shadow-card)');
     }
 
     styles.push('max-width: 100%');
@@ -357,7 +357,7 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
           figCaption.style.marginTop = '0.5rem';
           figCaption.style.textAlign = 'center';
           figCaption.style.fontSize = '0.875rem';
-          figCaption.style.color = '#71717a';
+          figCaption.style.color = 'var(--color-text-muted)';
           figure.appendChild(figCaption);
         }
         figCaption.textContent = config.caption;

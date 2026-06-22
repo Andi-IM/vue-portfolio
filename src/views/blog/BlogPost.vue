@@ -133,20 +133,19 @@ h1.blog-post-title {
 }
 
 .blog-content ul li::marker {
-  color: var(--q-primary); /* Use brand color for bullets */
+  color: var(--color-primary); /* Use brand color for bullets */
 }
 
 /* Blockquotes */
 .blog-content blockquote {
-  border-left: 4px solid var(--q-primary);
-  padding-left: 1.5rem;
+  border: 1px solid var(--color-border);
   margin: 2.5rem 0;
   font-style: italic;
   font-size: 1.25rem;
   color: var(--color-text-muted);
-  background: var(--color-bg-secondary); /* Optional: subtle bg */
+  background: var(--color-bg-card-hover);
   padding: 1.5rem;
-  border-radius: 0 0.5rem 0.5rem 0;
+  border-radius: 1rem;
 }
 
 /* Strong emphasis */
@@ -157,7 +156,7 @@ h1.blog-post-title {
 
 /* Links */
 .blog-content a {
-  color: var(--q-primary);
+  color: var(--color-primary);
   text-decoration: underline;
   text-underline-offset: 4px;
   font-weight: 500;
@@ -167,18 +166,5 @@ h1.blog-post-title {
   text-decoration: none;
 }
 
-/* Utilities for overrides if needed */
-:root {
-  --color-text-heading: #18181b;
-  --color-text-body: #3f3f46;
-  --color-text-muted: #71717a;
-  --color-bg-secondary: #f4f4f5;
-}
 
-.dark {
-  --color-text-heading: #fafafa;
-  --color-text-body: #d4d4d8;
-  --color-text-muted: #a1a1aa;
-  --color-bg-secondary: #27272a;
-}
 </style>

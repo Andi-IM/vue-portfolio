@@ -24,6 +24,7 @@ typography:
 rounded:
   card: "1rem"
   frame: "1.5rem"
+  pill: "9999px"
 spacing:
   gap-sm: "1rem"
   gap-lg: "3rem"

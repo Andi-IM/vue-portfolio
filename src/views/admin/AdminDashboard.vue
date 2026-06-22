@@ -146,7 +146,7 @@ onMounted(() => {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   padding: 1.5rem;
-  border-radius: 1.25rem;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -155,8 +155,8 @@ onMounted(() => {
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  border-color: var(--color-primary);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-border-hover);
 }
 
 .stat-icon {
