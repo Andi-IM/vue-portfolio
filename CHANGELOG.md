@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.7.0...v1.8.0) (2026-06-22)
+
+
+### Features
+
+* add dependabot configuration for bun dependency updates ([f0f3821](https://github.com/Andi-IM/vue-portfolio/commit/f0f38217422ec208b657554145895a48ff5c1c3e))
+
 # [1.7.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.6.0...v1.7.0) (2026-06-22)
 
 
