@@ -4,13 +4,33 @@ import { mount } from '@vue/test-utils';
 import ProjectsSection from '../ProjectsSection.vue';
 import enUS from '../../i18n/en-US';
 
+const tMock = (msg: string) => {
+  const keys = msg.split('.');
+  let res: any = enUS;
+  for (const key of keys) {
+    if (res && res[key] !== undefined) {
+      res = res[key];
+    } else {
+      return msg;
+    }
+  }
+  return res;
+};
+
+vi.mock('vue-i18n', async () => {
+  const actual = await vi.importActual('vue-i18n');
+  return {
+    ...actual,
+    useI18n: () => ({
+      t: tMock,
+      tm: tMock,
+      rt: (val: any) => val,
+    }),
+  };
+});
+
 const mocks = {
-  $t: (msg: string) => {
-    const keys = msg.split('.');
-    let res: any = enUS;
-    for (const key of keys) res = res[key];
-    return res;
-  },
+  $t: tMock,
 };
 
 describe('ProjectsSection', () => {

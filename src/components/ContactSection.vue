@@ -17,8 +17,8 @@ import { Mail, Linkedin, Github } from 'lucide-vue-next';
 
       <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
         <!-- Email Card -->
-        <a
-          href="mailto:alex.doe@example.com"
+<a
+           href="mailto:mail@airham.my.id"
           class="p-8 rounded-2xl transition-all group flex flex-col items-center text-center hover:-translate-y-2"
           style="
             background-color: var(--color-bg-card);
@@ -38,7 +38,7 @@ import { Mail, Linkedin, Github } from 'lucide-vue-next';
           <h3 class="font-bold text-xl mb-2" style="color: var(--color-text-heading)">
             {{ $t('contact.email') }}
           </h3>
-          <p class="font-medium" style="color: var(--color-primary)">andi.irhamm@gmail.com</p>
+          <p class="font-medium" style="color: var(--color-primary)">mail@airham.my.id</p>
           <span class="text-sm mt-4" style="color: var(--color-text-muted)"
             >{{ $t('contact.sendMessage') }} &rarr;</span
           >

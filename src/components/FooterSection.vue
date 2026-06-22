@@ -28,13 +28,13 @@ import { Github, Linkedin, Mail } from 'lucide-vue-next';
           aria-label="LinkedIn"
           ><Linkedin :size="20"
         /></a>
-        <a
-          href="mailto:andi.irhamm@gmail.com"
-          class="transition-colors hover:opacity-70"
-          style="color: var(--color-text-muted)"
-          aria-label="Email"
-          ><Mail :size="20"
-        /></a>
+<a
+           href="mailto:mail@airham.my.id"
+           class="transition-colors hover:opacity-70"
+           style="color: var(--color-text-muted)"
+           aria-label="Email"
+           ><Mail :size="20"
+         /></a>
       </div>
     </div>
   </footer>
