@@ -15,11 +15,14 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required by semantic-release to gather commit history
+          persist-credentials: false # Uses semantic-release for pushing instead
+
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
-        with:
-          fetch-depth: '0'
-          persist-credentials: 'false'
 
       - name: Semantic Release
         env:
