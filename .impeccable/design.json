@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-22T07:11:00Z",
+  "title": "Design System: Andi IM Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Technical Indigo", "canonical": "#1e40af", "tonalRamp": ["#dbeafe", "#bfdbfe", "#93c5fd", "#60a5fa", "#3b82f6", "#2563eb", "#1d4ed8", "#1e40af"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines only." },
+      "body": { "displayName": "Body", "purpose": "General reading and paragraphs." }
+    },
+    "shadows": [
+      { "name": "ambient-card", "value": "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)", "purpose": "Ambient definition used sparingly on skill and project cards." },
+      { "name": "hover-lift", "value": "0 10px 30px -10px rgba(30, 64, 175, 0.15)", "purpose": "An indigo-tinted shadow used purely to denote interactivity when a card is hovered." }
+    ],
+    "motion": [],
+    "breakpoints": [
+      { "name": "md", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Skill Card",
+      "kind": "card",
+      "refersTo": "skill-card",
+      "description": "Refined container for displaying individual skills.",
+      "html": "<div class=\"ds-skill-card\"><div class=\"ds-skill-icon\"></div><h3>Mobile App</h3><p>Android, Kotlin, Flutter</p></div>",
+      "css": ".ds-skill-card { background: #ffffff; padding: 1.5rem; border-radius: 1rem; border: 1px solid #e5e7eb; transition: all 0.3s ease; cursor: pointer; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); } .ds-skill-card:hover { border-color: #1e40af; transform: translateY(-4px); box-shadow: 0 10px 30px -10px rgba(30,64,175,0.15); } .ds-skill-card h3 { font-family: 'Outfit', sans-serif; color: #111827; font-size: 1.25rem; margin: 0 0 0.25rem 0; } .ds-skill-card p { font-family: 'Inter', sans-serif; color: #6b7280; margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Professional Showcase",
+    "overview": "The Andi IM Portfolio design system is built to exude technical competence, clarity, and professionalism. It pairs a geometric sans-serif for sharp, confident headings with a highly legible humanist sans-serif for body text. The aesthetic philosophy leans heavily into letting the work and expertise speak for itself—avoiding chaotic layouts, Web3 neon excesses, and generic templates. Instead, it relies on strict typographic rhythm and a restrained color palette anchored by a sharp technical indigo.",
+    "keyCharacteristics": [
+      "Content-first layout prioritizing legibility.",
+      "Deep, confident technical accents that don't overwhelm the user.",
+      "Subtle and refined component borders rather than heavy drop shadows."
+    ],
+    "rules": [
+      { "name": "The Content-First Contrast Rule", "body": "Body text must always hit a high contrast ratio against its background. The palette avoids light gray text on tinted backgrounds to ensure maximum readability.", "section": "colors" },
+      { "name": "The Geometric Discipline Rule", "body": "Display typography scales generously but remains tightly leaded (1.25) and slightly tracked-in (-0.025em) to prevent headlines from feeling disjointed or sprawling.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest, separated by 1px borders. Shadows appear only as a response to state (hover, elevation, focus).", "section": "elevation" }
+    ],
+    "dos": [
+      "Do ensure all body text hits WCAG AA contrast ratios (e.g., using #4b5563 on #ffffff or #f7f8fc).",
+      "Do rely on generous padding and whitespace to organize content rather than drawing boxes around everything.",
+      "Do use the Technical Indigo (#1e40af) deliberately and sparingly to draw the eye to actions and key metrics."
+    ],
+    "donts": [
+      "Don't use overly loud or chaotic designs, \"Web3\" neon excesses, or generic un-styled SaaS templates.",
+      "Don't use border-radius values beyond 1rem (16px) for cards; save fully rounded pills only for tags and buttons.",
+      "Don't dilute the identity by adding unnecessary gradients or overlapping drop-shadows on typography."
+    ]
+  }
+}
