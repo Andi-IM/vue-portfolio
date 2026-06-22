@@ -4,7 +4,9 @@
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
+    "noEmit": true,
     "baseUrl": ".",
+    "ignoreDeprecations": "5.0",
     "paths": {
       "@/*": ["./src/*"],
       "#q-app/wrappers": ["./node_modules/@quasar/app-vite/types/app-wrappers.d.ts"]
