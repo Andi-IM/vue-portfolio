@@ -17,6 +17,12 @@ on:
       - 'wrangler.toml'
       - '.github/workflows/**'
       - '.github/actions/**'
+      - '!**.md'
+      - '!**/.gitignore'
+      - '!**/.editorconfig'
+      - '!**/.prettierrc.json'
+      - '!**/.eslintcache'
+      - '!**/.oxlintignore'
   pull_request:
     branches: ['**']
     paths:
@@ -33,6 +39,12 @@ on:
       - 'wrangler.toml'
       - '.github/workflows/**'
       - '.github/actions/**'
+      - '!**.md'
+      - '!**/.gitignore'
+      - '!**/.editorconfig'
+      - '!**/.prettierrc.json'
+      - '!**/.eslintcache'
+      - '!**/.oxlintignore'
 
 jobs:
   codeql:
