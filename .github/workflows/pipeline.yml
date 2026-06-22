@@ -10,6 +10,10 @@ jobs:
   codeql:
     name: CodeQL Analysis
     uses: ./.github/workflows/codeql.yml
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     secrets: inherit
 
   ci:
@@ -30,6 +34,9 @@ jobs:
     needs: e2e
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: ./.github/workflows/cloudflare_worker_deployment.yml
+    permissions:
+      contents: read
+      deployments: write
     secrets: inherit
 
   release:
@@ -42,4 +49,8 @@ jobs:
       (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') && 
       (needs.deploy.result == 'success' || needs.deploy.result == 'skipped')
     uses: ./.github/workflows/release.yml
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     secrets: inherit
