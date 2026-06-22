@@ -19,7 +19,7 @@
         "sass": "^1.97.3",
         "slate": "^0.120.0",
         "slate-history": "^0.113.1",
-        "slate-vue3": "^0.11.4",
+        "slate-vue3": "^0.13.8",
         "vue": "^3.5.22",
         "vue-i18n": "^11.2.8",
         "vue-router": "^5.0.1",
@@ -1932,7 +1932,7 @@
 
     "slate-history": ["slate-history@0.113.1", "", { "dependencies": { "is-plain-object": "^5.0.0" }, "peerDependencies": { "slate": ">=0.65.3" } }, "sha512-J9NSJ+UG2GxoW0lw5mloaKcN0JI0x2IA5M5FxyGiInpn+QEutxT1WK7S/JneZCMFJBoHs1uu7S7e6pxQjubHmQ=="],
 
-    "slate-vue3": ["slate-vue3@0.11.4", "", { "dependencies": { "direction": "^2.0.1", "is-hotkey": "^0.2.0", "lodash-es": "^4.17.22", "scroll-into-view-if-needed": "^3.1.0" }, "peerDependencies": { "vue": "^3.0.0" } }, "sha512-NBstjlOTMTvbdvaNFjYEC4ImmkC5EcdcnH5pMPwPZymnZcIQ5UraKeCeEWJUkAc86M+sMkS6/elqodlB6mCyVw=="],
+    "slate-vue3": ["slate-vue3@0.13.8", "", { "dependencies": { "direction": "^2.0.1", "is-hotkey": "^0.2.0", "lodash-es": "^4.18.1", "scroll-into-view-if-needed": "^3.1.0" }, "peerDependencies": { "vue": "^3.0.0" } }, "sha512-3oXKL9F48GUHwJZ1gv767N6V4UxRxfVHCIiQmE4uvD1VOA3Q+n6oip6jmKv0tdOJIhAffAVZN0rHrKyRggLQZw=="],
 
     "source-map": ["source-map@0.7.6", "", {}, "sha512-i5uvt8C3ikiWeNZSVZNWcfZPItFQOsYTUAOkcUPGd8DqDy1uOUikjt5dG+uRlwyvR108Fb9DOd4GvXfT0N2/uQ=="],
 
