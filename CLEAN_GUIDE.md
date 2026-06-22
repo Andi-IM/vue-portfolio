@@ -7,7 +7,7 @@ The `clean` command removes all build artifacts, test outputs, and temporary fil
 ### Usage
 
 ```bash
-npm run clean
+bun run clean
 ```
 
 ### What Gets Cleaned
@@ -39,32 +39,32 @@ Run the clean command when you want to:
 #### Clean and Build
 
 ```bash
-npm run clean && npm run build
+bun run clean && bun run build
 ```
 
 #### Clean and Test
 
 ```bash
-npm run clean && npm test && npm run test:e2e
+bun run clean && bun test && bun run test:e2e
 ```
 
 #### Clean, Build, and Preview
 
 ```bash
-npm run clean && npm run build && npm run preview
+bun run clean && bun run build && bun run preview
 ```
 
 #### Full Clean and Coverage
 
 ```bash
-npm run clean && npm run test:coverage && npm run test:e2e:coverage
+bun run clean && bun run test:coverage && bun run test:e2e:coverage
 ```
 
 ### What Stays
 
 The clean command does **NOT** remove:
 
-- ✅ `node_modules/` - Dependencies (use `npm ci` to reinstall)
+- ✅ `node_modules/` - Dependencies (use `bun install` to reinstall)
 - ✅ `src/` - Source code
 - ✅ `public/` - Static assets
 - ✅ `.git/` - Git repository
@@ -76,22 +76,22 @@ If you need to completely reset the project:
 
 ```bash
 # Remove all artifacts
-npm run clean
+bun run clean
 
 # Remove node_modules
 Remove-Item -Recurse -Force node_modules
 
-# Remove package-lock.json
-Remove-Item package-lock.json
+# Remove package-lock.json (if present) and bun.lockb
+Remove-Item package-lock.json, bun.lockb -ErrorAction Ignore
 
 # Reinstall dependencies
-npm install
+bun install
 ```
 
 Or use this one-liner:
 
 ```bash
-npm run clean; Remove-Item -Recurse -Force node_modules, package-lock.json; npm install
+bun run clean; Remove-Item -Recurse -Force node_modules, package-lock.json, bun.lockb -ErrorAction Ignore; bun install
 ```
 
 ### Disk Space Savings
@@ -114,10 +114,10 @@ In CI/CD pipelines, you typically want to clean before building:
 ```yaml
 # GitHub Actions example
 - name: Clean project
-  run: npm run clean
+  run: bun run clean
 
 - name: Build
-  run: npm run build
+  run: bun run build
 ```
 
 ### Troubleshooting
@@ -127,27 +127,27 @@ In CI/CD pipelines, you typically want to clean before building:
 ```bash
 # Close any running dev servers or test processes
 # Then run clean again
-npm run clean
+bun run clean
 ```
 
 **Q: Want to clean only specific directories**
 
 ```bash
 # Clean only build output
-npx rimraf dist
+bunx rimraf dist
 
 # Clean only test results
-npx rimraf test-results playwright-report
+bunx rimraf test-results playwright-report
 
 # Clean only coverage
-npx rimraf coverage .nyc_output
+bunx rimraf coverage .nyc_output
 ```
 
 **Q: Want to keep screenshots but clean other test results**
 
 ```bash
 # Manually clean specific directories
-npx rimraf dist coverage .nyc_output playwright-report .eslintcache
+bunx rimraf dist coverage .nyc_output playwright-report .eslintcache
 ```
 
 ## Additional Cleanup Commands

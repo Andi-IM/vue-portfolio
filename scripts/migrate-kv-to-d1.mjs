@@ -104,7 +104,7 @@ async function main() {
   console.log(
     '1. Verify data: npx wrangler d1 execute blog-portfolio --command="SELECT * FROM posts"',
   );
-  console.log('2. Test locally: npm run dev:wrangler');
+  console.log('2. Test locally: bun run dev:wrangler');
   console.log('3. Deploy: npx wrangler pages deploy');
 }
 

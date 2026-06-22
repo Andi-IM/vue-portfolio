@@ -163,16 +163,16 @@ await page.screenshot({
 
 ```bash
 # Run all tests (including screenshot examples)
-npm run test:e2e
+bun run test:e2e
 
 # Run only screenshot examples
-npx playwright test screenshot-examples
+bunx playwright test screenshot-examples
 
 # Run with UI mode to see screenshots
-npm run test:e2e:ui
+bun run test:e2e:ui
 
 # View last test report (includes screenshots)
-npx playwright show-report
+bunx playwright show-report
 ```
 
 ---
@@ -196,7 +196,7 @@ test('visual regression', async ({ page }) => {
 Update baselines:
 
 ```bash
-npx playwright test --update-snapshots
+bunx playwright test --update-snapshots
 ```
 
 ---
