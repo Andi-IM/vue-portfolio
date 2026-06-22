@@ -1,3 +1,12 @@
+# [1.3.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.2.0...v1.3.0) (2026-06-22)
+
+
+### Features
+
+* add Quasar editor composable with image management and styling utilities ([d75de8d](https://github.com/Andi-IM/vue-portfolio/commit/d75de8d31ce2d68fc6fab46b80088e1197249639))
+* implement impeccable agent skill set for design, detection, and live-editing automation ([19e0a88](https://github.com/Andi-IM/vue-portfolio/commit/19e0a8844df6c8fe91906d8c87d638b8ba8c6f08))
+* implement session storage engine and add agent live-editing infrastructure ([3121fa9](https://github.com/Andi-IM/vue-portfolio/commit/3121fa9243e0b8b39a23e0104939bc4cbebb3086))
+
 # [1.2.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.1.0...v1.2.0) (2026-06-22)
 
 

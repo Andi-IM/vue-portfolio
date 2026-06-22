@@ -3,7 +3,7 @@
   "productName": "Andi IM | Portfolio",
   "description": "Andi Irham - Mobile App Developer & AI Enthusiast. Specializing in Android, Kotlin, Flutter development.",
   "author": "Andi-IM <andi.irhamm@gmail.com>",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "private": true,
   "type": "module",
   "scripts": {
