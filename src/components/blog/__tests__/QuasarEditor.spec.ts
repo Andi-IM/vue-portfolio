@@ -27,6 +27,8 @@ const mockContent = ref('');
 const mockIsSourceMode = ref(false);
 const mockToggleSourceMode = vi.fn();
 const mockUploadImageHandler = vi.fn();
+const mockMakeImagesClickable = vi.fn();
+const mockGetCurrentImageConfig = vi.fn(() => null);
 
 vi.mock('../../../composables/useQuasarEditor', () => ({
   useQuasarEditor: vi.fn(() => ({
@@ -34,6 +36,8 @@ vi.mock('../../../composables/useQuasarEditor', () => ({
     isSourceMode: mockIsSourceMode,
     toggleSourceMode: mockToggleSourceMode,
     uploadImageHandler: mockUploadImageHandler,
+    makeImagesClickable: mockMakeImagesClickable,
+    getCurrentImageConfig: mockGetCurrentImageConfig,
   })),
 }));
 
