@@ -92,7 +92,7 @@ export function useQuasarEditor(options: UseQuasarEditorOptions) {
     let editorElement: HTMLElement | null = null;
 
     for (const selector of editorSelectors) {
-      editorElement = document.querySelector(selector) as HTMLElement;
+      editorElement = document.querySelector(selector);
       if (editorElement) {
         console.log('Found editor element with selector:', selector);
         break;

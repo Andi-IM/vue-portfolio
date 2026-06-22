@@ -151,7 +151,7 @@ export function runCopyEditPostApplyChecks({ cwd = process.cwd(), files = [] } =
     }
     const markerMatch = findLeftoverImpeccableMarker(content);
     if (markerMatch) failures.push({ file: relativeFile, reason: 'leftover_impeccable_marker', marker: markerMatch });
-    if (/\.json$/.test(relativeFile)) {
+    if (relativeFile.endsWith('.json')) {
       try {
         JSON.parse(content);
       } catch (err) {

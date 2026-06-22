@@ -190,7 +190,7 @@ async function detectUrl(url, options = {}) {
       target: url,
     }, () => page.evaluate((designSystem) => {
       window.__IMPECCABLE_CONFIG__ = {
-        ...(window.__IMPECCABLE_CONFIG__ || {}),
+        ...window.__IMPECCABLE_CONFIG__,
         autoScan: false,
         ...(designSystem ? { designSystem } : {}),
       };

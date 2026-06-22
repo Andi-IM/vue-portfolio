@@ -39,12 +39,12 @@ describe('slate-commands', () => {
 
   describe('isMarkActive', () => {
     it('returns true if mark is present', () => {
-      vi.mocked(Editor.marks).mockReturnValue({ bold: true } as any);
+      vi.mocked(Editor.marks).mockReturnValue({ bold: true });
       expect(commands.isMarkActive(mockEditor, 'bold')).toBe(true);
     });
 
     it('returns false if mark is absent', () => {
-      vi.mocked(Editor.marks).mockReturnValue({ italic: true } as any);
+      vi.mocked(Editor.marks).mockReturnValue({ italic: true });
       expect(commands.isMarkActive(mockEditor, 'bold')).toBe(false);
     });
   });
@@ -57,7 +57,7 @@ describe('slate-commands', () => {
     });
 
     it('removes mark if active', () => {
-      vi.mocked(Editor.marks).mockReturnValue({ bold: true } as any);
+      vi.mocked(Editor.marks).mockReturnValue({ bold: true });
       commands.toggleMark(mockEditor, 'bold');
       expect(Editor.removeMark).toHaveBeenCalledWith(mockEditor, 'bold');
     });

@@ -3757,7 +3757,7 @@
       remainingCount: Number.isFinite(Number(existing.remainingCount)) ? Number(existing.remainingCount) : currentCount,
       phase: existing.phase || 'applying',
       startedAt: Number(existing.startedAt) || Date.now(),
-      ...(patch || {}),
+      ...patch,
     });
   }
 
@@ -6276,7 +6276,7 @@
       phase: 'steer',
       reason,
       pageUrl: location.pathname,
-      ...(extra || {}),
+      ...extra,
     }).catch(() => null);
   }
 
@@ -8500,7 +8500,7 @@ void main() {
       pageChatExpanded,
       active: steerFocusTargetLabel(activeElementDeep()),
       shouldSteer: shouldFocusSteerChat(),
-      ...(extra || {}),
+      ...extra,
     });
   }
 

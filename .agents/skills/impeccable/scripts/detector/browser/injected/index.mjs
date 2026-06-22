@@ -763,11 +763,11 @@ if (IS_BROWSER) {
     if (!token || token === 'center') return (container - painted) / 2;
     if (token === 'left' || token === 'top') return 0;
     if (token === 'right' || token === 'bottom') return container - painted;
-    if (/%$/.test(token)) {
+    if (token.endsWith('%')) {
       const pct = parseFloat(token) / 100;
       return (container - painted) * pct;
     }
-    if (/px$/.test(token)) return parseFloat(token) || 0;
+    if (token.endsWith('px')) return parseFloat(token) || 0;
     return (container - painted) / 2;
   }
 
@@ -798,11 +798,11 @@ if (IS_BROWSER) {
       const parts = size.split(/\s+/);
       const widthToken = parts[0];
       const heightToken = parts[1] || 'auto';
-      if (/%$/.test(widthToken)) paintedWidth = containerRect.width * (parseFloat(widthToken) / 100);
-      else if (/px$/.test(widthToken)) paintedWidth = parseFloat(widthToken) || paintedWidth;
+      if (widthToken.endsWith('%')) paintedWidth = containerRect.width * (parseFloat(widthToken) / 100);
+      else if (widthToken.endsWith('px')) paintedWidth = parseFloat(widthToken) || paintedWidth;
       if (heightToken === 'auto') paintedHeight = paintedWidth * (intrinsicHeight / intrinsicWidth);
-      else if (/%$/.test(heightToken)) paintedHeight = containerRect.height * (parseFloat(heightToken) / 100);
-      else if (/px$/.test(heightToken)) paintedHeight = parseFloat(heightToken) || paintedHeight;
+      else if (heightToken.endsWith('%')) paintedHeight = containerRect.height * (parseFloat(heightToken) / 100);
+      else if (heightToken.endsWith('px')) paintedHeight = parseFloat(heightToken) || paintedHeight;
     }
 
     const [xToken, yToken] = parsePositionPair(positionValue);

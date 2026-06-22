@@ -125,7 +125,7 @@ export function writeDetectionConfig(root, detectorConfig, opts = {}) {
   const existingHook = hookSection(existing);
   const nextHook = stripDetectorKeys(existingHook);
   const nextDetector = {
-    ...(detectorSection(existing) || {}),
+    ...detectorSection(existing),
     ...normalizeDetectionConfigForWrite(detectorConfig),
   };
   const next = {

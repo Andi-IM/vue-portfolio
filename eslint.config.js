@@ -27,6 +27,7 @@ export default defineConfigWithVueTs(
     '**/coverage/**',
     '**/.quasar/**',
     '**/functions/**',
+    '**/.agents/**',
     'postcss.config.js',
   ]),
   pluginQuasar.configs.recommended(),

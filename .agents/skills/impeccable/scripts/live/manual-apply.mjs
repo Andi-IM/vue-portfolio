@@ -637,7 +637,7 @@ export function splitManualApplyBatch(batch, maxOps) {
       ops: chunk.ops,
       candidates: filterManualApplyChunkCandidates(batch, chunk.refsByEntry),
       context: {
-        ...(batch?.context || {}),
+        ...batch?.context,
         totalEntries: chunk.entries.length,
         totalOps: chunk.opCount,
         chunkIndex: index + 1,

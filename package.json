@@ -13,7 +13,7 @@
     "preview": "quasar build && vite preview --outDir dist",
     "build-only": "quasar build",
     "type-check": "vue-tsc --build tsconfig.build.json",
-    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
+    "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore --ignore-pattern \".agents/**\"",
     "lint:eslint": "eslint src --ext .js,.ts,.vue --fix --cache",
     "lint": "run-s lint:*",
     "format": "prettier --write src/",

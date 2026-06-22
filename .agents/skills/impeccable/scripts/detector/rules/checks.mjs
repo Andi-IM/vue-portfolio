@@ -735,7 +735,7 @@ function parseRadiusToPx(value, widthPx) {
   const first = trimmed.split(/\s+/)[0];
   const num = parseFloat(first);
   if (Number.isNaN(num)) return null;
-  if (/%$/.test(first)) {
+  if (first.endsWith('%')) {
     if (widthPx && widthPx > 0) return (num / 100) * widthPx;
     return num;
   }

@@ -237,7 +237,7 @@ function mergeDetectorConfig(existing, seed = null) {
   }
   if (base.designSystem && typeof base.designSystem === 'object' && !Array.isArray(base.designSystem)) {
     out.designSystem = {
-      ...(out.designSystem || {}),
+      ...out.designSystem,
       enabled: base.designSystem.enabled === false ? false : true,
     };
   }

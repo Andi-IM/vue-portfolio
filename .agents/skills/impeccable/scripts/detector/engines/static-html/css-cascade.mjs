@@ -492,7 +492,7 @@ function parseStaticTransition(value) {
     const tokens = splitCssTokens(item);
     const timing = tokens.find(token => /^(?:ease|linear|step-|cubic-bezier\()/i.test(token));
     if (timing) timings.push(timing);
-    const prop = tokens.find(token => /^[a-z-]+$/i.test(token) && !/^(?:ease|linear|infinite|alternate|forwards|backwards|both|normal|none)$/.test(token) && !/s$/.test(token));
+    const prop = tokens.find(token => /^[a-z-]+$/i.test(token) && !/^(?:ease|linear|infinite|alternate|forwards|backwards|both|normal|none)$/.test(token) && !token.endsWith('s'));
     if (prop) props.push(prop);
   }
   return {

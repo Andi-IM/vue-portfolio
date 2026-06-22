@@ -238,9 +238,9 @@ function packageHasSvelteKit(cwd) {
   try {
     const pkg = JSON.parse(fs.readFileSync(file, 'utf-8'));
     const deps = {
-      ...(pkg.dependencies || {}),
-      ...(pkg.devDependencies || {}),
-      ...(pkg.peerDependencies || {}),
+      ...pkg.dependencies,
+      ...pkg.devDependencies,
+      ...pkg.peerDependencies,
     };
     return Boolean(deps['@sveltejs/kit'] || deps['@sveltejs/vite-plugin-svelte'] || deps.svelte);
   } catch {
