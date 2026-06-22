@@ -3,8 +3,36 @@ name: CI/CD Pipeline
 on:
   push:
     branches: ['**']
+    paths:
+      - 'src/**'
+      - 'functions/**'
+      - 'public/**'
+      - 'package.json'
+      - 'bun.lock'
+      - 'tsconfig*.json'
+      - 'quasar.config.ts'
+      - 'vitest.config.ts'
+      - 'vite.config.ts'
+      - 'index.html'
+      - 'wrangler.toml'
+      - '.github/workflows/**'
+      - '.github/actions/**'
   pull_request:
     branches: ['**']
+    paths:
+      - 'src/**'
+      - 'functions/**'
+      - 'public/**'
+      - 'package.json'
+      - 'bun.lock'
+      - 'tsconfig*.json'
+      - 'quasar.config.ts'
+      - 'vitest.config.ts'
+      - 'vite.config.ts'
+      - 'index.html'
+      - 'wrangler.toml'
+      - '.github/workflows/**'
+      - '.github/actions/**'
 
 jobs:
   codeql:
