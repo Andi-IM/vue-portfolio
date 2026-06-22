@@ -27,7 +27,7 @@
     "clean": "rimraf dist coverage .nyc_output .quasar test-results playwright-report .eslintcache .wrangler tsconfig.app.tsbuildinfo"
   },
   "dependencies": {
-    "@codecov/vite-plugin": "^1.9.1",
+    "@codecov/vite-plugin": "^2.0.1",
     "@iconify-json/simple-icons": "^1.2.65",
     "@iconify/vue": "^5.0.0",
     "@intlify/unplugin-vue-i18n": "^11.0.3",
