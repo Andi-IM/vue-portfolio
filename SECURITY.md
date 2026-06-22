@@ -16,7 +16,7 @@ If you discover a security vulnerability in this project, **please do not open a
 Instead, report it privately using one of the following methods:
 
 - **GitHub Private Advisory**: [Report a vulnerability](https://github.com/Andi-IM/vue-portfolio/security/advisories/new)
-- **Email**: [andi.irhamm@gmail.com](mailto:andi.irhamm@gmail.com)
+- **Email**: [email@airham.my.id](mailto:email@airham.my.id)
 
 Please include as much detail as possible:
 
