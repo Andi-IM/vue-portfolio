@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.5.0...v1.6.0) (2026-06-22)
+
+
+### Features
+
+* implement CI/CD pipeline workflow with CodeQL, testing, release, and deployment stages ([1a5596e](https://github.com/Andi-IM/vue-portfolio/commit/1a5596eba3e164d980460147f5cb766316dc583a))
+
 # [1.5.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.4.0...v1.5.0) (2026-06-22)
 
 
