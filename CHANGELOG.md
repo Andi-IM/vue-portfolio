@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.3.0...v1.4.0) (2026-06-22)
+
+
+### Features
+
+* add reusable setup-environment action and E2E testing workflow using Playwright ([796854d](https://github.com/Andi-IM/vue-portfolio/commit/796854d901ac30cba9c2a61a7ea3b0b1d66182ac))
+
 # [1.3.0](https://github.com/Andi-IM/vue-portfolio/compare/v1.2.0...v1.3.0) (2026-06-22)
 
 
