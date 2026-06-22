@@ -29,28 +29,23 @@ jobs:
     uses: ./.github/workflows/e2e.yml
     secrets: inherit
 
-  deploy:
-    name: Deploy to Cloudflare Pages
-    needs: e2e
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    uses: ./.github/workflows/cloudflare_worker_deployment.yml
-    permissions:
-      contents: read
-      deployments: write
-    secrets: inherit
-
   release:
     name: Semantic Release
-    needs: [ci, e2e, deploy]
-    if: |
-      always() && 
-      (github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) && 
-      needs.ci.result == 'success' && 
-      (needs.e2e.result == 'success' || needs.e2e.result == 'skipped') && 
-      (needs.deploy.result == 'success' || needs.deploy.result == 'skipped')
+    needs: e2e
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     uses: ./.github/workflows/release.yml
     permissions:
       contents: write
       issues: write
       pull-requests: write
+    secrets: inherit
+
+  deploy:
+    name: Deploy to Cloudflare Pages
+    needs: release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    uses: ./.github/workflows/cloudflare_worker_deployment.yml
+    permissions:
+      contents: read
+      deployments: write
     secrets: inherit

@@ -14,8 +14,6 @@ jobs:
       - name: Setup Environment
         uses: ./.github/actions/setup-environment
 
-      - name: Verify Quasar CLI
-        run: bunx quasar info
 
       - name: Lint
         run: bun run lint
@@ -23,8 +21,27 @@ jobs:
       - name: Type Check
         run: bun run type-check
 
-      - name: Unit Tests
-        run: bun run test
+      - name: Run test analytics
+        run: bunx vitest run --reporter=junit --outputFile=coverage/test-report.junit.xml
+
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/test-report.junit.xml
+          report_type: test_results
+          fail_ci_if_error: true
+
+      - name: Run tests with coverage
+        run: bunx vitest run --coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/lcov.info
+          fail_ci_if_error: true
 
       - name: Build
         run: bun run build

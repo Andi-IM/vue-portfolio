@@ -20,8 +20,6 @@ jobs:
       - name: Install Playwright browsers
         run: bunx playwright install --with-deps chromium
 
-      - name: Verify Quasar CLI
-        run: bunx quasar info
 
       - name: Run E2E tests
         run: bun run test:e2e --project=chromium
