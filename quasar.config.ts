@@ -86,9 +86,11 @@ export default defineConfig((ctx) => {
         };
         viteConf.build.rollupOptions = {
           output: {
-            manualChunks: {
-              'vue-vendor': ['vue', 'vue-router'],
-            } as any,
+            manualChunks(id) {
+              if (id.includes('node_modules/vue/') || id.includes('node_modules/vue-router/')) {
+                return 'vue-vendor';
+              }
+            },
           },
         };
       },
