@@ -89,7 +89,7 @@
     "vite-plugin-vue-devtools": "^8.0.3",
     "vitest": "^4.0.18",
     "vue-tsc": "^3.1.1",
-    "wrangler": "^4.61.1"
+    "wrangler": "^4.106.0"
   },
   "engines": {
     "node": "^28 || ^26 || ^24 || ^22 || ^20",
