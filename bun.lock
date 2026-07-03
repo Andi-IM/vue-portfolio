@@ -15,7 +15,7 @@
         "google-auth-library": "^10.5.0",
         "googleapis": "^173.0.0",
         "lucide-vue-next": "^0.563.0",
-        "quasar": "^2.18.6",
+        "quasar": "^2.20.2",
         "sass": "^1.97.3",
         "slate": "^0.120.0",
         "slate-history": "^0.113.1",
@@ -1762,7 +1762,7 @@
 
     "quansync": ["quansync@0.2.11", "", {}, "sha512-AifT7QEbW9Nri4tAwR5M/uzpBuqfZf+zwaEM/QkzEjj7NBuFD2rBuy0K3dE+8wltbezDV7JMA0WfnCPYRSYbXA=="],
 
-    "quasar": ["quasar@2.20.1", "", {}, "sha512-C+uFyt9/D2B2Dad/c9tGSlyWLMsrz+ROJLm3FKFdY9i+vc1Mk2q/+JyHBmQnuvQCEpUrdiXqcWQbpmZhuvo60A=="],
+    "quasar": ["quasar@2.20.2", "", {}, "sha512-ObNE8c+6Kk4WN1EEqJgaOhwOjGvVEAfP+EFbGqrwac36MR8lDFSk/snMpCXzQkdlitPg0/IT+Sx7pRBOQPWtwg=="],
 
     "queue-microtask": ["queue-microtask@1.2.3", "", {}, "sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A=="],
 
