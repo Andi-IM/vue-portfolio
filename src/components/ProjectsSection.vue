@@ -10,6 +10,7 @@ import deretsolverImg from '../images/deretsolver.webp';
 import fintrackImg from '../images/fintrack.png';
 import operationalReceiptImg from '../images/visiflow.jpg';
 import siaasImg from '../images/siaas.png';
+import masjidkuImg from '../images/masjidku.svg';
 
 interface Project {
   key: string;
@@ -40,6 +41,9 @@ const techLogos: Record<string, { icon: string; color: string }> = {
   Tauri: { icon: 'simple-icons:tauri', color: '#24C8DB' },
   SQLite: { icon: 'simple-icons:sqlite', color: '#003B57' },
   Rust: { icon: 'simple-icons:rust', color: '#E0573E' },
+  Java: { icon: 'simple-icons:openjdk', color: '#E76F00' },
+  CSS: { icon: 'simple-icons:css', color: '#663399' },
+  Gradle: { icon: 'simple-icons:gradle', color: '#02303A' },
 };
 
 const getTechLogo = (tech: string) => {
@@ -115,6 +119,13 @@ const projects = [
     link: 'https://github.com/Andi-IM/siaas/releases',
     github: 'https://github.com/Andi-IM/siaas',
   },
+  {
+    key: 'masjidku',
+    tags: ['Java', 'JavaFX', 'SQLite', 'CSS', 'Gradle'],
+    image: masjidkuImg,
+    link: 'https://github.com/Andi-IM/Masjidku/releases',
+    github: 'https://github.com/Andi-IM/Masjidku',
+  },
 ];
 
 const openProject = (project: Project) => {
@@ -154,11 +165,11 @@ const openLink = (url?: string | null) => {
             <div
               class="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors z-10"
             ></div>
-<img
-               :src="project.image"
-               :alt="$t(`projects.${project.key}.title`)"
-               class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-             />
+            <img
+              :src="project.image"
+              :alt="$t(`projects.${project.key}.title`)"
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+            />
             <div
               class="absolute bottom-4 right-4 bg-black/60 backdrop-blur text-white text-xs px-2 py-1 rounded z-20 opacity-0 group-hover:opacity-100 transition-opacity"
             >
@@ -166,15 +177,15 @@ const openLink = (url?: string | null) => {
             </div>
           </div>
           <div class="p-6">
-<h3
-                class="text-xl font-bold mb-2 transition-colors"
-                style="color: var(--color-text-heading)"
-              >
-                {{ $t(`projects.${project.key}.title`) }}
-              </h3>
-              <p class="text-sm mb-4 line-clamp-2" style="color: var(--color-text-muted)">
-                {{ $t(`projects.${project.key}.description`) }}
-              </p>
+            <h3
+              class="text-xl font-bold mb-2 transition-colors"
+              style="color: var(--color-text-heading)"
+            >
+              {{ $t(`projects.${project.key}.title`) }}
+            </h3>
+            <p class="text-sm mb-4 line-clamp-2" style="color: var(--color-text-muted)">
+              {{ $t(`projects.${project.key}.description`) }}
+            </p>
             <div class="flex flex-wrap gap-3 mb-6">
               <q-avatar
                 v-for="(tag, tagIndex) in project.tags.slice(0, 5)"
@@ -251,20 +262,20 @@ const openLink = (url?: string | null) => {
 
       <!-- Modal Image -->
       <div class="relative h-64 sm:h-80 w-full">
-<img
-           :src="selectedProject.image"
-           :alt="$t(`projects.${selectedProject.key}.title`)"
-           class="w-full h-full object-cover"
-         />
+        <img
+          :src="selectedProject.image"
+          :alt="$t(`projects.${selectedProject.key}.title`)"
+          class="w-full h-full object-cover"
+        />
         <div
           class="absolute inset-0"
           style="background: linear-gradient(to top, var(--color-bg-card), transparent)"
         ></div>
-<h3
-           class="absolute bottom-6 left-6 text-3xl md:text-4xl font-bold text-white shadow-black drop-shadow-lg"
-         >
-           {{ $t(`projects.${selectedProject.key}.title`) }}
-         </h3>
+        <h3
+          class="absolute bottom-6 left-6 text-3xl md:text-4xl font-bold text-white shadow-black drop-shadow-lg"
+        >
+          {{ $t(`projects.${selectedProject.key}.title`) }}
+        </h3>
       </div>
 
       <!-- Modal Content -->

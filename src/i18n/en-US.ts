@@ -87,6 +87,18 @@ export default {
         'Print-optimized A4 Academic Transcripts Generator',
       ],
     },
+    masjidku: {
+      title: 'Masjidku',
+      description: 'Offline desktop information system for mosque finance and affairs records',
+      longDescription:
+        'Masjidku is a Java-based desktop application for mosque administration. It records financial activity and operational affairs in an offline local database, giving mosque teams a simple system for keeping records without depending on a constant internet connection.',
+      features: [
+        'Offline-first mosque administration workflow',
+        'Financial activity recording for mosque operations',
+        'Local database storage for private records',
+        'JavaFX desktop interface with Gradle project structure',
+      ],
+    },
   },
   experience: {
     title: 'Experiences',
