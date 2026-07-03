@@ -32,6 +32,12 @@ coverage
 
 .eslintcache
 
+# TypeScript/Vue source should not emit generated files into src
+src/**/*.js
+src/**/*.d.ts
+!src/env.d.ts
+!src/shims-images.d.ts
+
 # Cypress
 /cypress/videos/
 /cypress/screenshots/
