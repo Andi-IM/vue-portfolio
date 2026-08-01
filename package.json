@@ -81,7 +81,7 @@
     "postcss": "^8.5.16",
     "prettier": "3.6.2",
     "rimraf": "^6.1.2",
-    "semantic-release": "^25.0.5",
+    "semantic-release": "^25.0.8",
     "tailwindcss": "^4.3.2",
     "typescript": "~5.9.0",
     "vite-plugin-checker": "^0.14.4",
